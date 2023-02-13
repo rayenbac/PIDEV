@@ -1,0 +1,379 @@
+.navbar-nav {
+    float: right !important;
+}
+
+.container-fluid {
+    margin-top: 60px;
+}
+
+body {
+    margin: 0 !important;
+}
+
+.logo-header {
+    width: 140px;
+}
+
+span.item-notification {
+    font-size: 15px;
+    color: #3f87f5;
+}
+
+.badge-notification {
+    color: #3f87f5;
+    font-size: 13px;
+    top: 0px;
+    position: absolute;
+    right: 10px;
+    font-weight: 500;
+}
+
+.is-folded .header .logo .logo-fold {
+    width: 40px;
+    text-align: center;
+    display: inline-block;
+    margin-top: 25px;
+}
+
+.card {
+    display: block;
+    width: 100%;
+}
+
+textarea {
+    resize: none;
+}
+
+table .anticon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.user-name {
+    font-size: 13px;
+}
+
+iframe {
+    width: 100%;
+    height: 100vh;
+}
+
+li.dashboard.nav-item.dropdown.active {
+    background-color: rgba(63, 135, 245, 0.15);
+}
+
+li.dashboard.nav-item.dropdown.active a {
+    color: #3f87f5;
+}
+
+li.nav-item.dropdown.active:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 1;
+    border-right: 2px solid;
+    border-color: #3f87f5;
+}
+
+.added-element {
+    position: relative;
+}
+
+.error-themes-item i.remove_field_button,
+.error-themes-item i.add_field_button {
+    right: 16px;
+    font-size: 24px;
+    position: absolute;
+    top: 48%;
+    cursor: pointer;
+}
+
+#send-password-btn {
+    display: block;
+    width: 120px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.swal2-styled {
+    outline: none !important;
+}
+
+#exporter_csv {
+    min-width: 120px;
+}
+
+#s2id_dashboard_agent_id,
+#s2id_dashboard_project_id,
+#s2id_dashboard_supervisor_id {
+    min-width: 200px;
+}
+
+.chart {
+    display: none;
+}
+
+.checkbox-add label {
+    margin-right: 15px;
+}
+
+.loader i.anticon.anticon-loading {
+    font-size: 50px;
+}
+
+.loader {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    text-align: center;
+    z-index: 9999;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    background-color: #fff;
+}
+
+.custom-select {
+    display: block;
+    width: 100%;
+    height: 40px;
+    padding: 0 10px;
+    border: 1px solid #b0b5b9;
+    color: #53535f;
+    font-size: 16px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    outline: 0;
+    background-color: #fff;
+}
+
+li.picker-switch.accordion-toggle {
+    padding: 10px 3px 1px;
+    text-align: center;
+    display: inline-block;
+    margin: 0 auto;
+    left: 125px;
+    position: relative;
+}
+
+.bootstrap-datetimepicker-widget .timepicker-picker {
+    text-align: center;
+    /* margin: 0 auto; */
+}
+
+.bootstrap-datetimepicker-widget li.collapsing,
+.bootstrap-datetimepicker-widget li.collapse {
+    text-align: center;
+}
+
+.bootstrap-datetimepicker-widget .timepicker {
+    text-align: center;
+    display: inline-block;
+}
+
+table i.anticon.anticon-delete {
+    color: #de4436 !important;
+}
+
+li.nav-item.dropdown.active {
+    background-color: rgba(63, 135, 245, 0.15);
+}
+
+a.fc-daygrid-event.fc-daygrid-dot-event {
+    cursor: pointer;
+}
+
+
+/*
+i wish this required CSS was better documented :(
+https://github.com/FezVrasta/popper.js/issues/674
+derived from this CSS on this page: https://popper.js.org/tooltip-examples.html
+*/
+
+.popper,
+.tooltip {
+    opacity: 1;
+    position: absolute;
+    z-index: 9999;
+    background: blue;
+    color: #fff;
+    width: 250px;
+    border-radius: 3px;
+    padding: 10px;
+    text-align: center;
+}
+
+.tooltip .tooltip-inner {
+    padding: 0px 0px !important;
+    margin: 0 auto;
+    background: none !important;
+}
+
+.style5 .tooltip {
+    color: #FFFFFF;
+    max-width: 250px;
+    width: 250px;
+    font-size: .8rem;
+    padding: .5em 1em;
+}
+
+.popper .popper__arrow,
+.tooltip .tooltip-arrow {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    position: absolute;
+    margin: 5px;
+}
+
+.tooltip .tooltip-arrow,
+.popper .popper__arrow {
+    border-color: #FFC107;
+}
+
+.style5 .tooltip .tooltip-arrow {
+    border-color: #1E252B;
+}
+
+.popper[x-placement^="top"],
+.tooltip[x-placement^="top"] {
+    margin-bottom: 5px;
+}
+
+.popper[x-placement^="top"] .popper__arrow,
+.tooltip[x-placement^="top"] .tooltip-arrow {
+    border-width: 5px 5px 0 5px;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    bottom: -5px;
+    left: calc(50% - 5px);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.popper[x-placement^="bottom"],
+.tooltip[x-placement^="bottom"] {
+    margin-top: 5px;
+}
+
+.tooltip[x-placement^="bottom"] .tooltip-arrow,
+.popper[x-placement^="bottom"] .popper__arrow {
+    border-width: 0 5px 5px 5px;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-top-color: transparent;
+    top: -5px;
+    left: calc(50% - 5px);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.tooltip[x-placement^="right"],
+.popper[x-placement^="right"] {
+    margin-left: 5px;
+}
+
+.popper[x-placement^="right"] .popper__arrow,
+.tooltip[x-placement^="right"] .tooltip-arrow {
+    border-width: 5px 5px 5px 0;
+    border-left-color: transparent;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    left: -5px;
+    top: calc(50% - 5px);
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.popper[x-placement^="left"],
+.tooltip[x-placement^="left"] {
+    margin-right: 5px;
+}
+
+.popper[x-placement^="left"] .popper__arrow,
+.tooltip[x-placement^="left"] .tooltip-arrow {
+    border-width: 5px 0 5px 5px;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    right: -5px;
+    top: calc(50% - 5px);
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.table-responsive .filter .checkbox {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.table-responsive .filter {
+    background: #f9fbfd !important;
+    padding: 15px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.filter .checkbox input[type=checkbox]:disabled+label,
+.filter .checkbox input[type=checkbox].disabled+label {
+    opacity: 1;
+}
+
+.dataTable .anticon.anticon-file-text {
+    color: #00c9a7;
+}
+
+.setting-icon {
+    position: absolute;
+    right: 23px;
+    top: 50px;
+    font-size: 23px;
+    cursor: pointer;
+}
+
+.select2-container-active.select2-container {
+    border: none !important;
+}
+
+li.nav-item.dropdown.active a i,
+li.nav-item.dropdown.active a {
+    color: #3f87f5 !important;
+}
+
+.select2-container {
+    margin-bottom: 15px;
+}
+
+.label-info {
+    background-color: #3f87f5;
+}
+
+.label-info[href]:focus,
+.label-info[href]:hover {
+    background-color: #31b0d5
+}
+
+.bootstrap-tagsinput .tag {
+    margin-right: 2px;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 5px;
+    margin-bottom: 5px !important;
+    display: inline-block;
+}
+
+.bootstrap-tagsinput {
+    width: 100%;
+    border: 1px solid #edf2f9 !important;
+    padding: 5px 8px !important;
+}

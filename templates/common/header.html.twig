@@ -1,0 +1,35 @@
+<div class="header">
+				<div class="container">
+					<!-- logo -->
+					<div class="logo">
+						<a href="{{path('home')}}"><img src="{{asset('images/logo.png')}}" title="medicalpluse" /></a>
+					</div>
+					<!-- logo -->
+					<!-- top-nav -->
+					<div class="top-nav">
+						<span class="menu"> </span>
+						<ul>
+							{#<li class="active"><a href="index.html">Home</a></li>#}
+							<li><a href="{{path('home')}}">HOME</a></li>
+							<li><a href="#">FORUM</a></li>
+							<li><a href="{{path('addproduct')}}">PRODUITS</a></li>
+							<li><a href="#">EVENEMENTS</a></li>
+                            <li><a href="#">MOOD</a></li>
+                            <li><a href="{{path('consultation')}}">Rendez-vous</a></li>
+                            <li><a href="#">A propos</a></li>
+						</ul>
+					</div>
+					<!-- top-nav -->
+					<!-- script-for-nav -->
+					<script>
+						$(document).ready(function(){
+							$("span.menu").click(function(){
+								$(".top-nav ul").slideToggle(300);
+							});
+						});
+					</script>
+					<!-- script-for-nav -->
+					<div class="clearfix"> </div>
+				</div>
+			</div>
+            </div>

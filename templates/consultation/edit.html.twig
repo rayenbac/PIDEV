@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	Ajouter une poste
+	{{ parent() }}
+{% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+{% endblock %}
+{% block body %}
+	<div
+		class="page-container">
+		<!-- Content Wrapper START -->
+		<div class="main-content">
+			<div class="card">
+				<div class="card-body">
+					<h4>Modifier une consultation</h4>
+					<form action="{{ path('editConsultation',{'id':consultation.id})}}" method="post">
+						<div class="m-t-25">
+							<div class="row">
+								<div class="col-md-6">
+									<label>Titre:</label>
+									<input type="text" value={{consultation.titre}} required name="title" class="form-control m-b-15" placeholder="titre">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<label>Description:</label>
+									<textarea aria-label="With textarea"  required name="description" class="form-control m-b-15" placeholder="description">{{consultation.description}}</textarea>
+								</div>
+							</div>
+                            <div class="col-md-4">
+										<div class="form-group">
+											<label>Choisir le jour :</label>
+											<div class="input-affix m-b-10">
+												<i class="prefix-icon anticon anticon-calendar"></i>
+												<input type="text" name="date" value={{consultation.date | date('Y-m-d') }} class="form-control datepicker-input" placeholder="Choisir la date">
+											</div>
+										</div>
+									</div>
+						</div>
+						<div class="m-t-25 form-group text-right">
+							<button type="submit" class="btn btn-primary">Sauvegarder</button>
+						<button type="reset" class="btn btn-danger">Annuler</button>
+						</div>
+				</form>
+			
+		</div>
+	</div>
+</div>{% endblock %}{% block javascripts %}
+{{ parent() }}{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+  Listes des postes
+  {{ parent() }}
+{% endblock %}
+{% block stylesheets %}
+  {{ parent() }}
+{% endblock %}
+{% block body %}
+<div class="page-container">
+    <!-- Content Wrapper START -->
+    <div class="main-content">
+      <div class="card">
+          <div class="card-body">
+              <h4>Listes des rendez-vous</h4>
+              <div class="m-t-25">
+                <table class="data-table table">
+                    <thead>
+                        <tr>
+                        <th>Id</th>
+                            <th>Titre</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                            <th>Modifier</th>
+                            <th>Supprimer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                     {% for consultation in consultations %}
+                        <tr>
+                        <td>{{consultation.id}}</td>
+                            <td>{{consultation.titre}}</td>
+                            <td>{{consultation.description}}</td>
+                            <td>
+                            {{consultation.date | date}}
+                            </td>
+                            <td><a href="{{ path ('editConsultation',{'id':consultation.id}) }}">
+												<i class="anticon anticon-eye"></i>
+											</a></td>
+                                            <td>
+                                            <a href="javascript:void(0)" data-href="{{ path ('deleteConsultation',{'id':consultation.id})}}" data-id="{{consultation.id}}" class="delete-element">
+												<i class="anticon anticon-delete"></i>
+											</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+              </div>
+          </div>
+      </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+{% endblock %}
