@@ -1,0 +1,23 @@
+<h1>Liste des reponses </h1>
+
+<table  border="1">
+<tr>
+  <th>Id</th>
+  <th>Reponse</th>
+  <th>Modification</th>
+  <th>Suppression</th>
+ 
+</tr>
+<tr>
+  {% for i in reponse %}
+  <td>{{i.id}}</td>
+  <td>{{i.reponse}}</td>
+  
+  <td><a href="{{ path('updateReponse',{'id':i.id}) }}">Modifier reponse</a></td>
+ <td><a href="{{path('suppReponse',{'id':i.id }) }}">Supprimer reponse</a></td>
+</tr>
+{% endfor %}
+</table>
+<td><a href="{{path('addR') }}"> Ajouter reponse </a></td>
+
+
