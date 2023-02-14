@@ -1,43 +1,37 @@
-<!--
-Author: W3layouts
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
-<!DOCTYPE HTML>
-<html>
-	<head>
-		<title>{% block title %}ECHKILI{% endblock %}</title>
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}ECHKILI{% endblock %}</title>
 		{% block stylesheets %}
-		<link rel="stylesheet" href="{{ asset('assets/css/furniture-icons.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css') }}">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.5.1/main.min.css">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link href="{{ asset('assets/vendors/datatables/dataTables.bootstrap.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('assets/vendors/select2/select2.css') }}" rel="stylesheet">
-        <link rel="stylesheet" href="{{ asset('assets/css/app.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-tagsinput.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/sweetalert2.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/intranet.css') }}">
-		<link href="{{asset('css/bootstrap.css')}}" rel='stylesheet' type='text/css' />
-		<script src="{{asset('js/jquery.min.js')}}"></script>
-		 <!-- Custom Theme files -->
-		<link href="{{asset('css/style.css')}}" rel='stylesheet' type='text/css' />
-   		 <!-- Custom Theme files -->
-   		 <meta name="viewport" content="width=device-width, initial-scale=1">
-		 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-   		 <!-- webfonts -->
-   		 <link href="{{asset('http://fonts.googleapis.com/css?family=Arimo:400,700')}}" rel='stylesheet' type='text/css'>
-   		  <!-- webfonts -->
-		  {% endblock %}
-	</head>
-	<body>
-		<!-- container -->
-			<!-- header -->
-			<div class="app">
+    <link rel="icon" href="{{ asset('assets/img/favicon.png')}}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css')}}">
+    <!-- animate CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/css/animate.css')}}">
+    <!-- owl carousel CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/css/owl.carousel.min.css')}}">
+    <!-- themify CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/css/themify-icons.css')}}">
+    <!-- flaticon CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/css/flaticon.css')}}">
+    <!-- magnific popup CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/css/magnific-popup.css')}}">
+    <!-- nice select CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/css/nice-select.css')}}">
+    <!-- swiper CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/css/slick.css')}}">
+    <!-- style CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css')}}">
+    {% endblock %}
+</head>
+
+<body>
+   
+   <div class="app">
             <div class="layout">
                {% include('common/header.html.twig') %}
                         {% block body %}
@@ -46,87 +40,24 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </div> 
 			<!-- /header -->
 		</div>
+	{% block javascripts %}
+    <script src="{{ asset('assets/js/jquery-1.12.1.min.js')}}"></script>
+    <!-- popper js -->
+    <script src="{{ asset('assets/js/popper.min.js')}}"></script>
+    <!-- bootstrap js -->
+    <script src="{{ asset('assets/js/bootstrap.min.js')}}"></script>
+    <!-- owl carousel js -->
+    <script src="{{ asset('assets/js/owl.carousel.min.js')}}"></script>
+    <script src="{{ asset('assets/js/jquery.nice-select.min.js')}}"></script>
+    <!-- contact js -->
+    <script src="{{ asset('assets/js/jquery.ajaxchimp.min.js')}}"></script>
+    <script src="{{ asset('assets/js/jquery.form.js')}}"></script>
+    <script src="{{ asset('assets/js/jquery.validate.min.js')}}"></script>
+    <script src="{{ asset('assets/js/mail-script.js')}}"></script>
+    <script src="{{ asset('assets/js/contact.js')}}"></script>
+    <!-- custom js -->
+    <script src="{{ asset('assets/js/custom.js')}}"></script>
+    {% endblock %}
+</body>
 
-		{% block javascripts %}
-        <script type="text/javascript" src="{{ asset('assets/js/vendors.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/vendors/chartjs/Chart.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/vendors/datatables/jquery.dataTables.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/vendors/datatables/dataTables.bootstrap.min.js') }}"></script>
-        <script type="text/javascript"src="{{ asset('assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/vendors/jquery-validation/jquery.validate.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/vendors/select2/select2.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/vendors/chartist/chartist.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/js/app.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/js/main.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/js/sweetalert2.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/js/jquery.slugify.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/vendors/ckeditor/ckeditor.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/js/moment.min.js') }}"></script>
-        <script type="text/javascript"src="{{ asset('assets/vendors/ckeditor/adapters/jquery.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/js/bootstrap-datetimepicker.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/vendors/quill/quill.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/js/axios.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/js/vue.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/js/bootstrap3-typeahead.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/js/bootstrap-tagsinput.min.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('assets/js/intranet.js') }}"></script>
-        {% endblock %}
-		<!-- /container -->
-		<!-- banner -->
-		<div class="benner">
-				<!-- slider -->
-				<!--- img-slider --->
-				<div class="img-slider">
-						<!----start-slider-script---->
-					<script src="{{asset('js/responsiveslides.min.js')}}"></script>
-					 <script>
-					    // You can also use "$(window).load(function() {"
-					    $(function () {
-					      // Slideshow 4
-					      $("#slider4").responsiveSlides({
-					        auto: true,
-					        pager: true,
-					        nav: true,
-					        speed: 500,
-					        namespace: "callbacks",
-					        before: function () {
-					          $('.events').append("<li>before event fired.</li>");
-					        },
-					        after: function () {
-					          $('.events').append("<li>after event fired.</li>");
-					        }
-					      });
-					
-					    });
-					  </script>
-					<!----//End-slider-script---->
-					<!-- Slideshow 4 -->
-					    
-					
-					</div>
-						<!-- slider -->
-					</div>
-		<!-- /banner -->
-		<!-- top-grids -->
-		
-		<!-- top-grids -->
-		<!-- mid-grids -->
-		
-		<!-- mid-grids -->
-		<!-- bottom-grids -->
-	
-		<!-- bottom-grids -->
-		<!-- team -->
-		
-						
-		<!-- team -->
-		<!-- team-grids-caption -->
-		
-		<!-- team-grids-caption -->
-		<!-- footer -->
-		
-		<!-- /footer -->
-	</body>
 </html>
-
-
