@@ -6,6 +6,8 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
@@ -16,14 +18,15 @@ class Category
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Name = null;
+    #[Assert\NotBlank(message: " le nom du categorie ne doit pas etre vide")]
+    public ?string $categoryName = null;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Product::class)]
-    private Collection $Product;
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Product::class)]
+    private Collection $products;
 
     public function __construct()
     {
-        $this->Product = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -33,12 +36,12 @@ class Category
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->categoryName;
     }
 
-    public function setName(string $Name): self
+    public function setName(string $name): self
     {
-        $this->Name = $Name;
+        $this->categoryName = $name;
 
         return $this;
     }
@@ -46,16 +49,16 @@ class Category
     /**
      * @return Collection<int, Product>
      */
-    public function getProduct(): Collection
+    public function getProducts(): Collection
     {
-        return $this->Product;
+        return $this->products;
     }
 
     public function addProduct(Product $product): self
     {
-        if (!$this->Product->contains($product)) {
-            $this->Product->add($product);
-            $product->setProduct($this);
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+            $product->setCategory($this);
         }
 
         return $this;
@@ -63,10 +66,10 @@ class Category
 
     public function removeProduct(Product $product): self
     {
-        if ($this->Product->removeElement($product)) {
+        if ($this->products->removeElement($product)) {
             // set the owning side to null (unless already changed)
-            if ($product->getProduct() === $this) {
-                $product->setProduct(null);
+            if ($product->getCategory() === $this) {
+                $product->setCategory(null);
             }
         }
 

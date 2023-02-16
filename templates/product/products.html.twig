@@ -1,0 +1,36 @@
+<h1>Liste des Produits</h1>
+<table border="1">
+	<tr>
+		<th>Id</th>
+		<th>Nom</th>
+		<th>Category</th>
+		<th>Description</th>
+		<th>Prix</th>
+	</tr>
+	{% for product in products %}
+		<tr>
+			<td>
+				{{product.id}}
+			</td>
+			<td>
+				{{product.name}}
+			</td>
+
+			<td>
+				{{product.category.name}}
+			</td>
+			<td>
+				{{product.description}}
+			</td>
+			<td>
+				{{product.price}}
+			</td>
+			<td>
+				<a href=" {{path('updateProduct' , {'id': product.id} ) }} ">Update</a>
+			</td>
+			<td>
+				<a href=" {{path('deleteProduct' , {'id': product.id} ) }} ">Delete</a>
+			</td>
+		</tr>
+	{% endfor %}
+</table></tr>

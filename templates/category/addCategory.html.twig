@@ -1,0 +1,11 @@
+<h1>Ajouter une categorie</h1>
+{{form_start(addCategoryForm,{'attr':{'novalidate':'novalidate'}})}}
+<table>
+	<tr>
+		<td>{{form_label(addCategoryForm.categoryName,"Nom du categorie" )}}</td>
+		<td>{{form_widget(addCategoryForm.categoryName)}}</td>
+		<td>{{form_errors(addCategoryForm.categoryName)}}</td>
+	</tr>
+</table>
+{{form_widget(addCategoryForm.save)}}
+{{form_end(addCategoryForm)}}

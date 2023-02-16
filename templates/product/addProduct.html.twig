@@ -1,0 +1,26 @@
+<h1>Ajouter une categorie</h1>
+{{form_start(addProductForm,{'attr':{'novalidate':'novalidate'}})}}
+<table>
+	<tr>
+		<td>{{form_label(addProductForm.name,"Nom du produit" )}}</td>
+		<td>{{form_widget(addProductForm.name)}}</td>
+		<td>{{form_errors(addProductForm.name)}}</td>
+	</tr>
+	<tr>
+		<td>{{form_label(addProductForm.category,"categorie" )}}</td>
+		<td>{{form_widget(addProductForm.category)}}</td>
+		<td>{{form_errors(addProductForm.category)}}</td>
+	</tr>
+	<tr>
+		<td>{{form_label(addProductForm.description,"Description" )}}</td>
+		<td>{{form_widget(addProductForm.description)}}</td>
+		<td>{{form_errors(addProductForm.description)}}</td>
+	</tr>
+	<tr>
+		<td>{{form_label(addProductForm.price,"Prix" )}}</td>
+		<td>{{form_widget(addProductForm.price)}}</td>
+		<td>{{form_errors(addProductForm.price)}}</td>
+	</tr>
+</table>
+{{form_widget(addProductForm.save)}}
+{{form_end(addProductForm)}}
