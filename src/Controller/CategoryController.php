@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
+use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,6 +39,9 @@ class CategoryController extends AbstractController
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $currecttime = new DateTime();
+            $category->setCreateAt($currecttime);
+            $category->setUpdatedAt($currecttime);
             $em = $doctrine->getManager();
             $em->persist($category);
             $em->flush();
@@ -57,6 +61,8 @@ class CategoryController extends AbstractController
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $currecttime = new DateTime();
+            $category->setUpdatedAt($currecttime);
             $em = $doctrine->getManager();
             $em->flush();
             return $this->redirectToRoute("categories");

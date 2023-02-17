@@ -3,11 +3,19 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[UniqueEntity(
+    fields: ['name'],
+    message: 'nom deja utilisé',
+)]
+
 class Product
 {
     #[ORM\Id]
@@ -46,6 +54,19 @@ class Product
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
+
+    #[ORM\Column]
+    #[Assert\NotBlank(message: ' La quantite est obligatoire')]
+    #[Assert\Positive(message: "La quantite doit etre positive")]
+    private ?int $quantity = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime]
+    private ?\DateTimeInterface $createdAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime]
+    private ?\DateTimeInterface $updatedAt = null;
 
     public function getId(): ?int
     {
@@ -110,6 +131,42 @@ class Product
     public function setImage($image)
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

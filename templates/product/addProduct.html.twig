@@ -1,26 +1,76 @@
-<h1>Ajouter une categorie</h1>
-{{form_start(addProductForm,{'attr':{'novalidate':'novalidate'}})}}
-<table>
-	<tr>
-		<td>{{form_label(addProductForm.name,"Nom du produit" )}}</td>
-		<td>{{form_widget(addProductForm.name)}}</td>
-		<td>{{form_errors(addProductForm.name)}}</td>
-	</tr>
-	<tr>
-		<td>{{form_label(addProductForm.category,"categorie" )}}</td>
-		<td>{{form_widget(addProductForm.category)}}</td>
-		<td>{{form_errors(addProductForm.category)}}</td>
-	</tr>
-	<tr>
-		<td>{{form_label(addProductForm.description,"Description" )}}</td>
-		<td>{{form_widget(addProductForm.description)}}</td>
-		<td>{{form_errors(addProductForm.description)}}</td>
-	</tr>
-	<tr>
-		<td>{{form_label(addProductForm.price,"Prix" )}}</td>
-		<td>{{form_widget(addProductForm.price)}}</td>
-		<td>{{form_errors(addProductForm.price)}}</td>
-	</tr>
-</table>
-{{form_widget(addProductForm.save)}}
-{{form_end(addProductForm)}}
+{% extends "dashboard.html.twig" %}
+{% block body %}
+	<div class="container-fluid" id="container-wrapper">
+		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+			<h1 class="h3 mb-0 text-gray-800 mx-auto">Ajouter un produit</h1>
+		</div>
+		<div class="col-lg-10 mx-auto">
+			<div class="card mb-4">
+
+				<div class="card-body">
+					{{ form_start(form, {'action': path('addProduct'), 'method': 'post', 'attr': {'novalidate': 'novalidate'}}) }}
+					<div class="form-group">
+						{{form_widget(form.name,{'attr': {'class': 'form-control'~ (form_errors(form.name) ? ' is-invalid' : ''), 'placeholder': 'Nom', 'id': 'exampleInputEmail1'}}) }}
+						{% if form_errors(form.name) %}
+							<div class="invalid-feedback">
+								{{form_errors(form.name)}}
+							</div>
+						{% endif %}
+					</div>
+					<div class="form-group">
+						{{form_label(form.description,"Description" )}}
+						{{form_widget(form.description,{'attr': {'class': 'form-control'~ (form_errors(form.description) ? ' is-invalid' : ''), 'placeholder': 'Description', 'id': 'exampleFormControlTextarea1', }}) }}
+						{% if form_errors(form.description) %}
+							<div class="invalid-feedback">
+								{{form_errors(form.description)}}
+							</div>
+						{% endif %}
+					</div>
+					<div class="form-group">
+						{{form_label(form.price,"Prix" )}}
+						{{form_widget(form.price,{'attr': {'class': 'form-control'~ (form_errors(form.price) ? ' is-invalid' : ''), 'id': 'touchSpin3','placeholder': 'Prix' }}) }}
+						{% if form_errors(form.price) %}
+							<div class="invalid-feedback">
+								{{form_errors(form.price)}}
+							</div>
+						{% endif %}
+					</div>
+					<div class="form-group">
+						{{form_label(form.quantity,"Quantité" )}}
+						{{ form_widget(form.quantity, { 'attr': { 'class': 'form-control' ~ (form_errors(form.quantity) ? ' is-invalid' : ''), 'placeholder': 'Quantité' } }) }}
+						{% if form_errors(form.quantity) %}
+							<div class="invalid-feedback">
+								{{form_errors(form.quantity)}}
+							</div>
+						{% endif %}
+						{# {{form_errors(form.quantity)}} #}
+					</div>
+					<div class="form-group mb-4">
+						{{form_label(form.category,"Categorie" )}}
+						{{form_widget(form.category,{'attr': {'class': 'form-control'~ (form_errors(form.category) ? ' is-invalid' : ''), 'placeholder': 'Quantité', }}) }}
+						{% if form_errors(form.category) %}
+							<div class="invalid-feedback">
+								{{form_errors(form.category)}}
+							</div>
+						{% endif %}
+					</div>
+					<div class="form-group">
+						<div class="custom-file">
+
+							{{ form_widget(form.image, { 'attr': {'class': 'custom-file-input'~ (form_errors(form.quantity) ? ' is-invalid' : ''), 'id': 'customFile'} }) }}
+							{{ form_label(form.image, 'Choose file', { 'label_attr': {'class': 'custom-file-label'} }) }}
+							{% if form_errors(form.image) %}
+								<div class="invalid-feedback">
+									{{form_errors(form.image)}}
+								</div>
+							{% endif %}
+						</div>
+					</div>
+					{{ form_widget(form.save, { 'attr': {'class': 'btn btn-primary'} }) }}
+					{{form_end(form)}}
+				</div>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}

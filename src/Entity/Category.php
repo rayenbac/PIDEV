@@ -5,11 +5,19 @@ namespace App\Entity;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[UniqueEntity(
+    fields: ['categoryName'],
+    message: 'nom deja utilisé',
+)]
+
 class Category
 {
     #[ORM\Id]
@@ -19,10 +27,28 @@ class Category
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: " le nom du categorie ne doit pas etre vide")]
+    #[Assert\Unique(message: 'le nom doit etre unique')]
     public ?string $categoryName = null;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Product::class)]
     private Collection $products;
+
+    #[ORM\Column(length: 1000, nullable: true)]
+    #[Assert\Length(
+        min: 5,
+        max: 500,
+        minMessage: 'La description du produit doit contenir au moin 5 caracteres',
+        maxMessage: 'La description produit doit contenir au maximum 1000 caracteres',
+    )]
+    private ?string $description = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime]
+    private ?\DateTimeInterface $createAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime]
+    private ?\DateTimeInterface $updatedAt = null;
 
     public function __construct()
     {
@@ -72,6 +98,42 @@ class Category
                 $product->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getCreateAt(): ?\DateTimeInterface
+    {
+        return $this->createAt;
+    }
+
+    public function setCreateAt(?\DateTimeInterface $createAt): self
+    {
+        $this->createAt = $createAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

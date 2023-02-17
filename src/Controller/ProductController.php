@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
+use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -39,6 +40,9 @@ class ProductController extends AbstractController
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $currenttime = new DateTime();
+            $product->setCreatedAt($currenttime);
+            $product->setUpdatedAt($currenttime);
             $imageFile = $form->get('image')->getData();
 
             // this condition is needed because the 'brochure' field is not required
@@ -65,7 +69,7 @@ class ProductController extends AbstractController
             $em->flush();
             return $this->redirectToRoute("products");
         }
-        return $this->renderForm("product/addProduct.html.twig", array("addProductForm" => $form));
+        return $this->renderForm("product/addProduct.html.twig", array("form" => $form));
     }
 
     #[Route('/updateProduct/{id}', name: 'updateProduct')]
@@ -81,6 +85,8 @@ class ProductController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $currenttime = new DateTime();
+            $product->setUpdatedAt($currenttime);
             $imageFile = $form->get('image')->getData();
 
             if ($imageFile) {
@@ -106,7 +112,7 @@ class ProductController extends AbstractController
         }
         return $this->renderForm(
             "product/addProduct.html.twig",
-            array("addProductForm" => $form)
+            array("form" => $form)
         );
     }
 
