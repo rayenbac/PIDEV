@@ -24,7 +24,7 @@ class Product
 
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: false)]
     #[Assert\NotBlank(message: "Le nom du produit ne doit pas entre vide")]
     #[Assert\Length(
         min: 3,
@@ -57,15 +57,13 @@ class Product
 
     #[ORM\Column]
     #[Assert\NotBlank(message: ' La quantite est obligatoire')]
-    #[Assert\Positive(message: "La quantite doit etre positive")]
+    #[Assert\PositiveOrZero(message: "La quantite doit etre positive")]
     private ?int $quantity = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Assert\DateTime]
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Assert\DateTime]
     private ?\DateTimeInterface $updatedAt = null;
 
     public function getId(): ?int
@@ -78,7 +76,7 @@ class Product
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -102,7 +100,7 @@ class Product
         return $this->price;
     }
 
-    public function setPrice(float $price): self
+    public function setPrice(?float $price): self
     {
         $this->price = $price;
 
@@ -140,7 +138,7 @@ class Product
         return $this->quantity;
     }
 
-    public function setQuantity(int $quantity): self
+    public function setQuantity(?int $quantity): self
     {
         $this->quantity = $quantity;
 

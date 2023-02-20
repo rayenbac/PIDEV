@@ -95,7 +95,6 @@ class ProductController extends AbstractController
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
 
-                // Move the file to the directory where brochures are stored
                 try {
                     $imageFile->move(
                         $this->getParameter('products_directory'),
@@ -111,7 +110,7 @@ class ProductController extends AbstractController
             return $this->redirectToRoute("products");
         }
         return $this->renderForm(
-            "product/addProduct.html.twig",
+            "product/editProduct.html.twig",
             array("form" => $form)
         );
     }

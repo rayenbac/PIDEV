@@ -27,7 +27,12 @@ class Category
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: " le nom du categorie ne doit pas etre vide")]
-    #[Assert\Unique(message: 'le nom doit etre unique')]
+    #[Assert\Length(
+        min: 3,
+        max: 40,
+        minMessage: 'Le nom du categorie doit contenir au moin 3 caracteres',
+        maxMessage: 'Le nom du categorie doit contenir au maximum 40 caracteres',
+    )]
     public ?string $categoryName = null;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Product::class)]
@@ -43,11 +48,9 @@ class Category
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Assert\DateTime]
     private ?\DateTimeInterface $createAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Assert\DateTime]
     private ?\DateTimeInterface $updatedAt = null;
 
     public function __construct()
@@ -65,7 +68,7 @@ class Category
         return $this->categoryName;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->categoryName = $name;
 

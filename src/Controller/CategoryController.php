@@ -47,7 +47,7 @@ class CategoryController extends AbstractController
             $em->flush();
             return $this->redirectToRoute("categories");
         }
-        return $this->renderForm("category/addCategory.html.twig", array("addCategoryForm" => $form));
+        return $this->renderForm("category/addCategory.html.twig", array("form" => $form));
     }
 
     #[Route('/updateCategory/{id}', name: 'updateCategory')]
@@ -69,7 +69,7 @@ class CategoryController extends AbstractController
         }
         return $this->renderForm(
             "category/addCategory.html.twig",
-            array("addCategoryForm" => $form)
+            array("form" => $form)
         );
     }
 
@@ -80,7 +80,7 @@ class CategoryController extends AbstractController
         ManagerRegistry $doctrine
     ): Response {
         $category = $r->find($id);
-        if (!empty($category->getProducts())) {
+        if ($category->getProducts()->count() > 0) {
             return new Response("Category cannot be deleted as it still contains products.", Response::HTTP_BAD_REQUEST);
         }
         $em = $doctrine->getManager();

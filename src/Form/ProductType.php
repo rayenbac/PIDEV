@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
-
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ProductType extends AbstractType
 {
@@ -42,7 +42,7 @@ class ProductType extends AbstractType
                 ],
             ])
             ->add('name', TextType::class, [
-                'label' => 'Nom du produit:'
+                'label' => 'Nom du produit:',
             ])
             ->add('description', TextType::class, [
                 'label' => 'description:'

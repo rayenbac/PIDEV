@@ -1,11 +1,37 @@
-<h1>Ajouter une categorie</h1>
-{{form_start(addCategoryForm,{'attr':{'novalidate':'novalidate'}})}}
-<table>
-	<tr>
-		<td>{{form_label(addCategoryForm.categoryName,"Nom du categorie" )}}</td>
-		<td>{{form_widget(addCategoryForm.categoryName)}}</td>
-		<td>{{form_errors(addCategoryForm.categoryName)}}</td>
-	</tr>
-</table>
-{{form_widget(addCategoryForm.save)}}
-{{form_end(addCategoryForm)}}
+{% extends "dashboard.html.twig" %}
+{% block body %}
+	<div class="container-fluid" id="container-wrapper">
+		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+			<h1 class="h3 mb-0 text-gray-800 mx-auto">Ajouter une categorie</h1>
+		</div>
+		<div class="col-lg-10 mx-auto">
+			<div class="card mb-4">
+				<div class="card-body">
+					{{ form_start(form, { 'attr': {'novalidate': 'novalidate'}}) }}
+					<div class="form-group">
+						{{form_widget(form.categoryName,{'attr': {'class': 'form-control'~ (form_errors(form.categoryName) ? ' is-invalid' : ''), 'placeholder': 'Nom', 'id': 'exampleInputEmail1'}}) }}
+						{% if form_errors(form.categoryName) %}
+							<div class="invalid-feedback">
+								{{form_errors(form.categoryName)}}
+							</div>
+						{% endif %}
+					</div>
+					<div class="form-group">
+						{{form_label(form.description,"Description" )}}
+						{{form_widget(form.description,{'attr': {'class': 'form-control'~ (form_errors(form.description) ? ' is-invalid' : ''), 'placeholder': 'Description', 'id': 'exampleFormControlTextarea1', }}) }}
+						{% if form_errors(form.description) %}
+							<div class="invalid-feedback">
+								{{form_errors(form.description)}}
+							</div>
+						{% endif %}
+					</div>
+
+
+					{{ form_widget(form.save, { 'attr': {'class': 'btn btn-primary'} }) }}
+					{{form_end(form)}}
+				</div>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}
