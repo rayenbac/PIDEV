@@ -87,7 +87,7 @@
                                                     alt=""></span>
                                             <h4>Informations</h4>
                                              
-                                              <p>Publié le {{ i.updatedAt | date("Y-m-d H:i:s") }} , par {{i.NomUtilisateur }}.</p>
+                                              <p>Publié le {{ i.createdAt | date("Y-m-d H:i:s") }} , par {{i.NomUtilisateur }}.</p>
                                               <td><a href={{path('updatePost',{'id':i.id}) }} class="btn btn-sm btn-primary">Modifier question </a></td>
                                               <td><a href={{path('suppPost',{'id':i.id }) }} class="btn btn-sm btn-primary">Supprimer question </a></td>
                                              
