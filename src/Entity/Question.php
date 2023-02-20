@@ -21,6 +21,7 @@ class Question
     #[Assert\NotBlank (message:"Reponse es required")]
     private ?string $Question = null;
 
+
     #[ORM\OneToMany(mappedBy: 'Reponses', targetEntity: Reponse::class)]
     private Collection $reponses;
 

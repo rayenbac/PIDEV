@@ -1,0 +1,34 @@
+<h1>Liste des reponses </h1>
+
+<table  border="1">
+<tr>
+  <th>Id</th>
+  
+  <th>Reponse</th>
+  <th>Date</th>
+  <th>Modification</th>
+  <th>Suppression</th>
+ 
+</tr>
+</tr>
+<tr>
+
+        </tr>
+
+
+<tr>
+  {% for i in commentaire %}
+  <td>{{i.id}}</td>
+  
+  <td>{% for r in i.commentaires %}
+        <a>{{ r.Reponse }}</a>
+        {% endfor %}
+  </td>
+ 
+  <td>{{i.Date | date("Y-m-d H:i:s")}}</td>
+  <td><a href="{{ path('updateCommentaire',{'id':i.id}) }}">Modifier reponse</a></td>
+  <td><a href="{{path('suppCommentaire',{'id':i.id }) }}">Supprimer reponse</a></td>
+</tr>
+{% endfor %}
+</table>
+

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %} 
+{% block body %}
+<section class="breadcrumb_part breadcrumb_bg">
+        
+          
+                <div class="col-lg-12">
+                    <div class="breadcrumb_iner">
+                        <div class="breadcrumb_iner_item">
+                            <h2>Article</h2>
+                        </div>
+                    </div>
+                </div>
+            
+        
+    </section>
+<div class="col-lg-10 mx-auto">
+	<div class="card mb-4">
+		<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+			<h6 class="m-0 font-weight-bold text-primary">Ajouter Article</h6>
+		</div>
+        <div class="card-body">
+			{{ form_start(f, {'attr': {'novalidate': 'novalidate'}}) }}
+			<div class="form-group">
+				{{form_label(f.Id_user,"ID utilisateur " )}}
+				{{form_widget(f.Id_user,{'attr': {'class': 'form-control', 'placeholder': ' ID utilisateur', 'id': 'exampleFormControlTextarea1', }}) }}
+				{{form_errors(f.Id_user)}}
+			</div>
+            <div class="form-group">
+				{{form_label(f.NomUtilisateur,"NomUtilisateur " )}}
+				{{form_widget(f.NomUtilisateur,{'attr': {'class': 'form-control', 'placeholder': ' Nom utilisateur', 'id': 'exampleFormControlTextarea1', }}) }}
+				{{form_errors(f.NomUtilisateur)}}
+			</div>
+             <div class="form-group">
+				{{form_label(f.article,"Article " )}}
+				{{form_widget(f.article,{'attr': {'class': 'form-control', 'placeholder': 'Article', 'id': 'exampleFormControlTextarea1', }}) }}
+				{{form_errors(f.article)}}
+			</div>
+            
+        
+{{ form_start(f,{'attr': {'novalidate': 'novalidate'}} ) }}
+{{ form_widget(f.save, { 'attr': {'class': 'btn btn-primary'} }) }}
+{{ form_end(f) }}
+{% endblock %}

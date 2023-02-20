@@ -32,6 +32,7 @@ class QuestionController extends AbstractController
             'forum' => $c
         ]);
     }
+    
 
     #[Route('/addQ', name: 'addQ')]
     public function addQ(ManagerRegistry $doctrine,Request $request)
@@ -71,6 +72,6 @@ class QuestionController extends AbstractController
             $em =$doctrine->getManager();
             $em->remove($question);
             $em->flush();
- return $this->redirectToRoute('afficheF',);}  
+ return $this->redirectToRoute('afficheA',);}  
 
 }

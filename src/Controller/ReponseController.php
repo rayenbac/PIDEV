@@ -15,6 +15,7 @@ use App\Form\ReponseType;
 
 
 
+
 class ReponseController extends AbstractController
 {
     #[Route('/reponse', name: 'app_reponse')]
@@ -73,6 +74,6 @@ return $this->renderForm("reponse/addR.html.twig", array("f" => $form));
             $em =$doctrine->getManager();
             $em->remove($reponse);
             $em->flush();
- return $this->redirectToRoute('afficheF',);}  
+ return $this->redirectToRoute('afficheA',);}  
 
 }
