@@ -6,6 +6,7 @@ use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
 {
@@ -14,53 +15,78 @@ class Reservation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
+    #[ORM\Column(nullable: true)]
+    #[Assert\NotBlank(message:"Le nombre de places est obligatoire")]
+    #[Assert\Positive(message:'Le nombre de places doit etre positif')]
+    private ?int $NombreDePlaceAReserver = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $description = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Email = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    #[ORM\ManyToOne(inversedBy: 'reservations',cascade: ['remove'])]
+    private ?Evenements $evenements = null;
+
+ 
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    
+
+    public function getNombreDePlaceAReserver(): ?int
     {
-        return $this->date;
+        return $this->NombreDePlaceAReserver;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setNombreDePlaceAReserver(?int $NombreDePlaceAReserver): self
     {
-        $this->date = $date;
+        $this->NombreDePlaceAReserver = $NombreDePlaceAReserver;
 
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getEmail(): ?string
     {
-        return $this->description;
+        return $this->Email;
     }
 
-    public function setDescription(string $description): self
+    public function setEmail(?string $Email): self
     {
-        $this->description = $description;
+        $this->Email = $Email;
 
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getEvenement(): ?Evenements
     {
-        return $this->title;
+        return $this->evenement;
     }
 
-    public function setTitle(string $title): self
+    public function setEvenement(?Evenements $evenement): self
     {
-        $this->title = $title;
+        $this->evenement = $evenement;
 
         return $this;
     }
+
+    public function getEvenements(): ?Evenements
+    {
+        return $this->evenements;
+    }
+
+    public function setEvenements(?Evenements $evenements): self
+    {
+        $this->evenements = $evenements;
+
+        return $this;
+    }
+
+    
+
+    
+
+   
 }

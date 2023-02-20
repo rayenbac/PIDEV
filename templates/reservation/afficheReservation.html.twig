@@ -1,0 +1,67 @@
+{% extends "base.html.twig" %}
+{% block body %}
+
+	<div class="container-fluid" id="container-wrapper">
+		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+			
+			
+				
+			</a>
+			
+		</div>
+
+
+		<div class="section-top-border">
+			<h1></h1>
+			<h1></h1>
+			<h1></h1>
+			<h3 class="mb-30">Liste des résérvations</h3>
+			<center>
+				<h1>Résérvation confirmée !</h1>
+			  </center>
+		
+			<div class="progress-table-wrap">
+				<div class="progress-table">
+					<div class="table-head">
+						<div class="country"><center>Id résérvation</center></div>
+						<div class="country"><center>Nombre de places résérvés </center></div>
+						
+						
+						<div class="country"><center>Modifier résérvation </center></div>
+						<div class="country"><center>Supprimer résérvation </center></div>
+
+					</div>
+					{% for i in reservation %}
+					<div class="table-row">
+						
+					<div class="country">{{i.id}}</div>
+						<div class="country"> <center>{{i.nombredeplaceareserver}}</center> </div>
+						
+						<div class="country"><a  href="{{ path('updateReservation',{'id':i.id}) }}" >
+							<span class="badge badge-success">
+								Cliquez pour mettre à jour</span>
+						</a>
+						</div>
+						
+						<div class="table-row">
+								<a href="{{path('suppReservation',{'id':i.id }) }}" class="btn btn-danger ">
+									<h6>Cliquez pour supprimer</h6>
+									
+								</a>
+
+								
+							</div>
+						</div>	
+
+						{% endfor %}
+						
+					
+						
+						
+					</div>
+					
+				
+	
+			
+		
+{% endblock %}
