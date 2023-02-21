@@ -1,0 +1,55 @@
+{# templates/user/list.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block body %}
+ <section class="banner_part">
+ <div class="container">
+  <div class="row align-items-center">
+                <div class="col-lg-12 col-xl-12">
+                    <div class="banner_text">
+                        <div class="banner_text_iner">
+
+
+    <h1>Liste des Consultation</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>cause</th>
+                <th>dateRV</th>
+                <th>description</th>
+                <th>Medecin</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for liste in rv %}
+                <tr>
+                    <td>{{ liste.id }}</td>
+                    <td>
+                    {{ liste.nom }}
+                    </td>
+                    <td>{{ liste.prenom }}</td>
+                    <td>{{ liste.cause }}</td>
+                  <td>{{ liste.dateRV | date }}</td> 
+                    <td>{{ liste.description }}</td>
+                     <td>{{ liste.Medecin.nom }}</td> 
+
+
+
+                   
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+       </div>
+     </div>
+      </div>
+       </div>
+        </div>
+    </section>
+{% endblock %}
