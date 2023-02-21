@@ -34,7 +34,8 @@ class ProductType extends AbstractType
                                 'image/jpg',
                                 'image/jpeg',
                                 'image/png',
-                                'image/x-png'
+                                'image/x-png',
+                                'image/jfif',
                             ],
                             'mimeTypesMessage' => 'image invalide',
                         ]

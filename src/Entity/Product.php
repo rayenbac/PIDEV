@@ -26,18 +26,18 @@ class Product
     #[Assert\NotBlank(message: "Le nom du produit ne doit pas entre vide")]
     #[Assert\Length(
         min: 3,
-        max: 25,
+        max: 100,
         minMessage: 'Le nom du produit doit contenir au moin 3 caracteres',
-        maxMessage: 'Le nom du produit doit contenir au maximum 25 caracteres',
+        maxMessage: 'Le nom du produit doit contenir au maximum 100 caracteres',
     )]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(
         min: 5,
-        max: 500,
+        max: 1000,
         minMessage: 'La description du produit doit contenir au moin 5 caracteres',
-        maxMessage: 'La description produit doit contenir au maximum 500 caracteres',
+        maxMessage: 'La description produit doit contenir au maximum 1000 caracteres',
     )]
     private ?string $description = null;
 

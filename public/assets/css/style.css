@@ -5,6 +5,11 @@
   background-image: -o-linear-gradient(to right, #649bff, #0070fa, #649bff);
   background-image: linear-gradient(to right, #649bff, #0070fa, #649bff);
 }
+.description{
+  text-overflow:ellipsis;
+  overflow:hidden;
+  white-space:nowrap;
+}
 
 /* line 6, ../../01 cl html template/03_jun 2019/182_medico_html/sass/_extends.scss */
 .regervation_part .btn_2 {

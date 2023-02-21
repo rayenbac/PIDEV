@@ -24,8 +24,8 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/products', name: 'products')]
-    public function products(ProductRepository $productsRepository): Response
+    #[Route('/dashboard/products', name: 'products')]
+    public function dashboardProducts(ProductRepository $productsRepository): Response
     {
         $products = $productsRepository->findAll();
         return $this->render('product/products.html.twig', [
@@ -173,6 +173,15 @@ class ProductController extends AbstractController
 
         return $this->render('product/new.html.twig', [
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/products', name: 'userProducts')]
+    public function userProducts(ProductRepository $productsRepository): Response
+    {
+        $products = $productsRepository->findAll();
+        return $this->render('product/userProducts.html.twig', [
+            'products' => $products
         ]);
     }
 }
