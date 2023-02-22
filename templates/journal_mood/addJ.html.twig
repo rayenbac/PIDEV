@@ -26,6 +26,21 @@
 				{{form_label(f.IdUser,"UserId " )}}
 				{{form_widget(f.IdUser,{'attr': {'class': 'form-control', 'placeholder': ' UserId', 'id': 'exampleFormControlTextarea1', }}) }}
 				{{form_errors(f.IdUser)}}
+				<div class="row">
+							<div class="col-md-4">
+									<label>Moods:</label>
+									</div>
+							</div>
+				<div class="row">
+<div class="col-md-4">
+									<select class="select" required name="mood">
+										{% for mood in moods %}
+											<option value="{{mood.id}}">{{mood.mood}}</option>
+										{% endfor %}
+									</select>
+							</div>
+				</div>
+								
 			</div>
 			
 

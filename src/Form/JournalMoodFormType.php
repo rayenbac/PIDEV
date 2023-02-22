@@ -20,7 +20,11 @@ class JournalMoodFormType extends AbstractType
     {
         $builder
             ->add('IdUser')
-            ->add('save',SubmitType::class)
+            
+            
+                ->add('save',SubmitType::class)
+
+
         ;
     }
 

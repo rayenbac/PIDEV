@@ -33,6 +33,12 @@ class MoodController extends AbstractController
     'm' => $c
                     ]);
      }
+
+
+     
+
+
+
      #[Route('/add/mood', name: 'addMood')]
      public function addMood(ManagerRegistry $doctrine,Request $request)
                     {$mood= new Mood();
@@ -80,4 +86,18 @@ class MoodController extends AbstractController
 
 
     }
+    #[Route('/mood/afficheA', name: 'mood_afficheA')]
+     public function afficheA(): Response
+                 {
+      //récupérer le repository
+      $c=$this->getDoctrine()->getRepository(Mood::Class)->findAll();
+      //utiliser la fonction findAll()
+      //$c=$r->findAll();
+    return $this->render('mood/afficheA.html.twig', [
+     'm' => $c
+     ]);
+      }
 }
+
+
+

@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\JournalMood;
 use App\Entity\Mood;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: JournalMoodRepository::class)]
 class JournalMood
@@ -21,7 +22,7 @@ class JournalMood
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\Positive(message:"Champ obligatoire")]
+    #[Assert\NotBlank(message:"Champ obligatoire")]
     private ?int $IdUser = null;
 
     #[ORM\OneToMany(mappedBy: 'journalMood', targetEntity: Mood::class)]
