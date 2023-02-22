@@ -28,7 +28,7 @@ class Post
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank (message:"Description es required")]
     #[Assert\Length([
-        'max' => 20,
+        'max' => 30,
         'maxMessage' => 'La description ne doit pas dépasser 20 caractères',
     ]),]
     #[Assert\Regex([
@@ -172,7 +172,7 @@ class Post
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+   public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }
@@ -183,6 +183,7 @@ class Post
 
         return $this;
     }
+
 
    
 

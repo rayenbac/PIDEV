@@ -35,6 +35,13 @@
 				{{form_widget(f.article,{'attr': {'class': 'form-control', 'placeholder': 'Article', 'id': 'exampleFormControlTextarea1', }}) }}
 				{{form_errors(f.article)}}
 			</div>
+			<div class="form-group">
+						<div class="custom-file">
+
+							{{ form_widget(f.photo, { 'attr': {'class': 'custom-file-input', 'id': 'customFile'} }) }}
+							{{ form_label(f.photo, 'Image', { 'label_attr': {'class': 'custom-file-label'} }) }}
+							{{form_errors(f.photo)}}					
+						</div>
             
         
 {{ form_start(f,{'attr': {'novalidate': 'novalidate'}} ) }}

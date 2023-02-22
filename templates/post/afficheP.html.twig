@@ -73,10 +73,8 @@
                                                 
                                             <h4>Question : {{i.id}}</h4>
                                             <p>{{i.publication}} </p>
-                                            <h5> Les réponses :</h5> 
-                                               <a class="text-black mr-2" href="#"><i class="ion-ios-chatboxes-outline icon-1x"> </i>{% for r in i.commentaires %}
-                                                 <a>{{ r.Reponse }} </a>
-                                                {% endfor %} </p>
+                                             <td><a href={{path('afficheReponse',{'id':i.id}) }} class="btn btn-sm btn-primary">Voir réponse </a></td>
+                                           
                                         </div>
                                     </div>
                                     
@@ -87,7 +85,7 @@
                                                     alt=""></span>
                                             <h4>Informations</h4>
                                              
-                                              <p>Publié le {{ i.createdAt | date("Y-m-d H:i:s") }} , par {{i.NomUtilisateur }}.</p>
+                                              <p>Publié le {{ i.updatedAt | date("Y-m-d H:i:s") }} , par {{i.NomUtilisateur }}.</p>
                                               <td><a href={{path('updatePost',{'id':i.id}) }} class="btn btn-sm btn-primary">Modifier question </a></td>
                                               <td><a href={{path('suppPost',{'id':i.id }) }} class="btn btn-sm btn-primary">Supprimer question </a></td>
                                              

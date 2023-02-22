@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Commentaire;
+use App\Entity\Post;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CommentaireRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,15 +23,34 @@ class CommentaireController extends AbstractController
         ]);
     }
 
-    #[Route('/afficheC', name: 'afficheC')]
-    public function afficheC(CommentaireRepository $repository):  Response
+    #[Route('/afficheC/{id}', name: 'afficheC')]
+    public function afficheC($id,CommentaireRepository $repository,ManagerRegistry $doctrine):  Response
                 {
      //utiliser la fonction findAll()
         $s=$repository->findAll();
+       
+        $c= $doctrine->getRepository(Commentaire::class)->findByPostId($id);
+       
+       
    return $this->render('commentaire/afficheC.html.twig', [
-    'commentaire' => $s
+    'commentaire' => $s,
+    'post'=>$c
                     ]);
      }
+     #[Route('/afficheReponse/{id}', name: 'afficheReponse')]
+     public function afficheReponse($id,CommentaireRepository $repository,ManagerRegistry $doctrine):  Response
+                 {
+      //utiliser la fonction findAll()
+         $s=$repository->findAll();
+        
+         $c= $doctrine->getRepository(Commentaire::class)->findByPostId($id);
+        
+        
+    return $this->render('commentaire/afficheReponse.html.twig', [
+     'commentaire' => $s,
+     'post'=>$c
+                     ]);
+      }
 
      #[Route('/addC', name: 'addC')]
     public function addC(ManagerRegistry $doctrine,Request $request)

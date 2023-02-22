@@ -24,7 +24,7 @@ class Commentaire
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $Date = null;
 
-    #[ORM\ManyToOne(inversedBy: 'commentaires', cascade: ['remove'])]
+    #[ORM\ManyToOne(inversedBy: 'commentaires', )]
    
     private ?Post $commentaires = null;
 

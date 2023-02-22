@@ -52,7 +52,7 @@
                   <td>{{ i.createdAt | date("Y-m-d H:i:s") }}</td>
                
    
-          <td><a href={{path('afficheC',{'id':i.id }) }} class="btn btn-sm btn-primary">Voir réponses </a></td>
+          <td><a href="{{path('afficheC',{'id':i.id }) }}" class="btn btn-sm btn-primary">Voir réponses </a></td>
           
           
                 {% endfor %}
@@ -80,13 +80,5 @@
 
 
 
-<footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="right text-center my-auto">
-            <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - developed by
-              <b><a >Echkili</a></b>
-            </span>
-          </div>
-        </div>
-      </footer>
+
 {% endblock %}

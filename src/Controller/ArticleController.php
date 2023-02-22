@@ -92,22 +92,40 @@ class ArticleController extends AbstractController
                     }
 
 
+                   
+                  
                     #[Route('/updateArticle/{id}', name: 'updateArticle')]
-                    public function updateArticle(ArticleRepository $repository,
-                    $id,ManagerRegistry $doctrine,Request $request)
-                    { //récupérer le classroom à modifier
-                        $article= $repository->find($id);
-                        $form=$this->createForm(ArticleFormType::class,$article);
-                        $form->handleRequest($request);
-                        if($form->isSubmitted() && $form->isValid()){
-                            $currenttime = new \DateTime();
-                            $article->setUpdatedAt($currenttime);
-                            $em =$doctrine->getManager();
-                            $em->flush();
-                            return $this->redirectToRoute("afficheArticle"); }
-                        return $this->renderForm("article/addArticle.html.twig",
-                            array("f"=>$form));
-                    }
+               public function updateArticle(ArticleRepository $repository,
+               $id,ManagerRegistry $doctrine,Request $request)
+               { 
+                   $article1= $repository->find($id);
+                   $article=new Article();
+                    $currenttime = new \DateTime();
+                    
+                   $form=$this->createForm(ArticleFormType::class,$article);
+                   $form->get("Id_user")->setData($article1->getIdUser());
+                   $form->get("NomUtilisateur")->setData($article1->getNomUtilisateur());
+                   $form->get("article")->setData($article1->getArticle());
+                   $form->get("photo")->setData($article1->getImage());
+
+
+                   $form->handleRequest($request);
+                   if($form->isSubmitted() && $form->isValid()){
+                    $article1->setIdUser($form->get("Id_user")->getData());
+                    $article1->setNomUtilisateur($form->get("NomUtilisateur")->getData());
+                    $article1->setArticle($form->get("article")->getData());
+                    $article1->setImage($form->get("photo")->getData());
+                    $article1->setCreatedAt($article1->getCreatedAt());
+                    $article1->setUpdatedAt($currenttime );
+                    
+                       $em =$doctrine->getManager();
+                       $em->persist($post1);
+                       $em->flush();
+                       return $this->redirectToRoute("afficheAA"); }
+                   return $this->renderForm("article/addArticle.html.twig",
+                       array("f"=>$form));
+               } 
+             
 
       #[Route('/suppArticle/{id}', name: 'suppArticle')]
                 public function suppArticle($id,ArticleRepository $r,

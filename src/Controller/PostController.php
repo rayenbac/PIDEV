@@ -23,6 +23,7 @@ class PostController extends AbstractController
             'controller_name' => 'PostController',
         ]);
     }
+   
 
     #[Route('/afficheP', name: 'afficheP')]
     public function afficheP(): Response
@@ -58,12 +59,12 @@ class PostController extends AbstractController
                        if($form->isSubmitted() && $form->isValid()){
                         $currenttime = new \DateTime();
                         $post->setCreatedAt($currenttime);
-                        $post->setUpdatedAt($currenttime);
+                       $post->setUpdatedAt($currenttime);
                        
                        
-                           $em =$doctrine->getManager() ;
-                           $em->persist($post);
-                           $em->flush();
+                           $em =$doctrine->getManager() ; // EM gestionnaire de l'entite (crud bd)
+                           $em->persist($post); //ajout
+                           $em->flush(); // persist->bd
                            return $this->redirectToRoute("afficheP");}
                   return $this->renderForm("post/addP.html.twig",
                            array("f"=>$form));
@@ -73,13 +74,28 @@ class PostController extends AbstractController
                public function updatePost(PostRepository $repository,
                $id,ManagerRegistry $doctrine,Request $request)
                { //récupérer le classroom à modifier
-                   $post= $repository->find($id);
+                   $post1= $repository->find($id);
+                   $post=new Post();
+                    $currenttime = new \DateTime();
+                    
                    $form=$this->createForm(PostFormType::class,$post);
+                   $form->get("NomUtilisateur")->setData($post1->getNomUtilisateur());
+                   $form->get("ID_user")->setData($post1->getIDUser());
+                   $form->get("Description")->setData($post1->getDescription());
+                   $form->get("Publication")->setData($post1->getPublication());
+
+
                    $form->handleRequest($request);
                    if($form->isSubmitted() && $form->isValid()){
-                    $currenttime = new \DateTime();
-                    $post->setUpdatedAt($currenttime);
+                    $post1->setNomUtilisateur($form->get("NomUtilisateur")->getData());
+                    $post1->setIDUser($form->get("ID_user")->getData());
+                    $post1->setDescription($form->get("Description")->getData());
+                    $post1->setPublication($form->get("Publication")->getData());
+                    $post1->setCreatedAt($post1->getCreatedAt());
+                    $post1->setUpdatedAt($currenttime );
+                    
                        $em =$doctrine->getManager();
+                       $em->persist($post1);
                        $em->flush();
                        return $this->redirectToRoute("afficheP"); }
                    return $this->renderForm("Post/addP.html.twig",

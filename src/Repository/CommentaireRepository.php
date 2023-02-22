@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Commentaire;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 
 /**
  * @extends ServiceEntityRepository<Commentaire>
@@ -53,6 +54,19 @@ class CommentaireRepository extends ServiceEntityRepository
 //            ->getResult()
 //        ;
 //    }
+
+public function findByPostId($id): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('p.id = :id')
+            ->setParameter('id', $id) //definir un parametre de la requete
+            ->leftJoin('c.commentaires', 'p')
+            ->orderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+       ;
+   }
+
 
 //    public function findOneBySomeField($value): ?Commentaire
 //    {
