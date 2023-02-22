@@ -22,7 +22,7 @@ class CategoryController extends AbstractController
         ]);
     }
 
-    #[Route('/categories', name: 'categories')]
+    #[Route('/dashboard/categories', name: 'categories')]
     public function categories(CategoryRepository $categoryRepository): Response
     {
         $categories = $categoryRepository->findAll();
@@ -32,7 +32,7 @@ class CategoryController extends AbstractController
     }
 
 
-    #[Route('/addCategory', name: 'addCategory')]
+    #[Route('/dashboard/addCategory', name: 'addCategory')]
     public function addCategory(ManagerRegistry $doctrine, Request $request): Response
     {
         $category = new Category();
@@ -50,7 +50,7 @@ class CategoryController extends AbstractController
         return $this->renderForm("category/addCategory.html.twig", array("form" => $form));
     }
 
-    #[Route('/updateCategory/{id}', name: 'updateCategory')]
+    #[Route('/dashboard/updateCategory/{id}', name: 'updateCategory')]
     public function updateCategory(
         CategoryRepository $repository,
         $id,
@@ -81,7 +81,11 @@ class CategoryController extends AbstractController
     ): Response {
         $category = $r->find($id);
         if ($category->getProducts()->count() > 0) {
-            return new Response("Category cannot be deleted as it still contains products.", Response::HTTP_BAD_REQUEST);
+            $this->addFlash(
+                'error',
+                'Cette categorie ne peut pas etre supprimé parcequil contient des produits'
+            );
+            return $this->redirectToRoute('categories');
         }
         $em = $doctrine->getManager();
         $em->remove($category);

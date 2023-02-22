@@ -33,7 +33,7 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/addProduct', name: 'addProduct')]
+    #[Route('/dashboard/addProduct', name: 'addProduct')]
     public function addProduct(ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
     {
         $product = new Product();
@@ -72,7 +72,7 @@ class ProductController extends AbstractController
         return $this->renderForm("product/addProduct.html.twig", array("form" => $form));
     }
 
-    #[Route('/updateProduct/{id}', name: 'updateProduct')]
+    #[Route('/dashboard/updateProduct/{id}', name: 'updateProduct')]
     public function updateProduct(
         ProductRepository $repository,
         $id,
@@ -115,7 +115,7 @@ class ProductController extends AbstractController
         );
     }
 
-    #[Route('/deleteProduct/{id}', name: 'deleteProduct')]
+    #[Route('/dashboard/deleteProduct/{id}', name: 'deleteProduct')]
     public function deleteProduct(
         $id,
         ProductRepository $r,

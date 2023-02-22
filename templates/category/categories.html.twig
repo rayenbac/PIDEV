@@ -1,4 +1,6 @@
 {% extends "dashboard.html.twig" %}
+{% block title %}Categories
+{% endblock %}
 {% block body %}
 
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -6,7 +8,7 @@
 
 	</div>
 	<a href={{path('addCategory')}} style="width:50%;margin:0 auto;" type="button" class="btn btn-primary mb-1">
-		Ajouter use categorie
+		Ajouter une categorie
 	</a>
 
 	<div
@@ -16,12 +18,20 @@
 		<div class="card">
 
 			<div class="table-responsive">
+				{% for message in app.flashes('error') %}
+					<div class="alert alert-danger">
+						{{ message }}
+
+					</div>
+				{% endfor %}
 				<table class="table align-items-center table-flush">
 					<thead class="thead-light">
 						<tr>
 							<th>Category ID</th>
 							<th>Nom du categorie</th>
 							<th>Description</th>
+							<th>Date de creation</th>
+							<th>Date de modification</th>
 							<th>Modifier categorie</th>
 							<th>Supprimer categorie</th>
 						</tr>
@@ -36,6 +46,8 @@
 								<td style="max-width:250px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;">
 									{{category.description}}
 								</td>
+								<td>{{category.createAt|date('d-m-Y H:i:s')}}</td>
+								<td>{{category.updatedAt|date('d-m-Y H:i:s')}}</td>
 								<td>
 									<button type="submit" class="btn btn-primary mb-1" onclick="window.location.href='{{ path('updateCategory', { id: category.id }) }}'">
 										Modifier

@@ -1,11 +1,13 @@
 {% extends "dashboard.html.twig" %}
-{% block title %}
-	Products
+{% block title %}Products
 {% endblock %}
 {% block body %}
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
 		<h1 class="h3 mb-0 text-gray-800">Liste des produits</h1>
 	</div>
+	<a href={{path('addProduct')}} style="width:50%;margin:0 auto;" type="button" class="btn btn-primary mb-1">
+		Ajouter un produit
+	</a>
 	<div class="col-lg-12">
 		<div class="card mb-4">
 
@@ -29,7 +31,7 @@
 							<tr>
 								<td>{{product.id}}</td>
 								<td>{{product.name}}</td>
-								<td>{{product.description}}</td>
+								<td style="max-width:250px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;">{{product.description}}</td>
 								<td>{{product.price}}</td>
 								<td>{{product.quantity}}</td>
 								<td>{{product.createdAt|date('d-m-Y H:i:s')}}</td>
