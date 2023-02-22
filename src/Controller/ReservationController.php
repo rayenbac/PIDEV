@@ -69,7 +69,7 @@ class ReservationController extends AbstractController
                      }
                     #[Route('/updateReservation/{id}', name: 'updateReservation')]
                     public function updateReservation(ReservationRepository $repository,
-                    $id,ManagerRegistry $doctrine,Request $request )
+                    $id,ManagerRegistry $doctrine,Request $request,EvenementsRepository $r )
                     
                         { $complet='';
                         $reservation= $repository->find($id);
@@ -77,7 +77,7 @@ class ReservationController extends AbstractController
                         $form->handleRequest($request);
                         if($form->isSubmitted()){
                             
-                            $nomevenement= $repository->find($reservation->getEvenements()->getId());
+                            $nomevenement= $r->find($reservation->getEvenements()->getId());
                             if ($nomevenement && $nomevenement->getNbrDePlaces()){
                             $nomevenement->setNbrDePlaces($nomevenement->getNbrDePlaces()-$reservation->getNombreDePlaceAReserver());
                             $em =$doctrine->getManager();
@@ -98,9 +98,11 @@ class ReservationController extends AbstractController
                     
                     #[Route('/suppReservation/{id}', name: 'suppReservation')]
                     public function suppReservation($id,ReservationRepository $r,
-                    ManagerRegistry $doctrine): Response
+                    ManagerRegistry $doctrine,EvenementsRepository $rep ): Response
                     {
                         $reservation=$r->find($id);
+                        $evenement=$rep->find($reservation->getEvenements()->getId());
+                        $evenement->setNbrDePlaces($evenement->getNbrDePlaces()+$reservation->getNombreDePlaceAReserver());
                         $em =$doctrine->getManager();
                         $em->remove($reservation);
                         $em->flush();

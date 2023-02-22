@@ -3,7 +3,7 @@
  <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
         <div class="sidebar-brand-icon">
-          <img src="{{asset('dashboard/img/logo/logo2.png')}}">
+          <img width = "50px" height = "100px" src="{{asset('dashboard/img/logo/x.png')}}">
         </div>
         <div class="sidebar-brand-text mx-3">ECHKILI</div>
       </a>
@@ -55,8 +55,23 @@
         <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header"></h6>
-            <a class="collapse-item" href="simple-tables.html">Liste des événements</a>
-            <a class="collapse-item" href="datatables.html">Ajouter un évènement</a>
+            <a class="collapse-item" href="{{path('afficheEAdmin')}}">Liste des événements</a>
+            <a class="collapse-item" href="{{path('addE')}}">Ajouter un évènement</a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
+          aria-controls="collapseTable">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Produits</span>
+        </a>
+        
+        <div id="collapsePage" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header"></h6>
+            <a class="collapse-item" href="register.html">Liste des reservations</a>
+           
           </div>
         </div>
       </li>
@@ -64,13 +79,13 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
           aria-controls="collapsePage">
           <i class="fas fa-fw fa-columns"></i>
-          <span>Produits</span>
+          <span>Reservations</span>
         </a>
         <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header"></h6>
-            <a class="collapse-item" href="login.html">Liste des produits</a>
-            <a class="collapse-item" href="register.html">Ajouter un produit</a>
+            <a class="collapse-item" href="{{path('afficheRAdmin')}}">Liste des reservations</a>
+           
             
           </div>
         </div>

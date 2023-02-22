@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
@@ -17,13 +17,17 @@ class Reservation
 
     #[ORM\Column(nullable: true)]
     #[Assert\NotBlank(message:"Le nombre de places est obligatoire")]
-    #[Assert\Positive(message:'Le nombre de places doit etre positif')]
+    #[Assert\PositiveOrZero(message:'Le nombre de places doit etre supérieur à zéro')]
     private ?int $NombreDePlaceAReserver = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Email(message:"L'email est invalide")]
+    #[Assert\NotBlank(message:"L'email est obligatoire")]
+
+
     private ?string $Email = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reservations',cascade: ['remove'])]
+    #[ORM\ManyToOne(inversedBy: 'reservations')]
     private ?Evenements $evenements = null;
 
  

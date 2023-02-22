@@ -62,13 +62,14 @@ class Evenements
 
     #[ORM\Column(nullable: true)]
     #[Assert\NotBlank(message:"Le nombre de places est obligatoire")]
-    #[Assert\Positive(message:'Le nombre de places doit etre positif')]
+    #[Assert\PositiveOrZero(message:'Le nombre de places doit etre supérieur à zéro')]
     private ?int $NbrDePlaces = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $Type = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+   
     
     private ?string $Image = null;
 
