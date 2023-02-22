@@ -14,10 +14,17 @@
                             id="navbarSupportedContent">
                             <ul class="navbar-nav align-items-center">
                                 <li class="nav-item active">
-                                    <a class="nav-link" href="{{path('addConsultation')}}">Home</a>
+                                    <a class="nav-link" href="{{path('home')}}">Home</a>
                                 </li>
-                                  <li class="nav-item">
-                                    <a class="nav-link" href="Doctor.html">FORUM</a>
+                                  <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="{{path('home')}}" id="navbarDropdown"
+                                        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        FORUM
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="#">Actualités</a>
+                                        <a class="dropdown-item" href="">FORUM</a>
+                                    </div>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="about.html">Evenements</a>
@@ -49,11 +56,29 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link" href="contact.html">Contact</a>
+                                    <a class="nav-link" href="contact.html">Actualités</a>
                                 </li>
                             </ul>
                         </div>
-                        <a class="btn_2 d-none d-lg-block" href="#">LOGIN</a>
+                        {% if app.user is null %}
+                         <div>
+                        <a class="btn_2 d-none d-lg-block" href="{{path('app_login')}} ">Se connecter</a>
+                        </div>
+                        <div>
+                        <a class="btn_2 d-none d-lg-block" href="{{path('register')}}">Creer un compte</a>
+                        </div>
+                        {% else %}
+                        
+                        <div>
+                         </a>
+                        <a class="btn_2 d-none d-lg-block" href="{{path('app_logout')}}">Se deconnecter</a>
+                        </div>
+                        
+                        <a href="#"> <img class="img-profile rounded-circle" src="{{asset('dashboard/img/boy.png')}}" style="max-width: 60px"></a>
+                                    {{app.user.FirstName}}{{app.user.LastName}}
+                               
+                        
+                        {% endif %}
                     </nav>
                 </div>
             </div>
