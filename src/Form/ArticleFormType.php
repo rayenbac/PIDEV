@@ -29,7 +29,7 @@ class ArticleFormType extends AbstractType
 
                 // make it optional so you don't have to re-upload the PDF file
                 // every time you edit the Product details
-                'required' => false,
+                'required' => true,
 
                 // unmapped fields can't define their validation using annotations
                 // in the associated entity, so you can use the PHP constraint classes
@@ -40,6 +40,8 @@ class ArticleFormType extends AbstractType
                             'image/gif',
                             'image/jpg',
                             'image/jpeg',
+                            'image/png',
+
                             
                         ],
                         'mimeTypesMessage' => 'Please upload a valid image',

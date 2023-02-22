@@ -17,25 +17,26 @@ class Article
 
     #[ORM\Column]
     #[Assert\Positive (message:"Vérifier votre ID")]
-    #[Assert\NotBlank (message:"ID es required")]
+    #[Assert\NotBlank (message:"ID est obligatoire")]
     private ?int $Id_user = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank (message:"Article es required")]
+    #[Assert\NotBlank (message:"Article est obligatoire")]
     private ?string $article = null;
 
     
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank (message:"Name es required")]
+    #[Assert\NotBlank (message:"Name est obligatoire")]
      #[Assert\Length([
         'max' => 20,
-        'maxMessage' => 'La description ne doit pas dépasser 10 caractères',
+        'maxMessage' => 'La description ne doit pas dépasser 20 caractères',
     ]),]
      
     private ?string $NomUtilisateur = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank (message:"Image est obligatoire")]
     private ?string $image = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]

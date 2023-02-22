@@ -22,14 +22,14 @@ class Post
 
     #[ORM\Column]
     #[Assert\Positive (message:"Vérifier votre ID")]
-    #[Assert\NotBlank (message:"ID es required")]
+    #[Assert\NotBlank (message:"ID est obligatoire")]
     private ?int $ID_user = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank (message:"Description es required")]
+    #[Assert\NotBlank (message:"Description est obligatoire")]
     #[Assert\Length([
         'max' => 30,
-        'maxMessage' => 'La description ne doit pas dépasser 20 caractères',
+        'maxMessage' => 'La description ne doit pas dépasser 30 caractères',
     ]),]
     #[Assert\Regex([
         'pattern' => '/^\D+$/',
@@ -38,17 +38,17 @@ class Post
     private ?string $Description = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank (message:"Question es required")]
+    #[Assert\NotBlank (message:"Question est obligatoire")]
     private ?string $Publication = null;
    
     #[ORM\OneToMany(mappedBy: 'commentaires', targetEntity: Commentaire::class , cascade: ['remove'])]
     private Collection $commentaires;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank (message:"User name es required")]
+    #[Assert\NotBlank (message:"Nom utilisateur est obligatoire")]
     #[Assert\Length([
         'max' => 20,
-        'maxMessage' => 'La description ne doit pas dépasser 10 caractères',
+        'maxMessage' => 'La description ne doit pas dépasser 20 caractères',
     ]),]
     
     private ?string $NomUtilisateur = null;
