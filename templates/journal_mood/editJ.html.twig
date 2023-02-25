@@ -17,7 +17,7 @@
 <div class="col-lg-10 mx-auto">
 	<div class="card mb-4">
 		<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-			<h6 class="m-0 font-weight-bold text-primary">Ajouter un journal mood</h6>
+			<h6 class="m-0 font-weight-bold text-primary">Modifier un journal mood</h6>
 		</div>
 		<div class="card-body">
 			{{ form_start(f, {'attr': {'novalidate': 'novalidate'}}) }}
@@ -26,24 +26,13 @@
 				{{form_label(f.IdUser,"UserId " )}}
 				{{form_widget(f.IdUser,{'attr': {'class': 'form-control', 'placeholder': ' UserId', 'id': 'exampleFormControlTextarea1', }}) }}
 				{{form_errors(f.IdUser)}}
-				<div class="row">
-							<div class="col-md-4">
-									<label>Moods:</label>
-									</div>
-							</div>
-				<div class="row">
-<div class="col-md-4">
-									<select class="select" required name="mood">
-										{% for mood in moods %}
-											<option value="{{mood.id}}">{{mood.mood}}</option>
-										{% endfor %}
-									</select>
-							</div>
-				</div>
-								
-			</div>
-			
 
+	<div class="form-group">
+				{{form_label(f.moods,"moods " )}}
+				{{form_widget(f.moods,{'attr': {'class': 'form-control', 'placeholder': ' moods', 'moods': 'exampleFormControlTextarea1', }}) }}
+				{{form_errors(f.moods)}}
+					
+			</div>
 			
 			{{ form_widget(f.save, { 'attr': {'class': 'btn btn-primary'} }) }}
 			{{form_end(f)}}

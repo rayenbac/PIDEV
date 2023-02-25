@@ -15,7 +15,7 @@ class FormMoodType extends AbstractType
         $builder
             ->add('MoodId')
             ->add('UserId')
-            
+            ->add('Mood')
             ->add('Description')
             ->add('save',SubmitType::class)
         ;

@@ -25,13 +25,14 @@ class JournalMood
     #[Assert\NotBlank(message:"Champ obligatoire")]
     private ?int $IdUser = null;
 
-    #[ORM\OneToMany(mappedBy: 'journalMood', targetEntity: Mood::class)]
-    private Collection $moods;
+    #[ORM\ManyToOne]
+    private ?Mood $moods = null;
 
-    public function __construct()
+    public function __toString()
     {
-        $this->moods = new ArrayCollection();
+         $this->moods;
     }
+
 
     public function getId(): ?int
     {
@@ -50,33 +51,16 @@ class JournalMood
         return $this;
     }
 
-    /**
-     * @return Collection<int, Mood>
-     */
-    public function getMoods(): Collection
+    public function getMoods(): ?Mood
     {
         return $this->moods;
     }
 
-    public function addMood(Mood $mood): self
+    public function setMoods(?Mood $moods): self
     {
-        if (!$this->moods->contains($mood)) {
-            $this->moods->add($mood);
-            $mood->setJournalMood($this);
-        }
+        $this->moods = $moods;
 
         return $this;
     }
 
-    public function removeMood(Mood $mood): self
-    {
-        if ($this->moods->removeElement($mood)) {
-            // set the owning side to null (unless already changed)
-            if ($mood->getJournalMood() === $this) {
-                $mood->setJournalMood(null);
-            }
-        }
-
-        return $this;
-    }
 }

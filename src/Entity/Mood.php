@@ -37,9 +37,10 @@ class Mood
     ]),]
     private ?string $Description = null;
 
-    #[ORM\ManyToOne(inversedBy: 'moods')]
-    private ?JournalMood $journalMood = null;
-
+    public function __toString()
+    {
+        return $this->getMood();
+    }
    
 
    
@@ -97,15 +98,5 @@ class Mood
         return $this;
     }
 
-    public function getJournalMood(): ?JournalMood
-    {
-        return $this->journalMood;
-    }
 
-    public function setJournalMood(?JournalMood $journalMood): self
-    {
-        $this->journalMood = $journalMood;
-
-        return $this;
-    }
 }

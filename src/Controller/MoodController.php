@@ -86,16 +86,16 @@ class MoodController extends AbstractController
 
 
     }
-    #[Route('/mood/afficheA', name: 'mood_afficheA')]
-     public function afficheA(): Response
+    #[Route('/afficheAdminMood', name: 'afficheAdminMood')]
+     public function afficheAdminMood(): Response
                  {
       //récupérer le repository
       $c=$this->getDoctrine()->getRepository(Mood::Class)->findAll();
       //utiliser la fonction findAll()
       //$c=$r->findAll();
-    return $this->render('mood/afficheA.html.twig', [
+    return $this->render("mood/afficheA.html.twig", [
      'm' => $c
-     ]);
+                     ]);
       }
 }
 

@@ -25,15 +25,21 @@ class JournalMoodController extends AbstractController
     }
     #[Route('/afficheJ', name: 'afficheJ')]
     public function afficheJ(): Response
-                {
-     //récupérer le repository
-     $c=$this->getDoctrine()->getRepository(JournalMood::Class)->findAll();
-     //utiliser la fonction findAll()
-     //$c=$r->findAll();
-   return $this->render('journal_mood/indexJ.html.twig', [
-    'j' => $c
-                    ]);
-     }
+    {
+        // récupérer le repository
+        $repository = $this->getDoctrine()->getRepository(JournalMood::class);
+        
+        // récupérer tous les journaux d'humeur
+        $journals = $repository->findAll();
+        
+        // retourner la vue avec les journaux d'humeur récupérés
+        return $this->render('journal_mood/indexJ.html.twig', [
+            'journals' => $journals
+        ]);
+    }
+
+
+
      #[Route('/add/journal', name: 'addjournal')]
      public function addjournal(ManagerRegistry $doctrine,Request $request ,JournalMoodRepository $repository,MoodRepository $r)
                     {$journal= new JournalMood();
