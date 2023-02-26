@@ -1,0 +1,58 @@
+{% extends "dashboard.html.twig" %}
+{% block title %}Products
+{% endblock %}
+{% block body %}
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">Liste des produits</h1>
+	</div>
+	<a href={{path('addProduct')}} style="width:50%;margin:0 auto;" type="button" class="btn btn-primary mb-1">
+		Ajouter un produit
+	</a>
+	<div class="col-lg-12">
+		<div class="card mb-4">
+
+			<div class="table-responsive p-3">
+				<table class="table align-items-center table-flush table-hover" id="dataTableHover">
+					<thead class="thead-light">
+						<tr>
+							<th>Id</th>
+							<th>Nom</th>
+							<th>Description</th>
+							<th>Prix</th>
+							<th>Quantite</th>
+							<th>Date creation</th>
+							<th>Date modification</th>
+							<th>Modifier</th>
+							<th>Supprimer</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for product in products %}
+							<tr>
+								<td>{{product.id}}</td>
+								<td>{{product.name}}</td>
+								<td style="max-width:250px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;">{{product.description}}</td>
+								<td>{{product.price}}</td>
+								<td>{{product.quantity}}</td>
+								<td>{{product.createdAt|date('d-m-Y H:i:s')}}</td>
+								<td>{{product.updatedAt|date('d-m-Y H:i:s')}}</td>
+								<td>
+									<button type="submit" class="btn btn-primary mb-1" onclick="window.location.href='{{ path('updateProduct', { id: product.id }) }}'">
+										Modifier
+									</button>
+								</td>
+								<th>
+									<a href=" {{path('deleteProduct' , {'id': product.id} ) }} " class="btn btn-danger ">
+										<i class="fas fa-trash"></i>
+									</a>
+								</th>
+
+							</tr>
+						{% endfor %}
+					</tbody>
+					<tbody></tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+{% endblock %}
