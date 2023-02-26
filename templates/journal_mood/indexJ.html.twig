@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+  {{ parent() }}
+{% endblock %}
+{% block body %}
+<section class="breadcrumb_part breadcrumb_bg">
+        
+          
+                <div class="col-lg-12">
+                    <div class="breadcrumb_iner">
+                        <div class="breadcrumb_iner_item">
+                            <h2>Liste des journals</h2>
+                        </div>
+                    </div>
+                </div>
+            
+        
+    </section>
+<div class="page-container">
+    <!-- Content Wrapper START -->
+    <div class="main-content">
+      <div class="card">
+          <div class="card-body">
+              <h4>Listes des journals</h4>
+              <div class="m-t-25">
+                <table class="data-table table">
+                    <thead>
+                        <tr>
+                        <th>Journal ID</th>
+                            <th>IdUser</th>
+                            <th>Moods</th>
+                            <th>Modifier</th>
+                            <th>Supprimer</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                     {% for journal in journals %}
+                        <tr>
+                        <td>{{journal.id}}</td>
+                        <td>{{journal.IdUser}}</td>
+                        <td>{{journal.moods}}</td>
+                    
+
+   
+                           
+                            
+												
+            <td>
+                        <button class="btn btn-primary">
+         <a href="{{ path('editjournal',{'id':journal.id}) }}"style="color: white;">Update</a>
+          </button>
+        
+      </td>
+       <td><button class="btn btn-primary">
+        <a href="{{path('deletejournal',{'id' :journal.id }) }}"style="color: white;">Delete</a>
+        </button> </td>
+        
+        
+											
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+              </div>
+          </div>
+      </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+{% endblock %}
