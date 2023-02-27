@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}RendezVous index{% endblock %}
+
+{% block body %}
+<section class="banner_part">
+ <div class="container">
+  <div class="row align-items-center">
+                <div class="col-lg-12 col-xl-12">
+                    <div class="banner_text">
+                        <div class="banner_text_iner">
+    <h1>Listes Des RendezVous </h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Cause</th>
+                <th>DateRV</th>
+                <th>Description</th>
+                <th>Chez le medecin</th>
+
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for rendez_vou in rendez_vouses %}
+            <tr>
+                <td>{{ rendez_vou.id }}</td>
+                <td>{{ rendez_vou.nom }}</td>
+                <td>{{ rendez_vou.prenom }}</td>
+                <td>{{ rendez_vou.cause }}</td>
+                <td>{{ rendez_vou.dateRV ? rendez_vou.dateRV|date('Y-m-d') : '' }}</td>
+                <td>{{ rendez_vou.description }}</td>
+                 <td>{{ rendez_vou.medecin.nom }}</td>
+
+                <td>
+                    <a class="btn btn-primary" href="{{ path('app_rendez_vous_show', {'id': rendez_vou.id}) }}">show</a>
+                    <a class="btn btn-primary" href="{{ path('app_rendez_vous_edit', {'id': rendez_vou.id}) }}">edit</a>
+                    
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn_2 d-none d-lg-block" href="{{ path('app_rendez_vous_new') }}">Create new</a>
+    </div>
+     </div>
+      </div>
+       </div>
+        </div>
+    </section>
+{% endblock %}

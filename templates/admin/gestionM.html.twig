@@ -1,0 +1,54 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}{{ parent() }}-Medecins {% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+{% endblock %}	
+{% block body %}
+
+  <div class="col-xl-12 col-lg-7 ">
+ <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Accepter un médecin</h6>
+                </div>
+                <div class="card-body">
+                  <form method="post">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Email</label>
+                      <input class="form-control  mb-3" type="text" readonly placeholder="Default input" name="email" value="{{medecin.Username}}" >
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Nom</label>
+                     <input class="form-control  mb-3" type="text" readonly placeholder="Default input" name="Lastname"  value="{{medecin.Lastname}}">
+                    </div>
+                     <div class="form-group">
+                      <label for="exampleInputEmail1">Prénom</label>
+                      <input class="form-control  mb-3" type="text" readonly placeholder="Default input" name="Firstname"  value="{{medecin.Firstname}}" >
+                    </div>
+                     <div class="form-group">
+                      <label for="exampleInputEmail1">Adresse</label>
+                      <input class="form-control  mb-3" type="text" readonly placeholder="Default input" name="adresse"  value="{{medecin.Adresse}}" >
+                    </div>
+                    
+                       {% if medecin.file %}
+                       <div class="form-group">
+                      <label for="exampleInputEmail1">Fichier ajouté</label>
+                      <img width = "350px" height = "350px" class="card-img rounded-0" src="{{ asset('uploads/' ~ medecin.file) }}" alt="">
+                     </div>
+                      {% endif %}
+        
+               
+                    <a href="{{ path ('gestionmedecin', {'id':medecin.id}) }}">
+                    <button type="submit" class="btn btn-success">Accepter</button>
+                    </a>
+                    <a href="{{ path ('deletemedecin', {'id':medecin.id}) }}">
+                    <button type="button" class="btn btn-danger mb-1">Supprimer</button>
+                    </a>
+                  </form>
+                </div>
+              </div>
+</div>
+              {% endblock %}
+			{% block javascripts %}
+				{{ parent() }}
+			{% endblock %}

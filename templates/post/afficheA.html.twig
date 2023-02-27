@@ -1,0 +1,84 @@
+{% extends 'dashboard.html.twig' %}
+{% block body %}
+<div class="container-fluid" id="container-wrapper">
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Forum</h1>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="./">Home</a></li>
+              <li class="breadcrumb-item">Forum</li>
+              <li class="breadcrumb-item active" aria-current="page">Actualité</li>
+            </ol>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 mb-4">
+              <!-- Liste des questions&réponses -->
+              <div class="card">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Liste des questions&réponses</h6>
+                </div>
+                <div class="table-responsive">
+                  <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Id_question</th>
+                          <th>Id_user</th>
+                          <th>Description</th>
+                          <th>Post</th>
+                          <th>Action</th>
+                          <th>Date</th>
+                           <th>Réponses</th>
+                                
+                                  
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                     </tr>
+                      <tr>
+                        <tr>
+                   {% for i in forum %}
+                   <tr>
+                   <td>{{i.id}}</td>
+                    <td>{{i.IDUser}}</td>
+                    <td>{{i.description}}</td>
+                     <td>{{i.publication}}</td>
+                
+   
+    <td><a href="{{path('suppPost',{'id':i.id }) }}" class="btn btn-danger">
+                    <i class="fas fa-trash"></i>
+                  </a></td>
+                
+                  <td>{{ i.createdAt | date("Y-m-d H:i:s") }}</td>
+               
+   
+          <td><a href="{{path('afficheC',{'id':i.id }) }}" class="btn btn-sm btn-primary">Voir réponses </a></td>
+          
+          
+                {% endfor %}
+
+  
+
+
+
+                </tr>
+                     
+                    </tbody>
+                  </table>
+                </div>
+                <div class="card-footer"></div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+  
+
+
+
+
+
+
+{% endblock %}
