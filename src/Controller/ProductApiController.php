@@ -34,7 +34,7 @@ class ProductApiController extends AbstractController
         $json = json_encode($normalizedProducts);
         return new Response($json);
     }
-    #[Route('/api/addProduct', name: 'addProductApi')]
+    #[Route('/api/addProduct', name: 'addProductApi', methods: ['POST'])]
     public function addProductsApi(NormalizerInterface $normalizer, ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger, CategoryRepository $categoryRepository): Response
     {
         $product = new Product();
@@ -47,7 +47,7 @@ class ProductApiController extends AbstractController
         $product->setPrice($request->get('price'));
         $product->setQuantity($request->get('quantity'));
         //upload image to database with a unique name
-        $imageFile = $form->get('image')->getData();
+        $imageFile = $request->get('image')->getData();
         if ($imageFile) {
             $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
             // this is needed to safely include the file name as part of the URL
@@ -138,13 +138,13 @@ class ProductApiController extends AbstractController
         return new Response($json);
     }
     #[Route('/dashboard/products/search', name: 'searchProducts', methods: ['POST'])]
-    #[Route('/dashboard/products/search', name: 'searchProducts', methods: ['POST'])]
     public function searchProducts(Request $request, ProductRepository $productRepository): JsonResponse
     {
         $filter = $request->request->get('filter');
         $searchTerm = $request->request->get('searchTerm');
+        $sortCriteria = $request->request->get('sortCriteria');
 
-        $products = $productRepository->search($filter, $searchTerm);
+        $products = $productRepository->search($filter, $searchTerm, $sortCriteria);
         $data = [];
         foreach ($products as $product) {
             $data[] = [

@@ -5,8 +5,8 @@
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
 		<h1 class="h3 mb-0 text-gray-800">Liste des produits</h1>
 	</div>
-	<div class="row">
-		<div class="col-md-4 mb-3">
+	<div class="row" style="width:80vw;margin-right:auto;margin-left:auto;">
+		<div class=" col-md-3 mb-3">
 			<select class="form-control" id="filter">
 				<option value="name">Nom</option>
 				<option value="category">Catégorie</option>
@@ -18,6 +18,14 @@
 		<button type="button" class="btn btn-primary col-md-2 mb-3" id="search-btn">
 			Rechercher
 		</button>
+		<div class=" col-md-3 mb-3">
+			<select class="form-control" id="sort">
+				<option value="name_asc">Tri A-Z</option>
+				<option value="name_desc">Tri Z-A</option>
+				<option value="price_asc">Prix ascendant</option>
+				<option value="price_desc">Prix descendant</option>
+			</select>
+		</div>
 	</div>
 	<a href={{path('addProduct')}} style="width:50%;margin:0 auto;" type="button" class="btn btn-primary mb-1">
 		Ajouter un produit
@@ -73,6 +81,7 @@
 		document.querySelector('#search-btn').addEventListener('click', function () {
 const filter = document.querySelector('#filter').value;
 const searchTerm = document.querySelector('#search-input').value;
+const sortCriteria = document.querySelector('#sort').value;
 const xhr = new XMLHttpRequest();
 xhr.onreadystatechange = function () {
 if (this.readyState === 4 && this.status === 200) {
@@ -80,10 +89,9 @@ const products = JSON.parse(this.responseText);
 updateTable(products);
 }
 };
-xhr.open('POST', '{{ path('
-      searchProducts ') }}', true);
+xhr.open('POST', '{{ path('searchProducts') }}', true);
 xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-xhr.send(`filter=${filter}&searchTerm=${searchTerm}`);
+xhr.send(`filter=${filter}&searchTerm=${searchTerm}&sortCriteria=${sortCriteria}`);
 });
 
 function updateTable(products) {
