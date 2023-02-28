@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProductApiController extends AbstractController
@@ -135,5 +136,27 @@ class ProductApiController extends AbstractController
         $normalizedProduct = $normalizer->normalize($product, 'json', ['groups' => 'userProducts']);
         $json = json_encode($normalizedProduct);
         return new Response($json);
+    }
+    #[Route('/dashboard/products/search', name: 'searchProducts', methods: ['POST'])]
+    #[Route('/dashboard/products/search', name: 'searchProducts', methods: ['POST'])]
+    public function searchProducts(Request $request, ProductRepository $productRepository): JsonResponse
+    {
+        $filter = $request->request->get('filter');
+        $searchTerm = $request->request->get('searchTerm');
+
+        $products = $productRepository->search($filter, $searchTerm);
+        $data = [];
+        foreach ($products as $product) {
+            $data[] = [
+                'id' => $product->getId(),
+                'name' => $product->getName(),
+                'description' => $product->getDescription(),
+                'price' => $product->getPrice(),
+                'quantity' => $product->getQuantity(),
+                'createdAt' => $product->getCreatedAt()->format('d-m-Y H:i:s'),
+                'updatedAt' => $product->getUpdatedAt()->format('d-m-Y H:i:s'),
+            ];
+        }
+        return $this->json($data);
     }
 }

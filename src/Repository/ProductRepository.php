@@ -38,6 +38,24 @@ class ProductRepository extends ServiceEntityRepository
       $this->getEntityManager()->flush();
     }
   }
+  public function search(string $filter, string $searchTerm): array
+  {
+    $qb = $this->createQueryBuilder('p');
+
+    switch ($filter) {
+      case 'name':
+        $qb->andWhere('p.name LIKE :searchTerm')
+          ->setParameter('searchTerm', '%' . $searchTerm . '%');
+        break;
+      case 'category':
+        $qb->join('p.category', 'c')
+          ->andWhere('c.name LIKE :searchTerm')
+          ->setParameter('searchTerm', '%' . $searchTerm . '%');
+        break;
+    }
+
+    return $qb->getQuery()->getResult();
+  }
 
   //    /**
   //     * @return Product[] Returns an array of Product objects
