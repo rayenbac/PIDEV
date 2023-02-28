@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MoodRepository::class)]
 class Mood
@@ -14,19 +15,23 @@ class Mood
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("moods")]
     private ?int $id = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message:"Champ obligatoire")]
+    #[Groups("moods")]
     private ?int $MoodId = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message:"Champ obligatoire")]
+    #[Groups("moods")]
     private ?int $UserId = null;
     
 
     #[ORM\Column]
     #[Assert\NotBlank(message:"Champ obligatoire")]
+    #[Groups("moods")]
     private ?string $Mood = null;
 
     #[ORM\Column(length: 255)]
@@ -35,6 +40,7 @@ class Mood
         'min' => 5,
         'minMessage' => 'La description doit contenir au minimum 5 caractères',
     ]),]
+    #[Groups("moods")]
     private ?string $Description = null;
 
     public function __toString()

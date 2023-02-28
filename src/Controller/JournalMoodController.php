@@ -12,6 +12,7 @@ use App\Entity\Mood;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\MoodRepository;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 
 class JournalMoodController extends AbstractController
@@ -94,4 +95,63 @@ class JournalMoodController extends AbstractController
 
 
     }
+
+
+    
+
+    #[Route('/afficheAPI', name: 'afficheAPI')]
+    public function afficheAPI(MoodRepository $repo, NormalizerInterface $normalizer)
+    {
+         $journals = $repo->findAll();
+         $journalsNormalises = $normalizer->normalize($journals, 'json', ['groups' => "journals"]);
+    
+         $json = json_encode($journalsNormalises);
+    
+         return new Response($json);
+    }
+     
+    
+    
+    #[Route('/addJournalJSON/new', name: 'addJournalJSON')]
+    public function addJournalJSON(Request $req, NormalizerInterface $Normalizer)
+    {
+         $em = $this->getDoctrine()->getManager();
+         $journal = new JournalMood();
+         $journal->setIdUser($req->get('IdUser'));
+         $journal->setMoods($req->get('moods'));
+         $em->persist($journal);
+         $em->flush();
+    
+         $jsonContent = $Normalizer->normalize($journal, 'json', ['groups' => 'journals']);
+         return new Response(json_encode($jsonContent));
+    }
+    
+    
+    #[Route('/updateJournalJSON/{id}', name: 'updateJournalJSON')]
+    public function updateJournalJSON(Request $req, $id, NormalizerInterface $Normalizer)
+    {
+         $em = $this->getManager();
+         $journal = $em->getRepository(JournalMood::class)->find($id);
+         $journal->setIdUser($req->get('IdUser'));
+         $journal->setMoods($req->get('moods'));
+    
+         $em->flush();
+    
+         $jsonContent = $Normalizer->normalize($journal, 'json', ['groups' => 'journals']);
+         return new Response("Journal Mood updated successfully" . json_encode($jsonContent));
+    }
+    
+    
+    #[Route('/deleteJournalJSON/{id}', name: 'deleteJournalJSON')]
+    public function deleteJournalJSON(Request $req, $id, NormalizerInterface $Normalizer)
+    {
+         $em = $this->getManager();
+         $journal = $em->getRepository(JournalMood::class)->find($id);
+         $em->remove($journal);
+         $em->flush();
+    
+         $jsonContent = $Normalizer->normalize($journal, 'json', ['groups' => 'journals']);
+         return new Response("Journal Mood deleted successfully" . json_encode($jsonContent));
+    }
+    
 }

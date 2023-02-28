@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\MoodRepository;
 use App\Form\FormMoodType;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MoodController extends AbstractController
 {
@@ -97,6 +98,68 @@ class MoodController extends AbstractController
      'm' => $c
                      ]);
       }
+
+
+
+      #[Route('/afficheApi', name: 'afficheApi')]
+public function afficheApi(MoodRepository $repo, NormalizerInterface $normalizer)
+{
+     $moods = $repo->findAll();
+     $moodsNormalises = $normalizer->normalize($moods, 'json', ['groups' => "moods"]);
+
+     $json = json_encode($moodsNormalises);
+
+     return new Response($json);
+}
+ 
+
+
+#[Route('/addMoodJSON/new', name: 'addMoodJSON')]
+public function addMoodJSON(Request $req, NormalizerInterface $Normalizer)
+{
+     $em = $this->getDoctrine()->getManager();
+     $mood = new Mood();
+     $mood->setMoodId($req->get('MoodId'));
+     $mood->setUserId($req->get('UserId'));
+     $mood->setMood($req->get('Mood'));
+     $mood->setDescription($req->get('Description'));
+     $em->persist($mood);
+     $em->flush();
+
+     $jsonContent = $Normalizer->normalize($mood, 'json', ['groups' => 'moods']);
+     return new Response(json_encode($jsonContent));
+}
+
+
+#[Route('/updateMoodJSON/{id}', name: 'updateMoodJSON')]
+public function updateMoodJSON(Request $req, $id, NormalizerInterface $Normalizer)
+{
+     $em = $this->getManager();
+     $mood = $em->getRepository(Mood::class)->find($id);
+     $mood->setMoodId($req->get('MoodId'));
+     $mood->setUserId($req->get('UserId'));
+     $mood->setMood($req->get('Mood'));
+     $mood->setDescription($req->get('Description'));
+
+     $em->flush();
+
+     $jsonContent = $Normalizer->normalize($mood, 'json', ['groups' => 'moods']);
+     return new Response("Mood updated successfully" . json_encode($jsonContent));
+}
+
+
+#[Route('/deleteMoodJSON/{id}', name: 'deleteMoodJSON')]
+public function deleteMoodJSON(Request $req, $id, NormalizerInterface $Normalizer)
+{
+     $em = $this->getManager();
+     $mood = $em->getRepository(Mood::class)->find($id);
+     $em->remove($mood);
+     $em->flush();
+
+     $jsonContent = $Normalizer->normalize($mood, 'json', ['groups' => 'moods']);
+     return new Response("Mood deleted successfully" . json_encode($jsonContent));
+}
+
 }
 
 
