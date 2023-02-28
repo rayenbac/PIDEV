@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 
+use Dompdf\Dompdf;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\Mood;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +15,11 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\MoodRepository;
 use App\Form\FormMoodType;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
+
+
+use Knp\Component\Pager\PaginatorInterface;
+use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
 
 class MoodController extends AbstractController
 {
@@ -134,7 +142,7 @@ public function addMoodJSON(Request $req, NormalizerInterface $Normalizer)
 #[Route('/updateMoodJSON/{id}', name: 'updateMoodJSON')]
 public function updateMoodJSON(Request $req, $id, NormalizerInterface $Normalizer)
 {
-     $em = $this->getManager();
+    $em = $this->getDoctrine()->getManager();
      $mood = $em->getRepository(Mood::class)->find($id);
      $mood->setMoodId($req->get('MoodId'));
      $mood->setUserId($req->get('UserId'));
@@ -159,6 +167,42 @@ public function deleteMoodJSON(Request $req, $id, NormalizerInterface $Normalize
      $jsonContent = $Normalizer->normalize($mood, 'json', ['groups' => 'moods']);
      return new Response("Mood deleted successfully" . json_encode($jsonContent));
 }
+
+
+
+    #[Route('/pdf', name: 'pdf', methods: ['GET'])]
+    public function pdf(MoodRepository $MoodRepository): Response
+    {
+        // Configure Dompdf according to your needs
+        $pdfOptions = new OptionsResolver();
+        $pdfOptions->setDefaults([
+            'defaultFont' => 'Arial',
+        ]);
+    
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+    
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('mood/pdf.html.twig', [
+            'moods' => $MoodRepository->findAll(),
+        ]);
+    
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+    
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+    
+        // Render the HTML as PDF
+        $dompdf->render();
+    
+        // Output the generated PDF to Browser (inline view)
+        $output = $dompdf->output();
+        $response = new Response($output);
+        $response->headers->set('Content-Type', 'application/pdf');
+        $response->headers->set('Content-Disposition', 'inline; filename="mypdf.pdf"');
+        return $response;
+    }
 
 }
 
