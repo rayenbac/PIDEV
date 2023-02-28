@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[UniqueEntity(
@@ -30,6 +31,7 @@ class Product
         minMessage: 'Le nom du produit doit contenir au moin 3 caracteres',
         maxMessage: 'Le nom du produit doit contenir au maximum 100 caracteres',
     )]
+    #[Groups("userProducts")]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -39,23 +41,28 @@ class Product
         minMessage: 'La description du produit doit contenir au moin 5 caracteres',
         maxMessage: 'La description produit doit contenir au maximum 1000 caracteres',
     )]
+    #[Groups("userProducts")]
     private ?string $description = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message: "Le prix est obligatoire !")]
     #[Assert\Positive(message: "Le prix doit etre positive")]
+    #[Groups("userProducts")]
     private ?float $price = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups("userProducts")]
     private ?Category $category = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups("userProducts")]
     private ?string $image = null;
 
     #[ORM\Column]
     #[Assert\NotBlank(message: ' La quantite est obligatoire')]
     #[Assert\PositiveOrZero(message: "La quantite doit etre positive")]
+    #[Groups("userProducts")]
     private ?int $quantity = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
