@@ -10,13 +10,13 @@ use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 class ProductController extends AbstractController
 {
@@ -29,11 +29,17 @@ class ProductController extends AbstractController
     }
 
     #[Route('/dashboard/products', name: 'products')]
-    public function dashboardProducts(ProductRepository $productsRepository): Response
+    public function dashboardProducts(ProductRepository $productsRepository,PaginatorInterface $paginator,Request $request): Response
     {
-        $products = $productsRepository->findAll();
+        $queryBuilder = $productsRepository->createQueryBuilder('p');
+        $pagination = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1), // get the page parameter from the URL, defaults to 1
+            3 // limit per page
+        );
+    
         return $this->render('product/products.html.twig', [
-            'products' => $products
+            'pagination' => $pagination,
         ]);
     }
 

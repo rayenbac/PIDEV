@@ -1,0 +1,10 @@
+knp_paginator:
+    page_range: 5                      # Number of links showed in the pagination menu (e.g: you have 10 pages, a page_range of 3, on the 5th page you'll see links to page 4, 5, 6)
+    default_options:
+        page_name: page                # Parameter name used in the URL to specify the current page number
+        sort_field_name: sort          # Parameter name used in the URL to specify the field to sort by
+        sort_direction_name: direction # Parameter name used in the URL to specify the sort direction
+        distinct: true                 # Ensure distinct results, useful when ORM queries are involved
+    template:
+        pagination: '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig'
+        sortable: '@KnpPaginator/Pagination/sortable_link.html.twig'
