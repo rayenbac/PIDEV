@@ -99,10 +99,10 @@ class JournalMoodController extends AbstractController
 
     
 
-    #[Route('/afficheAPI', name: 'afficheAPI')]
-    public function afficheAPI(MoodRepository $repo, NormalizerInterface $normalizer)
+    #[Route('/affichePI', name: 'affichePI')]
+    public function affichePI(JournalMoodRepository $repo, NormalizerInterface $normalizer)
     {
-         $journals = $repo->findAll();
+        $journals = $this->getDoctrine()->getRepository(JournalMood::class)->findAll();
          $journalsNormalises = $normalizer->normalize($journals, 'json', ['groups' => "journals"]);
     
          $json = json_encode($journalsNormalises);

@@ -2,24 +2,33 @@
 
 namespace App\Controller;
 
+use App\Entity\Mood;
+use App\Form\FormMoodType;
+use App\Repository\MoodRepository;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
 
 use Dompdf\Dompdf;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Entity\Mood;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Repository\MoodRepository;
-use App\Form\FormMoodType;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-
+use App\Service\FileUploader;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Knp\Component\Pager\PaginatorInterface;
 use CMEN\GoogleChartsBundle\GoogleCharts\Charts\PieChart;
+
+
 
 class MoodController extends AbstractController
 {
@@ -42,6 +51,7 @@ class MoodController extends AbstractController
     'm' => $c
                     ]);
      }
+
 
 
      
@@ -204,7 +214,56 @@ public function deleteMoodJSON(Request $req, $id, NormalizerInterface $Normalize
         return $response;
     }
 
+
+    #[Route('/stat', name: 'stat')]
+    
+    public function stat(): Response
+    {
+        $repository = $this->getDoctrine()->getRepository(Mood::class);
+        $moods = $repository->findAll();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $happyCount = 0;
+        $sadCount = 0;
+        foreach ($moods as $mood) {
+            if ($mood->getMood() == 'happy') {
+                $happyCount++;
+            } else {
+                $sadCount++;
+            }
+        }
+
+        $pieChart = new PieChart();
+        $pieChart->getData()->setArrayToDataTable([
+            ['Mood', 'Count'],
+            ['Happy', $happyCount],
+            ['Sad', $sadCount],
+        ]);
+
+        $pieChart->getOptions()->setTitle('Mood Statistics');
+        $pieChart->getOptions()->setHeight(500);
+        $pieChart->getOptions()->setWidth(900);
+        $pieChart->getOptions()->getTitleTextStyle()->setBold(true);
+        $pieChart->getOptions()->getTitleTextStyle()->setColor('#009900');
+        $pieChart->getOptions()->getTitleTextStyle()->setItalic(true);
+        $pieChart->getOptions()->getTitleTextStyle()->setFontName('Arial');
+        $pieChart->getOptions()->getTitleTextStyle()->setFontSize(20);
+
+        return $this->render('mood/stat.html.twig', [
+            'piechart' => $pieChart
+        ]);
+    }
 }
+
+
+
+
+
+
+
+
+
 
 
 

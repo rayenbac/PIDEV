@@ -17,6 +17,16 @@
             
         
     </section>
+
+<div id="google_translate_element"></div>
+                                    <script type="text/javascript">
+                                        function googleTranslateElementInit() {
+                                            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+                                        }
+                                    </script>
+
+                                    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 <div class="page-container">
     <!-- Content Wrapper START -->
     <div class="main-content">
@@ -34,6 +44,7 @@
                             <th>Modifier</th>
                             <th>Supprimer</th>
                             <th>PDF</th>
+                            <th>Statistics</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -61,7 +72,12 @@
        <td>
        <a class="btn btn-success" href="{{ path('pdf') }}">Create pdf</a> 
          </td>
-        
+         
+         <td>
+       <a class="btn btn-success" href="{{ path('stat') }}">Show Mood Statistics</a> 
+         </td>
+         
+    
 											
                         </tr>
                         {% endfor %}
