@@ -10,7 +10,7 @@
                     <div class="banner_text">
                         <div class="banner_text_iner">
 
-    <h1>RendezVous </h1>
+    <h1>RendezVous</h1>
 
     <table class="table">
         <tbody>
@@ -43,13 +43,17 @@
         <table>
 
 <th>
+<div class="row">
+<div class="col-md 4">
+    <a class="btn btn-primary" href="{{ path('app_rendez_vous_edit', {'id': rendez_vou.id}) }}">modifier</a>
+</div>
 
-    <a class="btn btn-primary" href="{{ path('app_rendez_vous_index') }}">back to list</a>
+<div class="col-md 4">
+    <a class="btn btn-primary" href="{{ path('app_rendez_vous_index') }}">retour</a>
+</div>
 
-    <a class="btn btn-primary" href="{{ path('app_rendez_vous_edit', {'id': rendez_vou.id}) }}">edit</a>
 
-
-    {{ include('rendez_vous/_delete_form.html.twig') }}
+    </div>
 
      </th>
          </table>

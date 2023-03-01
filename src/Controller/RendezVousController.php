@@ -8,6 +8,10 @@ use App\Entity\Medecin;
 use App\Form\RendezVousType;
 use App\Repository\RendezVousRepository;
 use App\Repository\MedecinRepository;
+use App\Repository\CabinetRepository;
+
+use App\Entity\Cabinet;
+
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +38,7 @@ class RendezVousController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $rendezVousRepository->save($rendezVou, true);
-
+            
             return $this->redirectToRoute('app_rendez_vous_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -74,18 +78,19 @@ class RendezVousController extends AbstractController
     public function delete(Request $request, RendezVous $rendezVou, RendezVousRepository $rendezVousRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$rendezVou->getId(), $request->request->get('_token'))) {
-            $rendezVousRepository->remove($rendezVou, true);
+            $rendezVousRepository->remove($rendezVou, true); //vérifie que le CSRF (Cross-Site Request Forgery) est valide pour empêcher les attaques de type CSRF. Si le CSRF est valide, la méthode continue.
         }
 
-        return $this->redirectToRoute('app_rendez_vous_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_rendez_vous_index', [], Response::HTTP_SEE_OTHER); // indique le code de réponse HTTP à utiliser pour la redirection.
     }
     
     #[Route('/appointments/create/{medecinId}', name: 'appointments')]
 
  
-    public function create(Request $request, int $medecinId, MedecinRepository $medecinRepository, RendezVousRepository $rvRepository){
+    public function create(Request $request, int $medecinId, MedecinRepository $medecinRepository, RendezVousRepository $rvRepository,CabinetRepository $cabinetRepository){
     // Get the doctor with the given ID
     $medecin = $medecinRepository->find($medecinId);
+    $cabinet = $cabinetRepository->find($medecin->getCabinet()->getId()); //Notez que j'ai ajouté une injection de dépendance pour le CabinetRepository et que j'ai utilisé la méthode getCabinet() pour récupérer la cabinet associée au médecin.
     if (!$medecin) {
         throw $this->createNotFoundException('Doctor not found');
     }
@@ -93,20 +98,24 @@ class RendezVousController extends AbstractController
     // Create a new appointment and set its doctor
     $rendezVou = new RendezVous();
     $rendezVou->setMedecin($medecin);
+    $rendezVou->setCabinet($cabinet);
+
+
     $form = $this->createForm(RendezVousType::class, $rendezVou);
     $form->handleRequest($request);
     if ($form->isSubmitted() && $form->isValid()) {
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($rendezVou);
         $entityManager->flush();
-
-        return $this->redirectToRoute('app_liste');
+        $this->addFlash('success', 'rendez vous pris avec succés!');
+       
     }
 
 
     return $this->renderForm('rendez_vous/new.html.twig', [
         'rendez_vou' => $rendezVou,
         'form' => $form,
+        
     ]);
 }
 }

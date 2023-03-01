@@ -7,6 +7,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 
 #[ORM\Entity(repositoryClass: RendezVousRepository::class)]
@@ -15,9 +17,13 @@ class RendezVous
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("rendezvous")]
+
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("rendezvous")]
+
     #[Assert\NotBlank(message: "Le champ nom est obligatoire.")]
     #[Assert\Length(
         min: 2,
@@ -29,6 +35,8 @@ class RendezVous
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("rendezvous")]
+
     #[Assert\NotBlank(message: "Le champ prénom est obligatoire.")]
     #[Assert\Length(
         min: 2,
@@ -40,6 +48,8 @@ class RendezVous
     private ?string $prenom = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("rendezvous")]
+
     #[Assert\NotBlank(message: "Le champ cause est obligatoire.")]
 
     #[Assert\Length(
@@ -51,7 +61,13 @@ class RendezVous
     private ?string $cause = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    
+    #[Groups("rendezvous")]
+
+    #[Assert\GreaterThanOrEqual(
+        value: 'today',
+        message : 'La date du rendez-vous doit être postérieure ou égale à la date du jour.',
+
+    )]
 
         private ?\DateTimeInterface $dateRV = null;
 
@@ -60,7 +76,14 @@ class RendezVous
 
     #[ORM\ManyToOne(inversedBy: 'rendezVouses')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups("rendezvous")]
+
     private ?Medecin $medecin = null;
+
+    #[ORM\ManyToOne(inversedBy: 'RV')]
+    #[Groups("rendezvous")]
+
+    private ?Cabinet $cabinet = null;
 
     public function getId(): ?int
     {
@@ -84,7 +107,7 @@ class RendezVous
         return $this->prenom;
     }
 
-    public function setPrenom(string $prenom): self
+    public function setPrenom(?string $prenom): self
     {
         $this->prenom = $prenom;
 
@@ -96,7 +119,7 @@ class RendezVous
         return $this->cause;
     }
 
-    public function setCause(string $cause): self
+    public function setCause(?string $cause): self
     {
         $this->cause = $cause;
 
@@ -135,6 +158,18 @@ class RendezVous
     public function setMedecin(?Medecin $medecin): self
     {
         $this->medecin = $medecin;
+
+        return $this;
+    }
+
+    public function getCabinet(): ?Cabinet
+    {
+        return $this->cabinet;
+    }
+
+    public function setCabinet(?Cabinet $cabinet): self
+    {
+        $this->cabinet = $cabinet;
 
         return $this;
     }

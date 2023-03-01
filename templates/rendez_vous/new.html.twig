@@ -10,16 +10,27 @@
   <div class="row align-items-center">
                 <div class="col-lg-12 col-xl-12">
                     <div class="banner_text">
-                        <div class="banner_text_iner">
+                    <div class="banner_text_iner">
+                    
+                    {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
     <h1> Créer un RendezVous</h1>
 
     {{ include('rendez_vous/_form.html.twig') }}
+     <table><th>
+</div>
+</th>
+</table>
 
-    <a class="btn_2 d-none d-lg-block" href="{{ path('app_rendez_vous_index') }}">back to list</a>
+{#<a class="btn_2 d-none d-lg-block" href="{{ path('app_rendez_vous_index') }}">back to list</a>#}
      </div>
      </div>
       </div>
        </div>
         </div>
     </section>
+
 {% endblock %}

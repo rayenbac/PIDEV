@@ -42,7 +42,7 @@ class RendezVousRepository extends ServiceEntityRepository
 //    /**
 //     * @return RendezVous[] Returns an array of RendezVous objects
 //     */
-//    public function findByExampleField($value): array
+// z   public function findByExampleField($value): array
 //    {
 //        return $this->createQueryBuilder('r')
 //            ->andWhere('r.exampleField = :val')
