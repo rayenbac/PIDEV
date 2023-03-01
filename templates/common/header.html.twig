@@ -3,8 +3,8 @@
 		<div class="row align-items-center">
 			<div class="col-lg-12">
 				<nav class="navbar navbar-expand-lg navbar-light">
-					<a class="navbar-brand" href="index.html">
-						<img src="{{ asset('assets/img/logo.png')}}" alt="logo">
+					<a class="navbar-brand" href="{{path('home')}}">
+						<img src="{{ asset('assets/img/echkilii.png')}}" alt="logo" width="100" height="100">
 					</a>
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
@@ -13,40 +13,49 @@
 					<div class="collapse navbar-collapse main-menu-item justify-content-center" id="navbarSupportedContent">
 						<ul class="navbar-nav align-items-center">
 							<li class="nav-item active">
-								<a class="nav-link">Home</a>
+								<a class="nav-link" href="{{path('home')}}">Home</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="Doctor.html">FORUM</a>
+								<a class="nav-link" href="{{path('afficheArticle')}}">Actualités</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="about.html">Evenements</a>
+								<a class="nav-link" href="{{path('afficheP')}}">Forum</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="Doctor.html">Rendez-vous</a>
+								<a class="nav-link" href="{{path('app_liste')}}">Rendez-vous</a>
 							</li>
-
-
 							<li class="nav-item">
 								<a class="nav-link" href="{{path('userProducts')}}">Produits</a>
 							</li>
-							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" href="blog.html" id="navbarDropdown_1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Mood
-								</a>
-								<div class="dropdown-menu" aria-labelledby="navbarDropdown_1">
-									<a class="dropdown-item" href="blog.html"></a>
-									<a class="dropdown-item" href="single-blog.html"></a>
-								</div>
-							</li>
-
 							<li class="nav-item">
-								<a class="nav-link" href="contact.html">Contact</a>
+								<a class="nav-link" href="{{path('addMood')}}">Humeur</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="{{path('afficheE')}}">Evènements</a>
 							</li>
 						</ul>
 					</div>
-					<a class="btn_2 d-none d-lg-block" href="#">LOGIN</a>
-				</nav>
-			</div>
+					{% if app.user is null %}
+						<div>
+							<a class="btn_2 d-none d-lg-block" href="{{path('app_login')}} ">Se connecter</a>
+						</div>
+						<div>
+							<a class="btn_2 d-none d-lg-block" href="{{path('register')}}">Creer un compte</a>
+						</div>
+					{% else %}
+
+						<div></a>
+						<a class="btn_2 d-none d-lg-block" href="{{path('app_logout')}}">Se deconnecter</a>
+					</div>
+
+					<a href="{{path('profile')}}">
+						<img class="img-profile rounded-circle" src="{{asset('dashboard/img/boy.png')}}" style="max-width: 60px"></a>
+					{{app.user.FirstName}}{{app.user.LastName}}
+
+
+				{% endif %}
+
+			</nav>
 		</div>
 	</div>
-</header>
+</div></header>
