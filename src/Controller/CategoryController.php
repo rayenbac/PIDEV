@@ -25,7 +25,7 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/dashboard/categories', name: 'categories')]
-    public function categories(CategoryRepository $categoryRepository,PaginatorInterface $paginator,Request $request): Response
+    public function categories(CategoryRepository $categoryRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $queryBuilder = $categoryRepository->createQueryBuilder('c')
             ->orderBy('c.id', 'ASC');
@@ -34,7 +34,7 @@ class CategoryController extends AbstractController
             $request->query->getInt('page', 1), // get the page parameter from the URL, defaults to 1
             5 // limit per page
         );
-    
+
         return $this->render('category/categories.html.twig', [
             'pagination' => $pagination,
         ]);

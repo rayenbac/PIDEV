@@ -30,7 +30,13 @@ class ProductApiController extends AbstractController
     public function getProductsApi(ProductRepository $productsRepository, NormalizerInterface $normalizer): Response
     {
         $products = $productsRepository->findAll();
-        $normalizedProducts = $normalizer->normalize($products, 'json', ['groups' => 'userProducts']);
+        $normalizedProducts = array_map(function ($product) use ($normalizer) {
+            $normalizedProduct = $normalizer->normalize($product, 'json', ['groups' => 'userProducts']);
+            $categoryId = $product->getCategory() ? $product->getCategory()->getId() : null;
+            $normalizedProduct['category'] = $categoryId;
+            return $normalizedProduct;
+        }, $products);
+
         $json = json_encode($normalizedProducts);
         return new Response($json);
     }
