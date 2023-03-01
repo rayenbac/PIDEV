@@ -74,11 +74,14 @@
                         <a class="btn_2 d-none d-lg-block" href="{{path('app_logout')}}">Se deconnecter</a>
                         </div>
                         
-                        <a href="#"> <img class="img-profile rounded-circle" src="{{asset('dashboard/img/boy.png')}}" style="max-width: 60px"></a>
+                        <a href="{{path('profile')}}"> <img class="img-profile rounded-circle" src="{{asset('dashboard/img/boy.png')}}" style="max-width: 60px"></a>
                                     {{app.user.FirstName}}{{app.user.LastName}}
-                               
-                        
+                                    
+								
+								
+							
                         {% endif %}
+                        
                     </nav>
                 </div>
             </div>

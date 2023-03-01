@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProfileController!{% endblock %}
+
+{% block body %}
+ <section class="regervation_part section_padding">
+        <div class="container">
+            <div class="row align-items-center regervation_content">
+                <div class="col-lg-7">
+                    <div class="regervation_part_iner">
+                        <form action="{{path('profile')}}" method="post">
+                            <h2>Profile</h2>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                <label>
+										Email:
+									</label>
+                                    <input type="email" class="form-control" name="email" id="inputEmail4" placeholder="email" value="{{user.email}}">
+                                </div>
+                                <div class="form-group col-md-4">
+                                 <label>
+										Prénom:
+									</label>
+                                    <input type="text" class="form-control" id="inputEmail4" name="firstname" placeholder="firstname" value="{{user.firstname}}">
+                                </div> 
+                                 <div class="form-group col-md-4">
+                                  <label>
+										Nom:
+									</label>
+                                    <input type="text" class="form-control" id="inputEmail4"  name="lastname" placeholder="lastname" value="{{user.lastname}}">
+                                </div>  
+                                </div>
+                                 <div class="form-row">
+                                 <div class="form-group col-md-4">
+                                  <label>
+										Adresse:
+									</label>
+                                    <input type="text" class="form-control" id="inputEmail4" name="adresse" placeholder="adresse" value="{{user.adresse}}">
+                                </div>  
+                                <div class="form-group col-md-4">
+                                 <label>
+										Numéro de téléphonne:
+									</label>
+                                    <input type="number" class="form-control" id="inputEmail4" name="phone" placeholder="phone" value="{{user.phonenumber}}">
+                                </div>  
+                                <div class="form-group col-md-4">
+                                 <label>
+										Genre:
+									</label>
+                                    <select class="form-control" id="Select" name="gender">
+                                        <option {% if user.gender == 'H' %} selected {% endif %} value="H" selected>Homme</option>
+                                        <option {% if user.gender == 'F' %} selected {% endif %} value="F" selected>Femme</option>
+
+                                    </select>
+                                </div>
+                                </div>
+                                 <div class="form-row">
+                                <div class="form-group time_icon col-md-4">
+                                  <label>
+										Date de naissance:
+									</label>
+                                    <div class="input-affix m-b-10">
+										<i class="prefix-icon anticon anticon-calendar"></i>
+										<input value="{{ user.BirthDate| date('Y-m-d') }}" name="birthdate" class="form-control datepicker-input" placeholder="Date de naissance">
+									</div>
+                                </div>
+                            </div>
+                           <div class="m-t-25 form-group text-right">
+								<button type="submit" class="btn btn-primary">Sauvegarder</button>
+							</div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <br>
+        <div class="container">
+            <div class="row align-items-center regervation_content">
+                <div class="col-lg-7">
+                    <div class="regervation_part_iner">
+                        <form name="change-password" method="post" action="{{path ('password')}}">
+                            <h2>Changer mot de passe</h2>
+                            <div class="row">
+								<div class="col-md-6">
+									<label>
+										Mot de passe:
+									</label>
+									<input type="text" required name="password" class="form-control m-b-15" placeholder="Votre mot de passe">
+								</div>
+                                 <br>
+                                 <br>
+								<div class="col-md-6">
+									
+									 <div class="m-t-25 form-group text-right">
+								        <button type="submit" class="btn btn-primary">Changer </button>
+							        </div>
+								</div>
+                               
+							</div>
+                             </form>
+                    </div>
+                </div>
+               
+               
+            </div>
+        </div>
+    </section>
+                    
+{% endblock %}

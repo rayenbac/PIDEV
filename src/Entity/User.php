@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -16,54 +17,82 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("users")]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Assert\NotBlank(message: "L'email ne doit pas entre vide")]
+    #[Assert\NotBlank(message: "L'email ne doit pas etre vide")]
+    #[Groups("users")]
     private ?string $email = null;
 
     #[ORM\Column]
+    #[Groups("users")]
     private array $roles = [];
 
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Le mote de passe est obligatoire !")]
+    #[Groups("users")]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "Le prenom est obligatoire !")]
+    #[Groups("users")]
     private ?string $FirstName = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "Le nom est obligatoire !")]
+    #[Groups("users")]
     private ?string $LastName = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\NotBlank(message: "Le prenom est obligatoire !")]
+    #[Assert\Length(
+        min: 5,
+        max: 100,
+        minMessage: "L'adresse  doit contenir au moins 3 caracteres",
+        maxMessage: "L'adresse  doit contenir au maximum 100 caracteres",
+    )]
+    #[Groups("users")]
     private ?string $Adresse = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\NotNull(message: "Le date doit etre courante !")]
+    #[Assert\NotNull(message: "La date doit etre rempli !")]
+    #[Groups("users")]
     private ?\DateTimeInterface $BirthDate = null;
 
-   
+        
     #[Assert\NotBlank(message: "Le téléphone est obligatoire !")]
-    private ?int $PhoneNumber = null;
+    #[Assert\Positive(message: "Le téléphone doit etre un nombre positive !")]
+    #[Assert\Length(
+        min: 8,
+        max: 8,
+        exactMessage: "Le numéro de téléphone  doit contenir au moins 8 caracteres",
+        
+    )]
+    #[Groups("users")]
+    private ?string $PhoneNumber = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups("users")]
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups("users")]
     private ?\DateTimeImmutable $updated_at = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups("users")]
     private ?bool $Status = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups("users")]
     private ?string $file = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("users")]
     private ?string $Gender = null;
 
     public function getId(): ?int
@@ -203,7 +232,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPhoneNumber(): ?int
+    public function getPhoneNumber(): ?string
     {
         return $this->PhoneNumber;
     }
