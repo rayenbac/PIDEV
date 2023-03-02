@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Form\CommentaireFormType;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 
 class CommentaireController extends AbstractController
@@ -51,6 +52,19 @@ class CommentaireController extends AbstractController
      'post'=>$c
                      ]);
       }
+      ////////////////////////////////////////////////////////////////////////////////
+      #[Route('/APIafficheReponse/{id}', name: 'APIafficheReponse')]
+      public function APIafficheReponse( $id ,CommentaireRepository $repo , NormalizerInterface $normalizer)
+      {
+      $commentaire = $repo->findByPostId($id);
+
+      $commentaireNormalises = $normalizer->normalize($commentaire , 'json' , ['groups' => "commentaire"]);
+      //nous renvoyons une reponse Http qui prend en parametre un tableau en format JSON
+      return new Response(json_encode($commentaireNormalises));
+  
+      } 
+
+      ///////////////////////////////////////////////////////////////////////////////
 
      #[Route('/addC', name: 'addC')]
     public function addC(ManagerRegistry $doctrine,Request $request)
@@ -70,6 +84,7 @@ class CommentaireController extends AbstractController
                public function updateCommentaire(CommentaireRepository $repository,
                $id,ManagerRegistry $doctrine,Request $request)
                { //récupérer le classroom à modifier
+                
                    $commentaire= $repository->find($id);
                    $form=$this->createForm(CommentaireFormType::class,$commentaire);
                    $form->handleRequest($request);

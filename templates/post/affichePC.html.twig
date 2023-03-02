@@ -69,7 +69,7 @@
                             <div class="col-xl-8">
                                 <h3>علاخاطر صحتك
  تهمنا</h3>
-                                <a class="btn btn-lg btn-block btn-success rounded-0 py-4 mb-3 bg-op-6 roboto-bold" href="{{path('addP') }}">Poser Question</a>
+                                
                                  <h6>Liste questions&Réponses</h6>
                                
                                 {% for i in forum %}
@@ -125,8 +125,12 @@
                                             <h4>Informations</h4>
                                              
                                               <p>Publié le {{ i.updatedAt | date("Y-m-d H:i:s") }} , par {{i.NomUtilisateur }}.</p>
-                                              <td><a href={{path('updatePost',{'id':i.id}) }} class="btn btn-sm btn-primary">Modifier question </a></td>
-                                              <td><a href={{path('suppPost',{'id':i.id }) }} class="btn btn-sm btn-primary">Supprimer question </a></td>
+                                               <tr><td><a href={{path('addC',{'id':i.id}) }} class="btn btn-sm btn-primary">Ajouter réponse </a></td></tr>
+                                              <tr><td><a href={{path('updateCommentaire',{'id':i.id}) }} class="btn btn-sm btn-primary">Modifier réponse </a></td></tr>
+                                              <br></br>
+                                       <td><a href={{path('suppCommentaire',{'id':i.id }) }} class="btn btn-sm btn-primary">Supprimer réponse </a></td>
+                       
+                                                 
                                              
                                              
                                                                                   

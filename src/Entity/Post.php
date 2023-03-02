@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
@@ -18,14 +19,17 @@ class Post
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("post")]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups("post")]
     #[Assert\Positive (message:"Vérifier votre ID")]
     #[Assert\NotBlank (message:"ID est obligatoire")]
     private ?int $ID_user = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("post")]
     #[Assert\NotBlank (message:"Description est obligatoire")]
     #[Assert\Length([
         'max' => 30,
@@ -38,6 +42,7 @@ class Post
     private ?string $Description = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("post")]
     #[Assert\NotBlank (message:"Question est obligatoire")]
     private ?string $Publication = null;
    
@@ -45,6 +50,7 @@ class Post
     private Collection $commentaires;
 
     #[ORM\Column(length: 255)]
+    #[Groups("post")]
     #[Assert\NotBlank (message:"Nom utilisateur est obligatoire")]
     #[Assert\Length([
         'max' => 20,
@@ -54,10 +60,18 @@ class Post
     private ?string $NomUtilisateur = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups("post")]
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups("post")]
     private ?\DateTimeInterface $updatedAt = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $likes = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Dislike = null;
 
    
 
@@ -85,19 +99,19 @@ class Post
         return $this->ID_user;
     }
 
-    public function setIDUser(int $ID_user): self
+    public function setIDUser(?int $ID_user): self
     {
         $this->ID_user = $ID_user;
 
         return $this;
     }
-
+  
     public function getDescription(): ?string
     {
         return $this->Description;
     }
 
-    public function setDescription(string $Description): self
+    public function setDescription(?string $Description): self
     {
         $this->Description = $Description;
 
@@ -111,7 +125,7 @@ class Post
         return $this->Publication;
     }
 
-    public function setPublication(string $Publication): self
+    public function setPublication(?string $Publication): self
     {
         $this->Publication = $Publication;
 
@@ -153,7 +167,7 @@ class Post
         return $this->NomUtilisateur;
     }
 
-    public function setNomUtilisateur(string $NomUtilisateur): self
+    public function setNomUtilisateur(?string $NomUtilisateur): self
     {
         $this->NomUtilisateur = $NomUtilisateur;
 
@@ -165,7 +179,7 @@ class Post
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
@@ -177,9 +191,33 @@ class Post
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getLikes(): ?string
+    {
+        return $this->likes;
+    }
+
+    public function setLikes(?string $likes): self
+    {
+        $this->likes = $likes;
+
+        return $this;
+    }
+
+    public function getDislike(): ?string
+    {
+        return $this->Dislike;
+    }
+
+    public function setDislike(?string $Dislike): self
+    {
+        $this->Dislike = $Dislike;
 
         return $this;
     }

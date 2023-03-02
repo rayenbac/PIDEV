@@ -6,22 +6,27 @@ use App\Repository\CommentaireRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Schema\Schema;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: CommentaireRepository::class)]
 class Commentaire
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("commentaire")]
+    
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups("commentaire")]
     private ?int $Id_user = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("commentaire")]
     private ?string $Reponse = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups("commentaire")]
     private ?\DateTimeInterface $Date = null;
 
     #[ORM\ManyToOne(inversedBy: 'commentaires', )]

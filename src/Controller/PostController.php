@@ -12,6 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Form\PostFormType;
 use Symfony\Component\Validator\Constraints\DateTime;
 use App\Repository\CommentaireRepository;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 
 class PostController extends AbstractController
@@ -32,10 +33,57 @@ class PostController extends AbstractController
     $r=$this->getDoctrine()->getRepository(Post::Class);
     //utiliser la fonction findAll()
     $c=$r->findAll();
+
         return $this->render('post/afficheP.html.twig', [
             'forum' => $c
         ]);
     } 
+
+    #[Route('/affichePC', name: 'affichePC')]
+    public function affichePC(): Response
+    {
+    //récupérer le répository
+    $r=$this->getDoctrine()->getRepository(Post::Class);
+    //utiliser la fonction findAll()
+    $c=$r->findAll();
+
+        return $this->render('post/affichePC.html.twig', [
+            'forum' => $c
+        ]);
+    } 
+
+
+   
+    #[Route('/afficheQ/{id}', name: 'afficheQ')]
+    public function affichepQ($id,PostRepository $repository,ManagerRegistry $doctrine):  Response
+                {
+     //utiliser la fonction findAll()
+        $s=$repository->findAll();
+       
+        $c= $doctrine->getRepository(Post::class)->find($id);
+       
+       
+   return $this->render('post/afficheQuestion.html.twig', [
+    
+    'post'=>$c
+                    ]);
+     }
+    
+
+    #[Route('/APIafficheP', name: 'APIafficheP')]
+    public function APIafficheP(PostRepository $repo , NormalizerInterface $normalizer)
+    {
+    $post = $repo->findAll();
+    //Nous utilisions la fonction normalize quitransforme le tableau d'objets
+    //post en tableau associatif simple 
+    $postNormalises = $normalizer->normalize($post , 'json' , ['groups' => "post"]);
+    // nous utilisons la fonction json_encode pour transfomer un tableau associatif en format json
+    $json = json_encode($postNormalises);
+    //nous renvoyons une reponse Http qui prend en parametre un tableau en format JSON
+    return new Response($json);
+
+    } 
+    ///////////////////////////////////////////////////////////////////////////////
    
     #[Route('/afficheA', name: 'afficheA')]
     public function afficheA(): Response
@@ -69,6 +117,27 @@ class PostController extends AbstractController
                   return $this->renderForm("post/addP.html.twig",
                            array("f"=>$form));
                     }
+/////////////////////////////////////////////////////////////
+#[Route('/APIaddP', name: 'APIaddP')]
+    public function APIaddP(Request $req, NormalizerInterface $Normalizer){
+        $em = $this->getDoctrine()->getManager();
+        $post = new Post ();
+        $post->setIDUser($req->get('ID_user'));
+        $post->setNomUtilisateur($req->get('NomUtilisateur'));
+        $post->setDescription($req->get('Description'));
+        $post->setCreatedAt($req->get('createdAt'));
+        $post->setUpdatedAt($req->get('updatedAt'));
+        $post->setPublication($req->get('Publication'));
+        
+        $em->persist($post);
+        $em->flush();
+
+        $jsonContent = $Normalizer->normalize($post , 'json' , ['groups'=> 'post']);
+        return new Response(json_encode($jsonContent));
+    }
+                  
+////////////////////////////////////////////////////////////
+
 
                     #[Route('/updatePost/{id}', name: 'updatePost')]
                public function updatePost(PostRepository $repository,
@@ -101,6 +170,25 @@ class PostController extends AbstractController
                    return $this->renderForm("Post/addP.html.twig",
                        array("f"=>$form));
                } 
+////////////////////////////////////////////////////////////
+#[Route('/APIupdatePost/{id}', name: 'APIupdatePost')]
+    public function APIupdatePost(Request $req, $id, NormalizerInterface $Normalizer){
+        $em = $this->getDoctrine()->getManager();
+        $post = $em->getRepository(Post::class)->find($id);
+        $post->setIDUser($req->get('ID_user'));
+        $post->setNomUtilisateur($req->get('NomUtilisateur'));
+        $post->setDescription($req->get('Description'));
+        $post->setCreatedAt($req->get('createdAt'));
+        $post->setUpdatedAt($req->get('updatedAt'));
+        $post->setPublication($req->get('Publication'));
+        
+       
+        $em->flush();
+
+        $jsonContent = $Normalizer->normalize($post , 'json' , ['groups'=> 'post']);
+        return new Response("question updated successfully" . json_encode($jsonContent));
+    }
+////////////////////////////////////////////////////////////
  #[Route('/suppPost/{id}', name: 'suppPost')]
            public function suppPost($id,PostRepository $r,
            ManagerRegistry $doctrine): Response
@@ -110,7 +198,21 @@ class PostController extends AbstractController
             $em =$doctrine->getManager();
             $em->remove($post);
             $em->flush();
- return $this->redirectToRoute('afficheP',);}  
+ return $this->redirectToRoute('afficheP',);} 
+
+ /////////////////////////////////////
+#[Route('/APISuppPost/{id}', name: 'APISuppPost')]
+public function APISuppPost(Request $req, $id, NormalizerInterface $Normalizer){
+    $em = $this->getDoctrine()->getManager();
+    $post = $em->getRepository(Post::class)->find($id);
+    $em->remove($post);
+    $em->flush();
+
+    $jsonContent = $Normalizer->normalize($post , 'json' , ['groups'=> 'post']);
+    return new Response("question deleted successfully" . json_encode($jsonContent));
+}
+/////////////////////////////////////
+
 
 
 }
