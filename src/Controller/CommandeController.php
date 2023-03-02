@@ -3,15 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Commande;
-use App\Form\CommandeType;
-use App\Repository\CommandeRepository;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
-use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -64,7 +59,6 @@ class CommandeController extends AbstractController
         foreach ($user->getShoppingCartItems() as $item) {
             $user->removeShoppingCartItem($item);
         }
-
         $em = $doctrine->getManager();
         $em->persist($commande);
         $em->flush();
