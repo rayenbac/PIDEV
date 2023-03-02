@@ -14,7 +14,7 @@ class ShoppingCartItem
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'shoppingCartItems')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?User $user = null;
 
     #[ORM\ManyToOne]
@@ -23,6 +23,9 @@ class ShoppingCartItem
 
     #[ORM\Column]
     private ?int $quantity = null;
+
+    #[ORM\ManyToOne(inversedBy: 'items')]
+    private ?Commande $commande = null;
 
     public function getId(): ?int
     {
@@ -61,6 +64,18 @@ class ShoppingCartItem
     public function setQuantity(int $quantity): self
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getCommande(): ?Commande
+    {
+        return $this->commande;
+    }
+
+    public function setCommande(?Commande $commande): self
+    {
+        $this->commande = $commande;
 
         return $this;
     }

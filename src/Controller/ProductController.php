@@ -29,7 +29,7 @@ class ProductController extends AbstractController
     }
 
     #[Route('/dashboard/products', name: 'products')]
-    public function dashboardProducts(ProductRepository $productsRepository,PaginatorInterface $paginator,Request $request): Response
+    public function dashboardProducts(ProductRepository $productsRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $queryBuilder = $productsRepository->createQueryBuilder('p');
         $pagination = $paginator->paginate(
@@ -37,7 +37,7 @@ class ProductController extends AbstractController
             $request->query->getInt('page', 1), // get the page parameter from the URL, defaults to 1
             3 // limit per page
         );
-    
+
         return $this->render('product/products.html.twig', [
             'pagination' => $pagination,
         ]);
@@ -135,7 +135,7 @@ class ProductController extends AbstractController
         $em = $doctrine->getManager();
         $em->remove($product);
         $em->flush();
-        return $this->redirectToRoute('products',);
+        return $this->redirectToRoute('products');
     }
     #[Route('/product/{id}', name: 'productById')]
     public function productById(ProductRepository $productsRepository, $id): Response

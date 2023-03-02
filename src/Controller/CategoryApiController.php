@@ -33,7 +33,6 @@ class CategoryApiController extends AbstractController
     public function addCategoryApi(NormalizerInterface $normalizer, ManagerRegistry $doctrine, Request $request, CategoryRepository $categoryRepository): Response
     {
         $category = new Category();
-        $form = $this->createForm(ProductType::class, $category);
         $currenttime = new DateTime();
         $category->setCreateAt($currenttime);
         $category->setUpdatedAt($currenttime);
