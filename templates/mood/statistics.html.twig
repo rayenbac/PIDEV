@@ -1,0 +1,46 @@
+
+
+<h1>Moods Statistics</h1>
+     <p>Nombre total de Mood: {{ totalMood }}</p>
+
+    <h2>Mood by Value</h2>
+
+    <canvas id="moodsPerTeamChart"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var Mood = [];
+        var MoodCounts = [];
+
+        {% for row in valueMood %}
+            Mood.push('{{ row["Mood"] }}');
+            MoodCounts.push('{{ row["MoodCount"] }}');
+        {% endfor %}
+
+        var chartData = {
+            labels: Mood,
+            datasets: [{
+                label: 'Number of Moods',
+                data: MoodCounts,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        var chartOptions = {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        };
+
+        var chart = new Chart('moodsPerTeamChart', {
+            type: 'bar',
+            data: chartData,
+            options: chartOptions
+        });
+    </script>

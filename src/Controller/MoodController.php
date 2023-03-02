@@ -1,5 +1,7 @@
 <?php
 
+
+
 namespace App\Controller;
 
 use App\Entity\Mood;
@@ -9,6 +11,9 @@ use App\Repository\MoodRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
+
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 
 use Dompdf\Dompdf;
@@ -67,7 +72,7 @@ class MoodController extends AbstractController
                         $form->handleRequest($request);
                         if($form->isSubmitted() && $form->isValid()){
                          
-                        
+                       
                         
                             $em =$doctrine->getManager() ;
                             $em->persist($mood);
@@ -86,6 +91,8 @@ class MoodController extends AbstractController
         $form=$this->createForm(FormMoodType::class,$mood);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+
+       
             $em =$doctrine->getManager();
             $em->flush();
             return $this->redirectToRoute("afficheM"); }
@@ -254,6 +261,34 @@ public function deleteMoodJSON(Request $req, $id, NormalizerInterface $Normalize
             'piechart' => $pieChart
         ]);
     }
+
+
+
+    #[Route('/mood/statistics', name: 'mood_statistics')]
+    public function statistics(ManagerRegistry $doctrine): Response {
+        $em = $doctrine->getManager();
+        $MoodRepository = $em->getRepository(Mood::class);
+    
+        // Get the total number of moods
+        $totalMood = $MoodRepository->createQueryBuilder('m')
+            ->select('COUNT(m.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    
+        // Get the number of moods per value
+        $valueMood = $MoodRepository->createQueryBuilder('m')
+            ->select('m.Mood AS Mood', 'COUNT(m.id) AS MoodCount')
+            ->groupBy('m.Mood')
+            ->getQuery()
+            ->getResult();
+    
+        return $this->render('mood/statistics.html.twig', [
+            'totalMood' => $totalMood,
+            'valueMood' => $valueMood,
+        ]);
+    }
+
+
 }
 
 

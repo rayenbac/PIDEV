@@ -52,6 +52,14 @@
 				{{form_errors(f.Mood)}}
 			</div>
 			
+			
+				<div class="form-group">
+				{{form_label(f.date,"Date" )}}
+				{{form_widget(f.date,{'attr': {'class': 'form-control', 'id': 'touchSpin3','placeholder': 'date' }}) }}
+				{{form_errors(f.date)}}
+			</div>
+
+		
 
 			
 			{{ form_widget(f.save, { 'attr': {'class': 'btn btn-primary'} }) }}
