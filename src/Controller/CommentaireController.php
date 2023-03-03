@@ -66,7 +66,7 @@ class CommentaireController extends AbstractController
 
       ///////////////////////////////////////////////////////////////////////////////
 
-     #[Route('/addC', name: 'addC')]
+     #[Route('/addC/{id}', name: 'addC')]
     public function addC(ManagerRegistry $doctrine,Request $request)
                    {$commentaire= new Commentaire();
     $form=$this->createForm(CommentaireFormType::class,$commentaire);
@@ -104,7 +104,8 @@ class CommentaireController extends AbstractController
                 $em =$doctrine->getManager();
                 $em->remove($reponse);
                 $em->flush();
-     return $this->redirectToRoute('afficheA',);}  
+     return $this->redirectToRoute('afficheA',);} 
+     
      
      
 }
