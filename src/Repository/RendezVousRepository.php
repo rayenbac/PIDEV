@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\RendezVous;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Twilio\Rest\Client;
 
 /**
  * @extends ServiceEntityRepository<RendezVous>
@@ -37,6 +38,27 @@ class RendezVousRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+    public function sms($tel){
+        // Your Account SID and Auth Token from twilio.com/console
+        $sid = '####';
+        $auth_token = '#########';
+        // In production, these should be environment variables. E.g.:
+        // $auth_token = $_ENV["TWILIO_AUTH_TOKEN"]
+        // A Twilio number you own with SMS capabilities
+        $twilio_number = "########";
+    
+        $client = new Client($sid, $auth_token);
+        $client->messages->create(
+            // the number you'd like to send the message to
+            $tel,
+            [
+                // A Twilio phone number you purchased at twilio.com/console
+                'from' => '##########',
+                // the body of the text message you'd like to send
+                'body' => 'Votre réclamation est reçue avec succès et sera traitée dans une heure. Merci!'
+            ]
+        );
     }
 
 //    /**
