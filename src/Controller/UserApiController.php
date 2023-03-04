@@ -43,26 +43,41 @@ class UserApiController extends AbstractController
 
 
 
-    #[Route('/addUser', name: 'add_user', methods: ['POST'])]
-    public function addUser(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/addUser/new', name: 'add_user')]
+    public function addUser(ManagerRegistry $doctrine,Request $request, NormalizerInterface $Normalizer): Response
     {
-    $userData = $request->request->all(); // assuming form data is sent as x-www-form-urlencoded
-    $user = new User();
-    $user->setUsername($userData['username']);
-    $user->setEmail($userData['email']);
-    $user->setGender($userData['gender']);
-    $user->setFirstname($userData['Firstname']);
-    $user->setLastname($userData['Lastname']);
-    $user->setAdresse($userData['adresse']);
-    // set other properties as needed
+        $entityManager = $doctrine->getManager();
+        $user=new User();
+        $user->setEmail($request->request->get('email'));
+        $user->setLastName($request->request->get('lastname'));
+        $user->setAdresse($request->request->get('adresse'));
 
-    $entityManager->persist($user);
-    $entityManager->flush();
+        
+        $entityManager->persist($user);
+        dd($entityManager);
+        $entityManager->flush();
 
-    return new Response('User added successfully', Response::HTTP_CREATED);
+        $jsonContent = $Normalizer->normalize($user , 'json' , ['groups'=> 'users']);
+
+        return new Response(json_encode($jsonContent));
     }
 
+    #[Route('/supprimer/{id}', name: 'user_delete')]
+    public function deleteUser(ManagerRegistry $doctrine,SerializerInterface $serializer, int $id): Response
+    {
+        $entityManager = $doctrine->getManager();
+        $user = $entityManager->getRepository(User::class)->find($id);
+        
+        if (!$user) {
+            return new Response(null, Response::HTTP_NOT_FOUND);
+        }
+        
+        $entityManager->remove($user);
+        $entityManager->flush();
 
+        $json = $serializer->serialize($user, 'json', ['groups' => 'users']);
+        return new Response('User has been deleted successfully', Response::HTTP_OK);
+    }
 
 
 

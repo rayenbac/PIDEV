@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -94,6 +96,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     #[Groups("users")]
     private ?string $Gender = null;
+
+    #[ORM\ManyToMany(targetEntity: Notification::class, inversedBy: 'Notif')]
+    private Collection $Notif;
+
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $resetToken;
+
+   
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $resetTokenExpiresAt;
+
+    public function __construct()
+    {
+        $this->Notif = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -304,6 +322,53 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotif(): Collection
+    {
+        return $this->Notif;
+    }
+
+    public function addNotif(Notification $notif): self
+    {
+        if (!$this->Notif->contains($notif)) {
+            $this->Notif->add($notif);
+        }
+
+        return $this;
+    }
+
+    public function removeNotif(Notification $notif): self
+    {
+        $this->Notif->removeElement($notif);
+
+        return $this;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    public function getResetTokenExpiresAt(): ?\DateTimeImmutable
+    {
+        return $this->resetTokenExpiresAt;
+    }
+
+    public function setResetTokenExpiresAt(\DateTimeImmutable $resetTokenExpiresAt): self
+    {
+        $this->resetTokenExpiresAt = $resetTokenExpiresAt;
+
+        return $this;
+    }
 
    
 }

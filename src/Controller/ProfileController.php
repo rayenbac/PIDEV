@@ -10,11 +10,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use App\Service\Utils;
 
 class ProfileController extends AbstractController
 {
+   
+    
     #[Route('/profile', name: 'profile')]
-    public function index(Request $request,ManagerRegistry $doctrine): Response
+    public function index(Request $request,ManagerRegistry $doctrine)
     {
 
         $user= $this->getUser();
@@ -61,4 +64,7 @@ class ProfileController extends AbstractController
         
 
         }
+
+
+        
 }
