@@ -12,8 +12,7 @@ use App\Service\Utils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
-use Swift_Mailer;
-use Swift_Message;  
+  
 
 class AuthentificationController extends AbstractController
 {
@@ -30,7 +29,7 @@ class AuthentificationController extends AbstractController
 
 
     #[Route('/forgotPassword', name: 'forgotPassword')]
-    public function ForgotPassword(Request $request,ManagerRegistry $doctrine,UserPasswordEncoderInterface $encoder,Swift_Mailer $mailer) {
+    public function ForgotPassword(Request $request,ManagerRegistry $doctrine,UserPasswordEncoderInterface $encoder,Swift_Mailer $maile) {
 
         $entityManager = $this->getDoctrine()->getManager();
         if ($request->isMethod('POST')) {
@@ -42,7 +41,7 @@ class AuthentificationController extends AbstractController
             $user->setResetTokenExpiresAt(new \DateTimeImmutable('+1 hour'));
             $this->getDoctrine()->getManager()->flush();
 
-            $message = (new Swift_Message('Mot de password oublié'))
+            $message = (new Swift_Mail('Mot de password oublié'))
                 ->setFrom('sportify0123@gmail.com')
                 ->setTo($user->getEmail())
                 ->setBody("<p> Bonjour</p> unde demande de réinitialisation de mot de passe a été effectuée. Veuillez cliquer sur le lien suivant ");
