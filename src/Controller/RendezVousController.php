@@ -9,17 +9,16 @@ use App\Form\RendezVousType;
 use App\Repository\RendezVousRepository;
 use App\Repository\MedecinRepository;
 use App\Repository\CabinetRepository;
-
 use App\Entity\Cabinet;
-
-
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Dompdf\Dompdf;
 
 #[Route('/rendez/vous')]
 class RendezVousController extends AbstractController
+
 {
     #[Route('/', name: 'app_rendez_vous_index', methods: ['GET'])]
     public function index(RendezVousRepository $rendezVousRepository): Response
@@ -107,6 +106,8 @@ class RendezVousController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($rendezVou);
         $entityManager->flush();
+        return $this->redirectToRoute('sms', [], Response::HTTP_SEE_OTHER);
+        
         $this->addFlash('success', 'rendez vous pris avec succés!');
        
     }
@@ -118,4 +119,7 @@ class RendezVousController extends AbstractController
         
     ]);
 }
+
+
+
 }
