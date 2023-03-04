@@ -9,8 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-
-
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[UniqueEntity(
@@ -23,6 +22,7 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("category")]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -33,6 +33,8 @@ class Category
         minMessage: 'Le nom du categorie doit contenir au moin 3 caracteres',
         maxMessage: 'Le nom du categorie doit contenir au maximum 40 caracteres',
     )]
+    #[Groups("category")]
+
     public ?string $categoryName = null;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Product::class)]
@@ -45,6 +47,8 @@ class Category
         minMessage: 'La description du produit doit contenir au moin 5 caracteres',
         maxMessage: 'La description produit doit contenir au maximum 1000 caracteres',
     )]
+    #[Groups("category")]
+
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]

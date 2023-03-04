@@ -20,6 +20,7 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("userProducts")]
 
     private ?int $id = null;
 

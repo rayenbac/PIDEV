@@ -112,7 +112,7 @@ class ShoppingCartController extends AbstractController
         }
         $cartItems = $shoppingCartRepository->findBy(['user' => $user]);
         foreach ($cartItems as &$item) {
-            $itemData = $normalizer->normalize($item, 'json', ['groups' => ['cartProducts', 'userProducts']]);
+            $itemData = $normalizer->normalize($item, 'json', ['groups' => ['cartProducts', 'userProducts', 'category']]);
             $itemData['userId'] = $user->getId();
             $item = $itemData;
         }
@@ -155,5 +155,24 @@ class ShoppingCartController extends AbstractController
         $entityManager->flush();
 
         return new Response('Produit ajouté avec success');
+    }
+
+    #[Route('/api/removeItem/{itemId}/{userId}', name: 'removeItemApi')]
+
+    public function removeItemApi(ManagerRegistry $doctrine, ShoppingCartItemRepository $shoppingCartRepository, UserRepository $userRepository, $itemId, $userId): JsonResponse
+    {
+        $user = $userRepository->find($userId);
+        if (!$user) {
+            return new JsonResponse(['success' => false, 'message' => 'Utilisateur introuvable'], JsonResponse::HTTP_BAD_REQUEST);
+        }
+        $product = $shoppingCartRepository->find($itemId);
+        if (!$product) {
+            return new JsonResponse(['success' => false, 'message' => 'Produit introuvable'], JsonResponse::HTTP_BAD_REQUEST);
+        }
+        $em = $doctrine->getManager();
+        $em->remove($product);
+        $em->flush();
+
+        return new JsonResponse(['success' => true, 'message' => 'Product removed successfully']);
     }
 }
