@@ -100,20 +100,60 @@ class ShoppingCartController extends AbstractController
         return new JsonResponse(['success' => true, 'message' => 'Product removed successfully']);
     }
 
-    #[Route('/api/cart', name: 'cartApi')]
+    #[Route('/api/cart/{userId}', name: 'cartApi')]
 
-    public function cartApi(Request $request, UserRepository $userRepository, ShoppingCartItemRepository $shoppingCartRepository, NormalizerInterface $normalizer): Response
+    public function cartApi(ShoppingCartItemRepository $shoppingCartRepository, UserRepository $userRepository, NormalizerInterface $normalizer, $userId): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-
         // Get the current session
-        $user = $this->getUser();
+        $user = $userRepository->find($userId);
 
         if (!$user) {
             return new Response('Utilisateur introuvable', Response::HTTP_BAD_REQUEST);
         }
         $cartItems = $shoppingCartRepository->findBy(['user' => $user]);
-        $json = $normalizer->normalize($cartItems, 'json', ['groups' => 'cartProducts']);
+        foreach ($cartItems as &$item) {
+            $itemData = $normalizer->normalize($item, 'json', ['groups' => ['cartProducts', 'userProducts']]);
+            $itemData['userId'] = $user->getId();
+            $item = $itemData;
+        }
+        $json = $normalizer->normalize($cartItems, 'json');
         return new Response(json_encode($json));
+    }
+
+
+    #[Route('/api/addToCart/{productId}/{userId}', name: 'addToCartApi')]
+
+    public function addToCartApi(ProductRepository $productRepository, UserRepository $userRepository, $productId, $userId): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $user = $userRepository->find($userId);
+        if (!$user) {
+            return new Response('Utilisateur introuvable', Response::HTTP_BAD_REQUEST);
+        }
+        $product = $productRepository->find($productId);
+        if (!$product) {
+            return new Response("Ce produit n'existe pas", Response::HTTP_BAD_REQUEST);
+        }
+        $existingCartItem = $entityManager->getRepository(ShoppingCartItem::class)
+            ->findOneBy([
+                'user' => $user,
+                'product' => $product
+            ]);
+
+        if ($existingCartItem) {
+            // If the user already has the product in their cart, update the quantity
+            $existingCartItem->setQuantity($existingCartItem->getQuantity() + 1);
+        } else {
+            // If the user does not have the product in their cart, create a new cart item
+            $cartItem = new ShoppingCartItem();
+            $cartItem->setUser($user);
+            $cartItem->setProduct($product);
+            $cartItem->setQuantity(1);
+            $entityManager->persist($cartItem);
+        }
+        $entityManager->flush();
+
+        return new Response('Produit ajouté avec success');
     }
 }
