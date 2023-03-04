@@ -5,6 +5,28 @@
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
 		<h1 class="h3 mb-0 text-gray-800">Liste des produits</h1>
 	</div>
+	<div class="row" style="width:80vw;margin-right:auto;margin-left:auto;">
+		<div class=" col-md-3 mb-3">
+			<select class="form-control" id="filter">
+				<option value="name">Nom</option>
+				<option value="category">Catégorie</option>
+			</select>
+		</div>
+		<div class="col-md-4 mb-3">
+			<input type="text" class="form-control" id="search-input" placeholder="Rechercher...">
+		</div>
+		<button type="button" class="btn btn-primary col-md-2 mb-3" id="search-btn">
+			Rechercher
+		</button>
+		<div class=" col-md-3 mb-3">
+			<select class="form-control" id="sort">
+				<option value="name_asc">Tri A-Z</option>
+				<option value="name_desc">Tri Z-A</option>
+				<option value="price_asc">Prix ascendant</option>
+				<option value="price_desc">Prix descendant</option>
+			</select>
+		</div>
+	</div>
 	<a href={{path('addProduct')}} style="width:50%;margin:0 auto;" type="button" class="btn btn-primary mb-1">
 		Ajouter un produit
 	</a>
@@ -26,8 +48,8 @@
 							<th>Supprimer</th>
 						</tr>
 					</thead>
-					<tbody>
-						{% for product in products %}
+					<tbody id="product-table">
+						{% for product in pagination %}
 							<tr>
 								<td>{{product.id}}</td>
 								<td>{{product.name}}</td>
@@ -41,18 +63,84 @@
 										Modifier
 									</button>
 								</td>
-								<th>
+								<td>
 									<a href=" {{path('deleteProduct' , {'id': product.id} ) }} " class="btn btn-danger ">
 										<i class="fas fa-trash"></i>
 									</a>
-								</th>
+								</td>
 
 							</tr>
 						{% endfor %}
 					</tbody>
-					<tbody></tbody>
+
 				</table>
+				{{ knp_pagination_render(pagination) }}
 			</div>
 		</div>
 	</div>
+	<script>
+		document.querySelector('#search-btn').addEventListener('click', function () {
+const filter = document.querySelector('#filter').value;
+const searchTerm = document.querySelector('#search-input').value;
+const sortCriteria = document.querySelector('#sort').value;
+const xhr = new XMLHttpRequest();
+xhr.onreadystatechange = function () {
+if (this.readyState === 4 && this.status === 200) {
+const products = JSON.parse(this.responseText);
+updateTable(products);
+}
+};
+xhr.open('POST', '{{ path('searchProducts') }}', true);
+xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+xhr.send(`filter=${filter}&searchTerm=${searchTerm}&sortCriteria=${sortCriteria}`);
+});
+
+function updateTable(products) {
+const tbody = document.getElementById('product-table');
+tbody.innerHTML = '';
+products.forEach(function (product) {
+const tr = document.createElement('tr');
+tr.innerHTML = `
+
+	<td>${
+product.id
+}</td>
+	<td>${
+product.name
+}</td>
+	<td style="max-width:250px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;">${
+product.description
+}</td>
+	<td>${
+product.price
+}</td>
+	<td>${
+product.quantity
+}</td>
+	<td>${
+product.createdAt
+}</td>
+	<td>${
+product.updatedAt
+}</td>
+	<td>
+		<button type="submit" class="btn btn-primary mb-1" onclick="window.location.href='product/update/${
+product.id
+}'">
+	Modifier
+</button>
+	</td>
+	<td>
+		<a href="product/delete/${
+product.id
+}" class="btn btn-danger">
+			<i class="fas fa-trash"></i>
+		</a>
+	</td>
+                
+            `;
+tbody.appendChild(tr);
+});
+}
+	</script>
 {% endblock %}

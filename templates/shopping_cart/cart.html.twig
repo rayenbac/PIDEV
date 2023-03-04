@@ -1,0 +1,69 @@
+{% extends "base.html.twig" %}
+{% block title %}Panier
+{% endblock %}
+{% block javascripts %}
+	{{parent()}}
+	<script>
+		$(document).on('click', '.remove-product', function (event) {
+event.preventDefault();
+
+var productId = $(this).data('id');
+var $tableRow = $(this).closest('.table-row');
+
+$.ajax({
+url: "{{ path('removeItem', {'id': '__ID__'}) }}".replace('__ID__', productId),
+type: 'DELETE',
+dataType: 'json',
+success: function (data) {
+if (data.success) { // Remove table row from the page
+$tableRow.remove();
+} else { // Display error modal
+alert(data.message);
+}
+},
+error: function (jqXHR, textStatus, errorThrown) { // Display error modal
+alert('Une erreur est survenue. Veuillez réessayer plus tard.');
+}
+});
+});
+	</script>
+{% endblock %}
+
+{% block body %}
+	<div class="section-top-border container" style="margin-top:100px;">
+		<h3 class="mb-30" style="text-align:center;">Panier</h3>
+		<div class="progress-table-wrap">
+			<div class="progress-table">
+				<div class="table-head">
+					<div class="serial" style="text-align:center;">Nom</div>
+					<div class="visit" style="text-align:center;">Image</div>
+					<div class="visit" style="text-align:center;">Prix unitaire</div>
+					<div class="visit" style="text-align:center;">quantite</div>
+					<div class="visit" style="text-align:center;">Prix totale</div>
+
+					<div class="visit" style="text-align:center;">Supprimer</div>
+				</div>
+				{% for item in cartItems %}
+					<div class="table-row" style="display: flex;justify-content: center;align-items: center;">
+						<div class="serial">{{item.product.name}}</div>
+						<div class="visit">
+							<img style="width:100px;height:100px;" src="{{ asset('uploads/products/' ~ item.product.image) }}" alt="country"></div>
+						<div class="visit">{{item.product.price}}</div>
+						<div class="visit">x{{item.quantity}}</div>
+						{% set totalPrice = item.product.price * item.quantity %}
+						<div class="visit">{{totalPrice}}</div>
+						<div class="visit">
+							<a href="#" class="genric-btn danger circle arrow remove-product" data-id="{{ item.id }}">Supprimer<span class="lnr lnr-arrow-right"></span>
+							</a>
+						</div>
+					</div>
+				{% endfor %}
+
+
+			</div>
+		</div>
+		<div class="d-sm-flex align-items-center">
+			<a href={{path('addCommande')}} style="width:30%;margin:10px auto;" class="genric-btn primary circle">Passer la commande</a>
+		</div>
+	</div>
+{% endblock %}

@@ -27,12 +27,13 @@
 									<div class="single_blog_text">
 										<h3 style="font-size:0.95rem;text-align:center;height:3em;overflow:hidden;" class="two-lines">{{ product.name }}</h3>
 										<h5 style="text-align:center;">({{product.category.name}})</h5>
+										<h5 style="text-align:center;">({{product.quantity}})</h5>
 										<h3 style="text-align:center;">{{product.price}}DT</h3>
 									</div>
 								</div>
 								<div style="margin-left:auto;margin-right:auto;text-align:center; margin-top:1em;width:80%;">
 
-									<a href="#" class="btn_2 d-none d-lg-block" style="font-size:0.75rem; ">Ajouter au panier</a>
+									<a href=" {{path('addToCart' , {'productId': product.id} ) }} " class="btn_2 d-none d-lg-block" style="font-size:0.75rem; ">Ajouter au panier</a>
 								</div>
 							</div>
 
