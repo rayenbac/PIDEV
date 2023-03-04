@@ -30,6 +30,15 @@ class ListeController extends AbstractController
         ]);
     }
 
-    
+    #[Route('/dashboard/rendezvous', name: 'rendezvousA')]
+    public function rendezvous_listeA(): Response
+    {
+        $rv = $this->getDoctrine()->getRepository(RendezVous::class)->findAll();
+
+        return $this->render('liste/listeR.html.twig', [
+            'rv' => $rv,
+        ]);
+    }
+
 
 }

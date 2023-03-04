@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Cabinet;
 use App\Entity\RendezVous;
 use App\Entity\Medecin;
 
@@ -61,6 +62,16 @@ class RendezVousType extends AbstractType
 
                 'class' => Medecin::class,
                 'choice_label' => 'nom',
+                
+                
+                
+            ])
+              ->add('cabinet', EntityType::class, [
+                'label'=>'cabinet', 
+
+                'class' => Cabinet::class,
+                'choice_label' => 'nom',
+                
                 
                 
             ])

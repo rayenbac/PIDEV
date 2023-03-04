@@ -6,6 +6,7 @@ use App\Repository\MedecinRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MedecinRepository::class)]
 class Medecin
@@ -13,22 +14,40 @@ class Medecin
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("medecins")]
+
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("medecins")]
+
+
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("medecins")]
+
     private ?string $prenom = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("medecins")]
+
     private ?string $adresse = null;
 
     #[ORM\Column]
+    #[Groups("medecins")]
+
     private ?int $numTelephone = null;
 
     #[ORM\OneToMany(mappedBy: 'medecin', targetEntity: RendezVous::class)]
+    #[Groups("medecins")]
+
     private Collection $rendezVouses;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[Groups("medecins")]
+
+    private ?Cabinet $cabinet = null;
 
     public function __construct()
     {
@@ -114,6 +133,18 @@ class Medecin
                 $rendezVouse->setMedecin(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCabinet(): ?Cabinet
+    {
+        return $this->cabinet;
+    }
+
+    public function setCabinet(?Cabinet $cabinet): self
+    {
+        $this->cabinet = $cabinet;
 
         return $this;
     }
