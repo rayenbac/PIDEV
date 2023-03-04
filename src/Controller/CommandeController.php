@@ -62,6 +62,7 @@ class CommandeController extends AbstractController
         $em = $doctrine->getManager();
         $em->persist($commande);
         $em->flush();
+
         return $this->redirectToRoute('home');
     }
 }
