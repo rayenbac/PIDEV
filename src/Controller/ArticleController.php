@@ -12,7 +12,7 @@ use App\Repository\ArticleRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 
 
@@ -37,6 +37,19 @@ class ArticleController extends AbstractController
             'forum' => $c
         ]);
     }
+    #[Route('/APIafficheArticle', name: 'APIafficheArticle')]
+    public function APIafficheP(ArticleRepository $repo , NormalizerInterface $normalizer)
+    {
+    $article = $repo->findAll();
+    //Nous utilisions la fonction normalize quitransforme le tableau d'objets
+    //post en tableau associatif simple 
+    $articleNormalises = $normalizer->normalize($article , 'json' , ['groups' => "article"]);
+    // nous utilisons la fonction json_encode pour transfomer un tableau associatif en format json
+    $json = json_encode($articleNormalises);
+    //nous renvoyons une reponse Http qui prend en parametre un tableau en format JSON
+    return new Response($json);
+
+    } 
   
     #[Route('/afficheAA', name: 'afficheAA')]
     public function afficheAA(): Response

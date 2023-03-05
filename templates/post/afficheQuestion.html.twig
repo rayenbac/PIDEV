@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<section class="breadcrumb_part breadcrumb_bg">
+        
+          
+                <div class="col-lg-12">
+                    <div class="breadcrumb_iner">
+                        <div class="breadcrumb_iner_item">
+                            <h2>Question</h2>
+                            
+                        </div>
+                    </div>
+                </div>
+            
+        
+    </section>
+
+
+<table  border="1">
+ <div class="row">
+            <div class="col-lg-12 mb-4">
+              <!-- Liste des questions&réponses -->
+              <div class="card">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Question</h6>
+                </div>
+                <div class="table-responsive">
+                  <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+  <th>Id</th>
+  <th>Question</th>
+  <th>Voir réponse</th>
+  <th>Ajouter réponse</th>
+  <th>Modifier réponse</th>
+  <th>Supprimer réponse</th>
+  
+
+ </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                     </tr>
+                      <tr>
+                        <tr>
+<tbody>
+{% for i in post %}
+<tr>
+  <td>{{i.id}}</td>
+
+  <td>{{i.publication}}</td>
+   <td><a href={{path('afficheReponse',{'id':i.id}) }} class="btn btn-sm btn-primary">Voir réponse </a></td>
+    <tr><td><a href={{path('addC',{'id':i.id}) }} class="btn btn-sm btn-primary">Ajouter réponse </a></td></tr>
+                                              <tr><td><a href={{path('updateCommentaire',{'id':i.id}) }} class="btn btn-sm btn-primary">Modifier réponse </a></td></tr>
+                                              <br></br>
+                                       <td><a href={{path('suppCommentaire',{'id':i.id }) }} class="btn btn-sm btn-primary">Supprimer réponse </a></td>
+   
+   
+ 
+</tr>
+ {% endfor %}
+<tbody/>
+
+</table>
+
+{% endblock %} 
+
