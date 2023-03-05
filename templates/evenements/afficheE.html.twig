@@ -46,14 +46,53 @@
                                 <ul class="blog-info-link">
                                     <li>Lieu : <a href="#"><i class="far fa-user"></i> {{i.lieuevenement}} </a></li>
 									<li>Nombre de places : <a href="#"><i class="far fa-user"></i> {{i.nbrdeplaces}} </a></li>
+                                    {% if i.nbrdeplaces > 0 %}
+  <p style="color: blue; display: flex; align-items: center;">
+    
+    <i class='bx bxs-error-circle bx-flashing'  style="margin-right: 0.5rem; color: blue;"></i> {{ i.nbrdeplaces }} places restantes seulement
+  </p>
+{% else %}
+  <p style="color: blue; display: flex; align-items: center;">
+    <i  class='bx bxs-x-circle bx-burst'  style="margin-right: 0.5rem;"></i> Evenement Complet
+  </p>
+  
+{% endif %}
 									<li>Type de l'évenement : <a href="#"><i class="far fa-user"></i> {{i.type}} </a></li>
 
-									
-						<a  href="{{path('addR') }}" >
-												
-							<span class="badge badge-success"> <h6>Cliquez pour résérver</h6> </span>
-								
-						</a>
+                                    {% if i.nbrdeplaces <= 0 %}
+                                    <a href="#" disabled>
+                                      <span class="badge badge-success"> <h6>Cliquez pour réserver</h6> </span>
+                                    </a>
+                                  {% else %}
+                                    <a href="{{path('addR')}}">
+                                      <span class="badge badge-success"> <h6>Cliquez pour réserver</h6> </span>
+                                    </a>
+                                  {% endif %}
+                                  <p>
+                                    <td>
+                                      <a href="{{path('app_likes',{'id':i.id})}}" class="text-danger">&#128077; </a>
+                                      {% if i.Likes is not empty %}
+                                        {{i.Likes}}like(s)
+                                      {% else %}
+                                        0 like
+                                      {% endif %}
+                                    
+                                      <td>
+                                        <a href="{{path('app_dislikes',{'id':i.id})}}" class="text-danger" onclick="decrementLikes('{{i.id}}');">&#128078;</a>
+                                        {% if i.Dislikes is not empty %}
+                                          {{i.Dislikes}}dislike(s)
+                                        {% else %}
+                                          0 dislike
+                                        {% endif %} 
+                                    </p>
+                                    
+                                    <script>
+                                      function decrementLikes(id) {
+                                        // Envoyer une requête AJAX pour décrémenter le nombre de likes
+                                        // en utilisant l'ID de l'élément.
+                                      }
+                                    </script>
+                                    
 						
                                     
                                 </ul>

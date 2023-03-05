@@ -6,6 +6,7 @@ use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
@@ -13,14 +14,17 @@ class Reservation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("info")]
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups("info")]
     #[Assert\NotBlank(message:"Le nombre de places est obligatoire")]
     #[Assert\PositiveOrZero(message:'Le nombre de places doit etre supérieur à zéro')]
     private ?int $NombreDePlaceAReserver = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups("info")]
     #[Assert\Email(message:"L'email est invalide")]
     #[Assert\NotBlank(message:"L'email est obligatoire")]
 

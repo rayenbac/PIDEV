@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EvenementsRepository::class)]
 #[UniqueEntity(
@@ -20,25 +21,34 @@ class Evenements
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("e")]
     
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("e")]
     #[Assert\NotBlank(message:"Nom de l'evenement est obligatoire")]
+    #[Assert\Length(min: 5,
+    max: 500,
+    minMessage: 'Le nom de lévénement doit contenir au moins 3 caractères ',
+    maxMessage : 'Le nom de lévénement doit contenir au maximum 500 caractères ',
     
-    #[Assert\Type('string' , message:"Nom de l'evenement doit etre chaine de caractères")]
+    )]
+    
 
     private ?string $NomEvenement = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("e")]
     #[Assert\NotBlank(message:"Lieu de l'evenement est obligatoire")]
-    #[Assert\String(message:"Lieu de l'evenement doit etre chaine de caractères")]
+    
 
     
     
     private ?string $LieuEvenement = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups("e")]
     #[Assert\NotBlank(message:"La date est obligatoire")]
     #[Assert\GreaterThanOrEqual("today",message: "La date doit être égale ou postérieure à aujourd'hui")]
     
@@ -46,6 +56,7 @@ class Evenements
     private ?\DateTimeInterface $DateEvenement = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups("e")]
     #[Assert\NotBlank(message:"Description de l'evenement est obligatoire")]
     #[Assert\Length(min: 5,
     max: 500,
@@ -61,19 +72,23 @@ class Evenements
     
 
     #[ORM\Column(nullable: true)]
+    #[Groups("e")]
     #[Assert\NotBlank(message:"Le nombre de places est obligatoire")]
     #[Assert\PositiveOrZero(message:'Le nombre de places doit etre supérieur à zéro')]
     private ?int $NbrDePlaces = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups("e")]
     private ?string $Type = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups("e")]
    
     
     private ?string $Image = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
+    #[Groups("e")]
     #[Assert\NotBlank(message:"L'heure est ligatoire")]
     private ?\DateTimeInterface $Heure = null;
 
@@ -81,10 +96,18 @@ class Evenements
     private Collection $reservations;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups("e")]
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups("e")]
     private ?\DateTimeInterface $updatedAt = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Likes = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $Dislikes = null;
 
     
 
@@ -256,6 +279,30 @@ class Evenements
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getLikes(): ?string
+    {
+        return $this->Likes;
+    }
+
+    public function setLikes(?string $Likes): self
+    {
+        $this->Likes = $Likes;
+
+        return $this;
+    }
+
+    public function getDislikes(): ?string
+    {
+        return $this->Dislikes;
+    }
+
+    public function setDislikes(?string $Dislikes): self
+    {
+        $this->Dislikes = $Dislikes;
 
         return $this;
     }

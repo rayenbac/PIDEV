@@ -11,6 +11,8 @@ use App\Repository\EvenementsRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Form\EvenementFormType;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 
 
 class EvenementsController extends AbstractController
@@ -142,6 +144,133 @@ class EvenementsController extends AbstractController
             $em->remove($evenement);
             $em->flush();
  return $this->redirectToRoute('afficheEAdmin',);}              
-}          
+      
+
+
+//Code Api : 
+
+
+#[Route('/ApiafficheE', name: 'ApiafficheE')]
+public function ApiafficheE(EvenementsRepository $repository, NormalizerInterface $normalizer)
+{
+    $evenements = $repository->findAll();
+    $evenementsNormalized = $normalizer->normalize($evenements, 'json', ['groups' => "e"]);
+    $json = json_encode($evenementsNormalized, JSON_PRETTY_PRINT);
+
+    return new Response($json, 200, ['Content-Type' => 'application/json']);
+}
+
+ 
+
+#[Route('/ApiaddE', name: 'ApiaddE')]
+public function ApiaddE(ManagerRegistry $doctrine,Request $request, SluggerInterface $slugger , NormalizerInterface $Normalizer)
+               {$evenement= new Evenements();
+                $form = $this->createForm(EvenementFormType::class, $evenement);
+                $currenttime = new \DateTime();
+                $evenement->setCreatedAt($currenttime);
+                $evenement->setUpdatedAt($currenttime);
+                $evenement->setNomEvenement($request->get('NomEvenement'));
+                $evenement->setDescriptionEvenement($request->get('DescriptionEvenement'));
+                $evenement->setLieuEvenement($request->get('LieuEvenement'));
+                $evenement->setDateEvenement($request->get('DateEvenement'));
+                $evenement->setHeure($request->get('Heure'));
+                $evenement->setNbrDePlaces($request->get('NbrDePlaces'));
+                $evenement->setType($request->get('type'));
+                   
+                      
+                       $Image = $form->get('Image')->getData();
+                       if ($Image) {
+                           $originalFilename = pathinfo($Image->getClientOriginalName(), PATHINFO_FILENAME);
+                           // this is needed to safely include the file name as part of the URL
+                           $safeFilename = $slugger->slug($originalFilename);
+                           $newFilename = $safeFilename.'-'.uniqid().'.'.$Image->guessExtension();
+           
+                           // Move the file to the directory where brochures are stored
+                           try {
+                               $Image->move(
+                                   $this->getParameter('evenement_directory'),
+                                   $newFilename
+                               );
+                           } catch (FileException $e) {
+                               // ... handle exception if something happens during file upload
+                           }
+
+                           $evenement->setImage($newFilename);
+                       }
+                       $em =$doctrine->getManager() ;
+                       $em->persist($evenement);
+                       $em->flush();
+                       $jsonContent = $Normalizer->normalize($evenement, 'json', ['groups' => 'e']);
+                       return new Response(json_encode($jsonContent));
+                       
+                       
+                }
+
+            
+
+#[Route('/ApiupdateEvenement/{id}', name: 'ApiUpdateE')]
+public function ApiUpdateE(ManagerRegistry $doctrine,Request $request, SluggerInterface $slugger , NormalizerInterface $Normalizer, $id , EvenementsRepository $repository)
+               {$evenement = $EvenementsRepository->find($id);
+                $form = $this->createForm(EvenementFormType::class, $evenement);
+                $currenttime = new \DateTime();
+                $evenement->setCreatedAt($currenttime);
+                $evenement->setUpdatedAt($currenttime);
+                $evenement->setNomEvenement($request->get('NomEvenement'));
+                $evenement->setDescriptionEvenement($request->get('DescriptionEvenement'));
+                $evenement->setLieuEvenement($request->get('LieuEvenement'));
+                $evenement->setDateEvenement($request->get('DateEvenement'));
+                $evenement->setHeure($request->get('Heure'));
+                $evenement->setNbrDePlaces($request->get('NbrDePlaces'));
+                $evenement->setType($request->get('type'));
+                   
+                      
+                       $Image = $form->get('Image')->getData();
+                       if ($Image) {
+                           $originalFilename = pathinfo($Image->getClientOriginalName(), PATHINFO_FILENAME);
+                           // this is needed to safely include the file name as part of the URL
+                           $safeFilename = $slugger->slug($originalFilename);
+                           $newFilename = $safeFilename.'-'.uniqid().'.'.$Image->guessExtension();
+           
+                           // Move the file to the directory where brochures are stored
+                           try {
+                               $Image->move(
+                                   $this->getParameter('evenement_directory'),
+                                   $newFilename
+                               );
+                           } catch (FileException $e) {
+                               // ... handle exception if something happens during file upload
+                           }
+
+                           $evenement->setImage($newFilename);
+                       }
+                       $em =$doctrine->getManager() ;
+                       $em->persist($evenement);
+                       $em->flush();
+                       $jsonContent = $Normalizer->normalize($evenement, 'json', ['groups' => 'e']);
+                       return new Response( "Event updated !"   .json_encode($jsonContent));
+                       
+                       
+                }
+                #[Route('/ApisuppEvenement/{id}', name: 'ApisuppEvenement')]
+public function ApisuppEvenement(NormalizerInterface $normalizer, ManagerRegistry $doctrine, EvenementsRepository $EvenementsRepository, $id)
+{
+    $evenement = $EvenementsRepository->find($id);
+    $em = $doctrine->getManager();
+    $em->remove($evenement);
+    $em->flush();
+    $json = $normalizer->normalize($evenement, 'json', ['groups' => 'e']);
+    $response = new Response("Evenement supprimé avec succès : " . json_encode($json));
+    $response->headers->set('Content-Type', 'application/json');
+    return $response;
+}
+
+}
+
+
+
+
+
+
+
 
 
