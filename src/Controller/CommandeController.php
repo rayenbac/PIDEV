@@ -48,6 +48,7 @@ class CommandeController extends AbstractController
                 return new Response("Produit non disponible", Response::HTTP_BAD_REQUEST);
             }
         }
+        $stripeProducts = [];
         foreach ($userItems as $item) {
             $product = $item->getProduct();
             //get the available quantity of the product
@@ -62,6 +63,9 @@ class CommandeController extends AbstractController
         $em = $doctrine->getManager();
         $em->persist($commande);
         $em->flush();
+
+
+
 
         return $this->redirectToRoute('home');
     }
