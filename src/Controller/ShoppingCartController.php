@@ -27,7 +27,7 @@ class ShoppingCartController extends AbstractController
             'controller_name' => 'ShoppingCartController',
         ]);
     }
-    #[Route('/addToCart/{productId}', name: 'addToCart')]
+    #[Route('/addToCart/{productId}', name: 'addToCart', methods: ['POST'])]
 
     public function addToCart(ProductRepository $productRepository, $productId): Response
     {
