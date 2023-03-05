@@ -11,7 +11,12 @@ parameters:
     twilio_auth_token: '%env(TWILIO_AUTH_TOKEN)%'
     twilio_phone_number: '+12765337052'
 
+    from_email: '%env(FROM_EMAIL)%'
+    lws: '%env(LWS)%'
+    password : '%env(PASS)%'
+
 services:
+    
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
@@ -39,6 +44,6 @@ services:
             - '../src/Kernel.php'
     App\Controller\DefaultController:
         autowire: true
-
+   
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
