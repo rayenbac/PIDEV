@@ -8,6 +8,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+
 class FormMoodType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -17,6 +19,10 @@ class FormMoodType extends AbstractType
             ->add('UserId')
             ->add('Mood')
             ->add('Description')
+
+            ->add('date' , DateTimeType::class, [
+                'widget' => 'choice'])
+           
             ->add('save',SubmitType::class)
         ;
     }

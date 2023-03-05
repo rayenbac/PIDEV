@@ -1,0 +1,30 @@
+
+<div class="table-responsive">
+    <table border="2" class="table mb-0">
+    
+        <thead>
+        <tr>
+            <th>IdMood</th>
+            <th>IdUser</th>
+            <th>Votre mood</th>
+            <th>Description</th>
+            
+        </tr>
+        </thead>
+        <tbody>
+
+            {% for i in moods %}
+                   <tr>
+                    <td>{{i.MoodId}}</td>
+                    <td>{{i.UserId}}</td>
+                    <td>{{i.Mood}}</td>
+                    <td>{{i.Description}}</td>
+
+        </tr>
+
+        {% endfor %}
+        </tbody>
+
+</table>
+</div>
+

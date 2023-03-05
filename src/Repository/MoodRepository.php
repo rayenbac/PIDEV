@@ -37,8 +37,20 @@ class MoodRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+
     }
 
+
+
+    public function findAllOrderedByProperty($property, $order = 'ASC') {
+        $validProperties = ['MoodId', 'UserId', 'Mood', 'Description'];
+        if (!in_array($property, $validProperties)) {
+            $property = 'id'; // Default to 'id' if an invalid property is specified
+        }
+        $qb = $this->createQueryBuilder('e')
+            ->orderBy("e.$property", $order);
+        return $qb->getQuery()->getResult();
+    }
 //    /**
 //     * @return Mood[] Returns an array of Mood objects
 //     */
