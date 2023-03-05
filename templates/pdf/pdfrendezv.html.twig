@@ -1,0 +1,52 @@
+<style>
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+th {
+  background-color: #ddd;
+  font-weight: bold;
+}
+</style>
+{% block header %}
+<img src="{{ asset('/PIDEV/public/assets/img/eshkili.png') }}" alt="image.jpg">
+
+<div style="text-align: center; margin-bottom: 20px;">
+  <h1>RendezVous</h1>
+</div>
+{% endblock %}
+
+{% block content %}
+<table class="table table-bordered table-striped">
+  <tbody>
+    <tr>
+      <th>Votre Nom</th>
+      <td>{{ rendez_vou.nom }}</td>
+    </tr>
+    <tr>
+      <th>Prénom</th>
+      <td>{{ rendez_vou.prenom }}</td>
+    </tr>
+    <tr>
+      <th>Cause</th>
+      <td>{{ rendez_vou.cause }}</td>
+    </tr>
+    <tr>
+      <th>DateRV</th>
+      <td>{{ rendez_vou.dateRV ? rendez_vou.dateRV|date('Y-m-d') : '' }}</td>
+    </tr>
+    <tr>
+      <th>Description</th>
+      <td>{{ rendez_vou.description }}</td>
+    </tr>
+  </tbody>
+</table>
+{% endblock %}
+
+

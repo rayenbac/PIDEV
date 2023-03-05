@@ -14,7 +14,6 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Nom</th>
                 <th>Prenom</th>
                 <th>Cause</th>
@@ -28,7 +27,6 @@
         <tbody>
         {% for rendez_vou in rendez_vouses %}
             <tr>
-                <td>{{ rendez_vou.id }}</td>
                 <td>{{ rendez_vou.nom }}</td>
                 <td>{{ rendez_vou.prenom }}</td>
                 <td>{{ rendez_vou.cause }}</td>
@@ -38,7 +36,7 @@
 
                 <td>
                     <a class="btn btn-primary" href="{{ path('app_rendez_vous_show', {'id': rendez_vou.id}) }}">show</a>
-                    <a class="btn btn-primary" href="{{ path('app_rendez_vous_edit', {'id': rendez_vou.id}) }}">edit</a>
+                    <a class="btn btn-primary" href="{{ path('app_rendez_vous_edit', {'id': rendez_vou.id}) }}">modifier</a>
                     
                 </td>
             </tr>
@@ -50,7 +48,7 @@
         </tbody>
     </table>
 
-    <a class="btn_2 d-none d-lg-block" href="{{ path('app_rendez_vous_new') }}">Create new</a>
+    <a class="btn_2 d-none d-lg-block" href="{{ path('app_rendez_vous_new') }}">nouveau reservation</a>
     </div>
      </div>
       </div>
