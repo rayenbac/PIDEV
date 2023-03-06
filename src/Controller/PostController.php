@@ -15,6 +15,7 @@ use App\Repository\CommentaireRepository;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 
+
 class PostController extends AbstractController
 {
     #[Route('/post', name: 'app_post')]
@@ -71,7 +72,7 @@ class PostController extends AbstractController
     
 
     #[Route('/APIafficheP', name: 'APIafficheP')]
-    public function APIafficheP(PostRepository $repo , NormalizerInterface $normalizer)
+    public function APIafficheP(PostRepository $repo , NormalizerInterface $normalizer )
     {
     $post = $repo->findAll();
     //Nous utilisions la fonction normalize quitransforme le tableau d'objets
@@ -98,8 +99,9 @@ class PostController extends AbstractController
     }
 
     #[Route('/addP', name: 'addP')]
-    public function addP(ManagerRegistry $doctrine,Request $request)
-                   {$post= new Post();
+    public function addP(ManagerRegistry $doctrine,Request $request )
+                   {
+                    $post= new Post();
                     
                     $form=$this->createForm(PostFormType::class,$post);
   
@@ -113,6 +115,7 @@ class PostController extends AbstractController
                            $em =$doctrine->getManager() ; // EM gestionnaire de l'entite (crud bd)
                            $em->persist($post); //ajout
                            $em->flush(); // persist->bd
+                           $this->get('session')->getFlashBag()->add('flashy--success', 'Ajout avec succées');
                            return $this->redirectToRoute("afficheP");}
                   return $this->renderForm("post/addP.html.twig",
                            array("f"=>$form));
@@ -125,8 +128,8 @@ class PostController extends AbstractController
         $post->setIDUser($req->get('ID_user'));
         $post->setNomUtilisateur($req->get('NomUtilisateur'));
         $post->setDescription($req->get('Description'));
-        $post->setCreatedAt($req->get('createdAt'));
-        $post->setUpdatedAt($req->get('updatedAt'));
+        $post->setCreatedAt(new \DateTime('now'));
+        $post->setUpdatedAt(new \DateTime('now'));
         $post->setPublication($req->get('Publication'));
         
         $em->persist($post);
@@ -178,8 +181,8 @@ class PostController extends AbstractController
         $post->setIDUser($req->get('ID_user'));
         $post->setNomUtilisateur($req->get('NomUtilisateur'));
         $post->setDescription($req->get('Description'));
-        $post->setCreatedAt($req->get('createdAt'));
-        $post->setUpdatedAt($req->get('updatedAt'));
+        $post->setCreatedAt(new \DateTime('now'));
+        $post->setUpdatedAt(new \DateTime('now'));
         $post->setPublication($req->get('Publication'));
         
        
@@ -207,7 +210,6 @@ public function APISuppPost(Request $req, $id, NormalizerInterface $Normalizer){
     $post = $em->getRepository(Post::class)->find($id);
     $em->remove($post);
     $em->flush();
-
     $jsonContent = $Normalizer->normalize($post , 'json' , ['groups'=> 'post']);
     return new Response("question deleted successfully" . json_encode($jsonContent));
 }
