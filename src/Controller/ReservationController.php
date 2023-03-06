@@ -12,8 +12,22 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Form\ReservationFormType;
 use App\Repository\EvenementsRepository;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Mailer\MailerInterface;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
+use Endroid\QrCode\Label\Alignment\LabelAlignmentCenter;
+use Endroid\QrCode\Label\Font\NotoSans;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Writer\PngWriter;
+use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mailer\MailerInterface;
+
+
+
 
 class ReservationController extends AbstractController
 {
@@ -45,11 +59,39 @@ class ReservationController extends AbstractController
       
    return $this->render('reservation/afficheReservation.html.twig', [
     'reservation' => $info,
-                    ]);
-     }
+                    ]);}
+    #[Route('/confirmation', name: 'confirmation')]
+    public function confirmation(ReservationRepository  $r): Response
+                {
+                        //$f=$r->find($id);
+                        //$fjson=$serializer->serialize($f, 'json', ['groups' => "suppliers"]);
+                        //$lien=$f->getWebsite();
+                        //$img=$f->getImg();
+                        $qrCode=Builder::create()
+                            ->writer(new PngWriter())
+                            ->writerOptions([])
+                            ->data("cette personne est autorisée de faire partie de l'événement!")
+                            ->encoding(new Encoding('UTF-8'))
+                            ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+                            ->size(300)
+                            ->margin(10)
+                            ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+                            ->labelText("")
+                            ->labelFont(new NotoSans(20))
+                            ->labelAlignment(new LabelAlignmentCenter())
+                            //->logoPath('public/uploads/fournisseur/nike-63fe736cba9d1.png')
+                            ->build();
+                
+                        return $this->render('reservation/confirmation.html.twig', [
+                            'qr'=>$qrCode->getDataUri()]);
+                    }
+    
+
+    
+     
      #[Route('/addR', name: 'addR')]
      
-    public function addR(ManagerRegistry $doctrine, Request $request, EvenementsRepository $repository, MailerInterface $mailer)
+    public function addR(ManagerRegistry $doctrine, Request $request, EvenementsRepository $repository , MailerInterface $mailer)
     {
         $complet='';
         $reservation = new Reservation();
@@ -65,15 +107,29 @@ class ReservationController extends AbstractController
                 $em = $doctrine->getManager();
                 $em->persist($reservation);
                 $em->flush();
-    
-                // Envoie de l'email
+
+                //mail 
+                
                 $email = (new Email())
-                    ->from('pidevtest7@gmail.com')
-                    ->to($reservation->getEmail())
-                    ->subject('Confirmation de réservation')
-                    ->text('Bonjour '  . ', votre réservation pour ' . $nombreDePlaces . ' place(s) pour l\'événement ' . $nomevenement->getnomevenement() . ' a été confirmée.');
+                
+                ->from('echkiliboucha@gmail.com')
+                ->to($form->get('Email')->getData())
+                //->cc('cc@example.com')
+                //->bcc('bcc@example.com')
+                //->replyTo('fabien@example.com')
+                //->priority(Email::PRIORITY_HIGH)
+                ->subject('Réservation confrimée !')
+                ->text('Votre réservation est confirmée ')    
+                ->html('<p>Merci de nous faire confiance </p>');
+
+                
+
+            $mailer->send($email);
+
+         
+       
     
-                $mailer->send($email);
+                
     
                 return $this->redirectToRoute('afficheReservation', ['email' => $reservation->getEmail()]);
             } else {
@@ -135,37 +191,48 @@ class ReservationController extends AbstractController
     public function ApiAfficheR(NormalizerInterface $normalizer, ManagerRegistry $doctrine, ReservationRepository $reservationRepository, $email): Response
     {
         $reservation = $reservationRepository->findBy(array('Email'=>$email));
-        $normalizedReservation = $normalizer->normalize($reservation, 'json', ['groups' => 'info']);
-        $json = json_encode($normalizedReservation);
-        return new Response($json);
+        $normalizedReservation= array_map(function ($reservation) use ($normalizer) {
+            $normalizedReservation = $normalizer->normalize($reservation, 'json', ['groups' => 'info']);
+            $event_id = $reservation->getId() ? $reservation->getEvenements()->getId() : null;
+            $normalizedReservation['event'] = $event_id;
+            return $normalizedReservation;
+        }, $reservation);
+        
+
+        $json = json_encode($normalizedReservation , JSON_PRETTY_PRINT);
+        return new Response($json, 200, ['Content-Type' => 'application/json']);
     }
 
                     
 
 
  #[Route('/ApiAddR', name: 'ApiAddR')]
-    public function ApiAddR(ManagerRegistry $doctrine,Request $request, SluggerInterface $slugger)
-        {$reservation= new Reservation();
-                    $form=$this->createForm(ReservationFormType::class,$reservation);
-                                       
-                                        $reservation->setNombreDePlaceAReserver($request->get('NombreDePlaceAReserver'));
-                                        $reservation->setEmail($request->get('Email'));
-                                        //     Nom évenement à réccupérer      
+    public function ApiAddR(ManagerRegistry $doctrine,Request $request,NormalizerInterface $normalizer,EvenementsRepository $repository)
+        {        $complet='';
+            $reservation= new Reservation();
+
+            
+               $reservation->setNombreDePlaceAReserver($request->get('NombreDePlaceAReserver'));
+          $reservation->setEmail($request->get('Email'));
+            $event = $repository->find($request->get('id'));
+            $reservation->setEvenements($event);
+            
+                                    //     Nom évenement à réccupérer      
                                            $em =$doctrine->getManager() ;
                                            $em->persist($reservation);
                                            $em->flush();
-                                           $jsonContent = $Normalizer->normalize($reservation, 'json', ['groups' => 'info']);
+                                           
+                                           $jsonContent = $normalizer->normalize($reservation, 'json', ['groups' => 'info']);
                                            return new Response(json_encode($jsonContent));
                                     }
                                 
 
 #[Route('/ApiUpdateR/{id}', name: 'ApiUpdateR')]
 public function ApiUpdateR(ReservationRepository $repository,
-                    $id,ManagerRegistry $doctrine,Request $request,EvenementsRepository $r )
+                    $id,ManagerRegistry $doctrine,Request $request,EvenementsRepository $r,NormalizerInterface $normalizer )
                     
                         { 
                         $reservation= $repository->find($id);
-                        $form=$this->createForm(ReservationFormType::class,$reservation);
                         $reservation->setNombreDePlaceAReserver($request->get('NombreDePlaceAReserver'));
                         $reservation->setEmail($request->get('Email'));
                         //     Nom évenement à réccupérer  
@@ -173,7 +240,7 @@ public function ApiUpdateR(ReservationRepository $repository,
                         $em = $doctrine->getManager();
                         $em->persist($reservation);
                         $em->flush();
-                        $json = $normalizer->normalize($product, 'json', ['groups' => 'info']);
+                        $json = $normalizer->normalize($reservation, 'json', ['groups' => 'info']);
                         return new Response(json_encode($json));
                             
                         

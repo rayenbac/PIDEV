@@ -32,6 +32,8 @@ class Reservation
     private ?string $Email = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
+    
+
     private ?Evenements $evenements = null;
 
  
