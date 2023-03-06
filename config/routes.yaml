@@ -10,6 +10,9 @@ page_not_found:
     defaults: { _controller: App\Controller\ErrorController:error404, path: '' }
     requirements:
        path: .*
+app_success:
+    path: /success
+    controller: App\Controller\StripeController::success
 
 
 

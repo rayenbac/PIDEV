@@ -3,7 +3,6 @@
 {% endblock %}
 
 {% block body %}
-
 	<section class="doctor_part single_page_doctor_part">
 		<div class="container">
 			<div class="row justify-content-center">
@@ -33,7 +32,8 @@
 								</div>
 								<div style="margin-left:auto;margin-right:auto;text-align:center; margin-top:1em;width:80%;">
 
-									<a href=" {{path('addToCart' , {'productId': product.id} ) }} " class="btn_2 d-none d-lg-block" style="font-size:0.75rem; ">Ajouter au panier</a>
+									<a href="#" id="add-to-cart-{{ product.id }}" class="btn_2 d-none d-lg-block" style="font-size:0.75rem;">Ajouter au panier</a>
+
 								</div>
 							</div>
 
@@ -43,4 +43,27 @@
 				{% endfor %}
 			</div>
 		</section>
+	{% endblock %}
+	{% block javascripts %}
+		{{parent()}}
+		<script>
+			$(document).ready(function () {
+$('a[id^="add-to-cart-"]').click(function (e) {
+e.preventDefault();
+
+var productId = $(this).attr('id').replace('add-to-cart-', '');
+
+$.ajax({
+url: '{{ path("addToCart", {"productId": "__productId__"})|raw }}'.replace('__productId__', productId),
+method: 'POST',
+success: function (data) { // Display success message
+alert('Le produit a été ajouté au panier!');
+},
+error: function (xhr, textStatus, errorThrown) { // Display error message
+alert('Une erreur est survenue lors de l\'ajout au panier.');
+}
+});
+});
+});
+		</script>
 	{% endblock %}
