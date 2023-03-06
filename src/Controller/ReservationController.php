@@ -159,7 +159,7 @@ class ReservationController extends AbstractController
                         
                             return $this->redirectToRoute("afficheReservation",array('email'=> $reservation->getEmail()));}
                             else {
-                                $complet="L'événement est complet !";
+                                $complet="  L 'événement est complet !";
                             }
                               
                         }

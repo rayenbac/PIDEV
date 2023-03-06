@@ -20,7 +20,7 @@ class Reservation
     #[ORM\Column(nullable: true)]
     #[Groups("info")]
     #[Assert\NotBlank(message:"Le nombre de places est obligatoire")]
-    #[Assert\PositiveOrZero(message:'Le nombre de places doit etre supérieur à zéro')]
+    #[Assert\PositiveOrZero(message:'Le     nombre de places doit etre supérieur à zéro')]
     private ?int $NombreDePlaceAReserver = null;
 
     #[ORM\Column(length: 255, nullable: true)]
