@@ -155,7 +155,6 @@ class ReservationController extends AbstractController
                             $nomevenement->setNbrDePlaces($nomevenement->getNbrDePlaces()-$reservation->getNombreDePlaceAReserver()+$nbr);
                             $em =$doctrine->getManager();
                             $em->flush();
-                            
                         
                             return $this->redirectToRoute("afficheReservation",array('email'=> $reservation->getEmail()));}
                             else {
@@ -179,7 +178,7 @@ class ReservationController extends AbstractController
                         $em =$doctrine->getManager();
                         $em->remove($reservation);
                         $em->flush();
-                        
+
                         return $this->redirectToRoute("afficheReservation",array('email'=> $reservation->getEmail()));}
 
 
