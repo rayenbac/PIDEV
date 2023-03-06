@@ -11,6 +11,11 @@ use App\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\UserRepository;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Form\RegisterType;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class UserApiController extends AbstractController
 {
@@ -43,24 +48,70 @@ class UserApiController extends AbstractController
 
 
 
-    #[Route('/addUser/new', name: 'add_user')]
-    public function addUser(ManagerRegistry $doctrine,Request $request, NormalizerInterface $Normalizer): Response
+    #[Route('/signup', name: 'signup' , methods:['GET'])]
+    public function addUser(ManagerRegistry $doctrine,Request $request, NormalizerInterface $Normalizer,UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $entityManager = $doctrine->getManager();
+        $email=$request->get('email');
+        $password =$request->get('password');
+        $roles= $request->get('roles');
+        $date = $request->get( ('birthDate'));
         $user=new User();
-        $user->setEmail($request->request->get('email'));
-        $user->setLastName($request->request->get('lastname'));
-        $user->setAdresse($request->request->get('adresse'));
-
-        
+        $user->setEmail($email);
+        $user->setRoles(array($roles));
+        $user->setPassword($passwordEncoder->encodePassword($user,$password));
+        $user->setLastName($request->get('lastname'));
+        $user->setFirstName($request->get('firstname'));
+        $user->setAdresse($request->get('adresse'));
+        $user->setBirthDate(new \DateTimeImmutable($date));
+        $user->setGender($request->get('gender'));
+        $user->setCreatedAt(new \DateTimeImmutable());
+        $user->setStatus(0);
         $entityManager->persist($user);
-        dd($entityManager);
         $entityManager->flush();
 
         $jsonContent = $Normalizer->normalize($user , 'json' , ['groups'=> 'users']);
 
+        
         return new Response(json_encode($jsonContent));
+    
     }
+
+    #[Route('/signin', name: 'signin' )]
+    public function signin(ManagerRegistry $doctrine,Request $request, NormalizerInterface $Normalizer,UserPasswordEncoderInterface $passwordEncoder): Response
+    {
+        $email=$request->get('email');
+        $password =$request->get('password');
+
+
+        $entityManager = $doctrine->getManager();
+        $user=$doctrine->getRepository(User::class)->findOneBy(['email' => $email]);;
+
+        if ($user) {
+
+            if (password_verify($password,$user->getPassword())) {
+
+                $serializer = new Serializer([ new ObjectNormalizer()]);
+                $formatted = $serializer->normalize($user);
+                return new JsonResponse($formatted);
+            }
+            else {
+
+                return new Response("password not found");
+            }
+        }
+        else {
+
+            return new Response("user not found");
+        }
+
+
+
+    }
+
+
+    
+
 
     #[Route('/supprimer/{id}', name: 'user_delete')]
     public function deleteUser(ManagerRegistry $doctrine,SerializerInterface $serializer, int $id): Response

@@ -255,7 +255,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->PhoneNumber;
     }
 
-    public function setPhoneNumber(string $PhoneNumber): self
+    public function setPhoneNumber(?string $PhoneNumber): self
     {
         $this->PhoneNumber = $PhoneNumber;
 
