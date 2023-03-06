@@ -1,30 +1,141 @@
 
-<div class="table-responsive">
-    <table border="2" class="table mb-0">
-    
-        <thead>
-        <tr>
-            <th>IdMood</th>
-            <th>IdUser</th>
-            <th>Votre mood</th>
-            <th>Description</th>
-            
-        </tr>
-        </thead>
-        <tbody>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des mmods</title>
+    <style>
+        /* Styles pour l'en-tête */
+        .header {
+            position: relative;
+            background-color: #E4F4F6;
+            color: #2246AF;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+        }
 
-            {% for i in moods %}
+        .circle-wrapper {
+            position: relative;
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            margin: 0;
+            font-family: 'Arial';
+            font-size: 32px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 2px #ccc;
+        }
+        
+        .circle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            transform: translate(50%, -50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #2246AF;
+            color: #E4F4F6;
+            text-align: center;
+            line-height: 50px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        /* Styles pour le tableau */
+        .table-wrapper {
+            border: 2px solid black;
+            width: 90%;
+            margin: 20px auto;
+            overflow-x: auto;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        th {
+            background-color: #309887;
+            color: #fff;
+            text-transform: uppercase;
+        }
+        
+        tbody tr:nth-child(even) {
+            background-color: #E8F5E9;
+        }
+        
+        tbody tr:nth-child(odd) {
+            background-color: #E1F5FE;
+        }
+    </style>
+</head>
+<body>
+ 
+    <div class="header">
+        <div class="logo-wrapper">
+            <div class="circle-wrapper">
+                <div class="circle">MRS</div>
+            </div>
+            <p class="logo-text">Echkili:</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" class="link-color" style="color: #300E2D;">MOOD:</a></li>
+            </ul>
+            <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>IdMood</th>
+                    <th>IdUser</th>
+                    <th>Votre mood</th>
+                    <th>Description</th>
+                    <th>Date de l'enregistrement</th>
+                </tr>
+            </thead>
+            <tbody>
+                   {% for i in moods %}
                    <tr>
                     <td>{{i.MoodId}}</td>
                     <td>{{i.UserId}}</td>
                     <td>{{i.Mood}}</td>
                     <td>{{i.Description}}</td>
+                    <td>{{i.date|date('Y-m-d H:i:s')}}</td>
 
         </tr>
 
         {% endfor %}
-        </tbody>
+            </tbody>
+        </table>
+    </div>
+        </nav>
+    </div>
 
-</table>
-</div>
+    
+        </nav>
+    </div>
 
+  
+    
+    <footer>
+        <p>Tous droits réservés &copy; 2023 Echkili</p>
+    </footer>
+</body>
+</html>
