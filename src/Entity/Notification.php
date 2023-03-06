@@ -21,6 +21,15 @@ class Notification
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'Notif')]
     private Collection $Notif;
 
+    #[ORM\Column]
+    private ?string $EmailUser = null;
+
+    #[ORM\Column]
+    private ?bool $Status = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $Code = null;
+
     public function __construct()
     {
         $this->Notif = new ArrayCollection();
@@ -66,6 +75,42 @@ class Notification
         if ($this->Notif->removeElement($notif)) {
             $notif->removeNotif($this);
         }
+
+        return $this;
+    }
+
+    public function getEmailUser(): ?string
+    {
+        return $this->EmailUser;
+    }
+
+    public function setEmailUser(string $EmailUser): self
+    {
+        $this->EmailUser = $EmailUser;
+
+        return $this;
+    }
+
+    public function isStatus(): ?bool
+    {
+        return $this->Status;
+    }
+
+    public function setStatus(bool $Status): self
+    {
+        $this->Status = $Status;
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->Code;
+    }
+
+    public function setCode(string $Code): self
+    {
+        $this->Code = $Code;
 
         return $this;
     }

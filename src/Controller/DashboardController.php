@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use App\Entity\User;
+use App\Entity\Notification;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -155,6 +156,53 @@ class DashboardController extends AbstractController
         return $this->redirectToRoute('listeP');
     }
 
+    #[Route('/notification', name: 'notification')]
+    public function notification(ManagerRegistry $doctrine,Request $request)
+    {
 
+        if ($this->isGranted('ROLE_ADMIN')) {
+
+            $notifications=$doctrine->getRepository(Notification::class)->findBy(array('Status' => '0' ));
+        
+        }
+        return $this->render('notification/index.html.twig', [
+            'controller' => 'admin',
+            'notifs'=>$notifications,
+
+
+        ]);
+
+    }
+
+    #[Route('/user/show/{email}', name: 'editPP')]
+    public function editPP($email,  Request $request, ManagerRegistry $doctrine): Response
+    {
+
+        $medecin=$doctrine->getRepository(User::class)->findByEmail($email);
+        if(!$medecin){
+            return $this->redirectToRoute('error-404');
+        }
+
+        $entityManager = $this->getDoctrine()->getManager();
+        if ($request->isMethod('POST')) {
+            $date = new \DateTimeImmutable(date('Y/m/d H:i:s'));
+            $medecin->setFirstName($request->request->get('Firstname'));
+            $medecin->setEmail($request->request->get('email'));
+            $medecin->setLastname($request->request->get('Lastname'));
+            $medecin->setAdresse($request->request->get('adresse'));
+            $medecin->setUpdatedAt($date);
+            $entityManager->persist($medecin);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('listeP');
+
+
+
+        }
+        return $this->render('admin/editPP.html.twig', [
+            'controller_name' => 'DashboardController',
+            'user'=>$medecin
+        ]);
+    }
 
 }

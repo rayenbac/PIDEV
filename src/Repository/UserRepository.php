@@ -80,6 +80,21 @@ public function findUsersByRole($role)
 
     return $qb->getQuery()->getResult();
 }
+
+
+
+public function findByEmail($email)
+{
+    return $this->createQueryBuilder('u')
+        ->select('u')
+        ->from('App\Entity\User','user')
+        ->join('u.Notif', 'n')
+        ->where('n.EmailUser = :email')
+        ->setParameter('email', $email)
+        ->getQuery()
+        ->getResult()
+    ;
+}
 //    public function findOneBySomeField($value): ?User
 //    {
 //        return $this->createQueryBuilder('u')

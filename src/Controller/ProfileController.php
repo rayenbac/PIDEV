@@ -10,7 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use App\Service\Utils;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Swift_Mailer;
+use Swift_Message;
 
 class ProfileController extends AbstractController
 {
@@ -47,16 +50,24 @@ class ProfileController extends AbstractController
     }
 
     #[Route('/profile/password', name: 'password')]
-    public function newPassword(Request $request,UserPasswordEncoderInterface $encoder,ManagerRegistry $doctrine )
+    public function newPassword(Request $request,UserPasswordEncoderInterface $encoder,ManagerRegistry $doctrine,Swift_Mailer $mailer )
         {   
         $user= $this->getUser();
         $entityManager = $this->getDoctrine()->getManager();
         if ($request->isMethod('POST')) {
             $password=$request->get('password');
-            //$this->utils->sendEmail($user,'NEWPASS',$password);
+           
+            $message = (new Swift_Message('Nouveau mot de passe'))
+            ->setFrom('sportify0123@gmail.com')
+            ->setTo($user->getEmail())
+            ->setBody(" voici votre nouveau mot de passe:".$password,
+            "text/html");
+            $mailer->send($message);
             $user->setPassword($encoder->encodePassword($user,$password));
             $entityManager->persist($user);
             $entityManager->flush();
+            $this->addFlash('success','un email a été envoyé a votre adresse  ');
+
         
         }
 

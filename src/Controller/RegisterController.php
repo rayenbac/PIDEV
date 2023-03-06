@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use App\Entity\User;
+use App\Entity\Notification;
 use App\Form\RegisterType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 
@@ -76,6 +78,20 @@ class RegisterController extends AbstractController
                 $user->setStatus('0');
                 $doctrine = $this->getDoctrine()->getManager();
                 $doctrine->persist($user);
+
+                $notification = new Notification();
+                $notification->setEmailUser($form->get('email')->getData());
+                $notification->setText('Nouveau utilisateur');
+                $notification->setStatus(0);
+                if ($form->get('Roles')->getData() == ['ROLE_PATIENT']) {
+                    $notification->setCode('PATIENT');
+                }
+                if ($form->get('Roles')->getData() == ['ROLE_MEDECIN']) {
+                    $notification->setCode('MEDECIN');
+                }
+
+                $user->addNotif($notification);
+                $doctrine->persist($notification);
                 $doctrine->flush();
                 return $this->redirectToRoute('app_login');
             }
@@ -86,6 +102,4 @@ class RegisterController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-
-    
 }
