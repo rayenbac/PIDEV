@@ -1,33 +1,7 @@
 {% extends "base.html.twig" %}
 {% block title %}Panier
 {% endblock %}
-{% block javascripts %}
-	{{parent()}}
-	<script>
-		$(document).on('click', '.remove-product', function (event) {
-event.preventDefault();
 
-var productId = $(this).data('id');
-var $tableRow = $(this).closest('.table-row');
-
-$.ajax({
-url: "{{ path('removeItem', {'id': '__ID__'}) }}".replace('__ID__', productId),
-type: 'DELETE',
-dataType: 'json',
-success: function (data) {
-if (data.success) { // Remove table row from the page
-$tableRow.remove();
-} else { // Display error modal
-alert(data.message);
-}
-},
-error: function (jqXHR, textStatus, errorThrown) { // Display error modal
-alert('Une erreur est survenue. Veuillez réessayer plus tard.');
-}
-});
-});
-	</script>
-{% endblock %}
 
 {% block body %}
 	<div class="section-top-border container" style="margin-top:100px;">
@@ -63,7 +37,57 @@ alert('Une erreur est survenue. Veuillez réessayer plus tard.');
 			</div>
 		</div>
 		<div class="d-sm-flex align-items-center">
-			<a href={{path('addCommande')}} style="width:30%;margin:10px auto;" class="genric-btn primary circle">Passer la commande</a>
+			<button style="width:30%;margin:10px auto;" class="genric-btn primary circle" id="checkout-button">Passer la commande</button>
 		</div>
 	</div>
+{% endblock %}
+{% block javascripts %}
+	{{parent()}}
+	<script src="https://js.stripe.com/v3/"></script>
+	<script>
+		// Create an instance of the Stripe object with your publishable API key
+var stripe = Stripe("pk_test_51MhGaAGeGEgrQ6hOEnXatmbTvZcPd3ll7Z5G4IsG18jdvInJbqQPR24LgWUZcnKp7NLZZh2K8LX0RYnRIGwi33IS00NUy6pYHg");
+
+// Get a reference to the checkout button and add a click event listener
+var checkoutButton = document.getElementById("checkout-button");
+checkoutButton.addEventListener("click", function () { // Make a POST request to create a new checkout session
+fetch("/commande/createSession", {method: "POST"}).then(function (response) {
+return response.json();
+}).then(function (session) { // Redirect the customer to the checkout page
+return stripe.redirectToCheckout({sessionId: session.id});
+}).then(function (result) { // Handle any errors that occur during the checkout process
+if (result.error) {
+alert(result.error.message);
+}
+}).catch(function (error) {
+console.error("ERROR", error);
+});
+});
+	</script>
+	{# add to cart script #}
+	<script>
+		$(document).on('click', '.remove-product', function (event) {
+event.preventDefault();
+
+var productId = $(this).data('id');
+var $tableRow = $(this).closest('.table-row');
+
+$.ajax({
+url: "{{ path('removeItem', {'id': '__ID__'}) }}".replace('__ID__', productId),
+type: 'DELETE',
+dataType: 'json',
+success: function (data) {
+if (data.success) { // Remove table row from the page
+$tableRow.remove();
+} else { // Display error modal
+alert(data.message);
+}
+},
+error: function (jqXHR, textStatus, errorThrown) { // Display error modal
+alert('Une erreur est survenue. Veuillez réessayer plus tard.');
+}
+});
+});
+	</script>
+
 {% endblock %}
