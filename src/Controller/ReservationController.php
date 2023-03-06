@@ -179,6 +179,7 @@ class ReservationController extends AbstractController
                         $em =$doctrine->getManager();
                         $em->remove($reservation);
                         $em->flush();
+                        
                         return $this->redirectToRoute("afficheReservation",array('email'=> $reservation->getEmail()));}
 
 
