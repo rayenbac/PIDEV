@@ -77,7 +77,7 @@ class MoodController extends AbstractController
                             $em =$doctrine->getManager() ;
                             $em->persist($mood);
                             $em->flush();
-                            return $this->redirectToRoute("afficheM");}
+                            return $this->redirectToRoute("sms");}
                    return $this->renderForm("mood/add.html.twig",
                             array("f"=>$form));
                      }
