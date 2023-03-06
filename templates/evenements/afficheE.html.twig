@@ -22,12 +22,15 @@
                 <div class="col-lg-8 mb-5 mb-lg-0">
                     <div class="blog_left_sidebar">
 
-						{% for i in evenements %}
+                        {% for i in evenements |sort((a, b) => b.dateevenement.timestamp() - a.dateevenement.timestamp())|reverse  %}
+                        
+                        
                         <article class="blog_item">
                             <div class="blog_item_img">
                                 <img width = "750px" height = "350px" class="card-img rounded-0" src="{{ asset('uploads/Evenements/' ~ i.Image) }}" alt="">
                                 <a href="#" class="blog_item_date">
                                     <h3>{{i.dateevenement|date("m/d/Y")}}</h3>
+                                   
                                     
                                 </a>
                             </div>
@@ -60,6 +63,8 @@
 									<li>Type de l'évenement : <a href="#"><i class="far fa-user"></i> {{i.type}} </a></li>
 
                                     {% if i.nbrdeplaces <= 0 %}
+                                   
+                                    
                                     <a href="#" disabled>
                                       <span class="badge badge-success"> <h6>Cliquez pour réserver</h6> </span>
                                     </a>
@@ -86,12 +91,7 @@
                                         {% endif %} 
                                     </p>
                                     
-                                    <script>
-                                      function decrementLikes(id) {
-                                        // Envoyer une requête AJAX pour décrémenter le nombre de likes
-                                        // en utilisant l'ID de l'élément.
-                                      }
-                                    </script>
+                                    
                                     
 						
                                     

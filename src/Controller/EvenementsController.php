@@ -30,6 +30,9 @@ class EvenementsController extends AbstractController
                 $e=$this->getDoctrine()->getRepository(Evenements::Class);
      //utiliser la fonction findAll()
         $e=$repository->findAll();
+   
+
+
       
    return $this->render('evenements/afficheE.html.twig', [
     'evenements' => $e,
@@ -147,6 +150,7 @@ class EvenementsController extends AbstractController
       
 
 
+
 //Code Api : 
 
 
@@ -163,7 +167,7 @@ public function ApiafficheE(EvenementsRepository $repository, NormalizerInterfac
  
 
 #[Route('/ApiaddE', name: 'ApiaddE')]
-public function ApiaddE(ManagerRegistry $doctrine,Request $request, SluggerInterface $slugger , NormalizerInterface $Normalizer)
+public function ApiaddE(ManagerRegistry $doctrine,Request $request, SluggerInterface $slugger , NormalizerInterface $Normalizer) 
                {$evenement= new Evenements();
                 $form = $this->createForm(EvenementFormType::class, $evenement);
                 $currenttime = new \DateTime();
@@ -172,31 +176,25 @@ public function ApiaddE(ManagerRegistry $doctrine,Request $request, SluggerInter
                 $evenement->setNomEvenement($request->get('NomEvenement'));
                 $evenement->setDescriptionEvenement($request->get('DescriptionEvenement'));
                 $evenement->setLieuEvenement($request->get('LieuEvenement'));
-                $evenement->setDateEvenement($request->get('DateEvenement'));
-                $evenement->setHeure($request->get('Heure'));
+                $inputString =$request->get('DateEvenement') ;
+                $format = 'Y-m-d';
+                $dateTime = \DateTime::createFromFormat($format, $inputString);
+                $evenement->setDateEvenement($dateTime);
+              //  $evenement->setDateEvenement($request->get('DateEvenement'));
+                $inputString2 =$request->get('Heure') ;
+                $format2 = 'H:i:s';  
+                $dateTime2 = \DateTime::createFromFormat($format2, $inputString2);
+                $evenement->setHeure($dateTime2);
                 $evenement->setNbrDePlaces($request->get('NbrDePlaces'));
                 $evenement->setType($request->get('type'));
-                   
-                      
-                       $Image = $form->get('Image')->getData();
-                       if ($Image) {
-                           $originalFilename = pathinfo($Image->getClientOriginalName(), PATHINFO_FILENAME);
-                           // this is needed to safely include the file name as part of the URL
-                           $safeFilename = $slugger->slug($originalFilename);
-                           $newFilename = $safeFilename.'-'.uniqid().'.'.$Image->guessExtension();
-           
-                           // Move the file to the directory where brochures are stored
-                           try {
-                               $Image->move(
-                                   $this->getParameter('evenement_directory'),
-                                   $newFilename
-                               );
-                           } catch (FileException $e) {
-                               // ... handle exception if something happens during file upload
-                           }
+                $evenement->setLikes(0);
+                $evenement->setDislikes(0);
+                $evenement->setImage("image.png");
 
-                           $evenement->setImage($newFilename);
-                       }
+
+                   
+                     
+                       
                        $em =$doctrine->getManager() ;
                        $em->persist($evenement);
                        $em->flush();
