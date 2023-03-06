@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Reservation|null find($id, $lockMode = null, $lockVersion = null)
  * @method Reservation|null findOneBy(array $criteria, array $orderBy = null)
  * @method Reservation[]    findAll()
- * @method Reservation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Reservation[]    findBy(array $criteria    , array $orderBy = null, $limit = null, $offset = null)
  */
 class ReservationRepository extends ServiceEntityRepository
 {

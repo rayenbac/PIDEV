@@ -20,7 +20,7 @@ class ReservationFormType extends AbstractType
             
             ->add('NombreDePlaceAReserver')
             ->add('Email ')
-            ->add('Evenements',EntityType::class,
+            ->add('Evenements  ',EntityType::class,
               ['class'=>Evenements::class,
               'choice_label'=>'NomEvenement',
               'multiple'=>false])
