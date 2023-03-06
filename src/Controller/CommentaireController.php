@@ -7,6 +7,7 @@ use App\Entity\Commentaire;
 use App\Entity\Post;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CommentaireRepository;
+use App\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Form\CommentaireFormType;
@@ -66,19 +67,49 @@ class CommentaireController extends AbstractController
 
       ///////////////////////////////////////////////////////////////////////////////
 
-     #[Route('/addC/{id}', name: 'addC')]
-    public function addC(ManagerRegistry $doctrine,Request $request)
+      #[Route('/addC/{id}', name: 'addC')]
+    public function addC($id , ManagerRegistry $doctrine,Request $request , PostRepository $r)
                    {$commentaire= new Commentaire();
-    $form=$this->createForm(CommentaireFormType::class,$commentaire);
-                       $form->handleRequest($request);
+                    $form=$this->createForm(CommentaireFormType::class,$commentaire);
+                    $form->handleRequest($request);
+
                        if($form->isSubmitted() && $form->isValid()){
+                        
+                        $commentaire = $form->getData();
+                        $post=$r-> find($id);
+                        $post->addCommentaire($commentaire);
+                        
                            $em =$doctrine->getManager() ;
                            $em->persist($commentaire);
                            $em->flush();
-                           return $this->redirectToRoute("afficheA");}
+                           return $this->redirectToRoute("affichePC");}
                   return $this->renderForm("commentaire/addC.html.twig",
                            array("f"=>$form));
                     }
+
+                    #[Route('/APIaddC/{id}', name: 'APIaddC')]
+                    public function APIaddC(Request $req, $id,NormalizerInterface $Normalizer,PostRepository $repo ){
+                        $em = $this->getDoctrine()->getManager();
+                        $commentaire = new Commentaire ();
+                        $post=$repo-> find($id);
+                        $commentaire->setIDUser($req->get('ID_user'));
+                        $commentaire->setReponse($req->get('Reponse'));
+                        $commentaire->setCommentaires($post);
+                        $currenttime = new \DateTime();
+                        //$inputString=$req->get('Date');
+                        //$format='Y-m-d';
+                       // $dateTime = \DateTime::createFromFormat($format, $inputString);
+                        $commentaire->setDate($currenttime);
+                
+                        $em->persist($commentaire);
+                        $em->flush();
+                
+                        $jsonContent = $Normalizer->normalize($commentaire , 'json' , ['groups'=> 'commentaire']);
+                        return new Response(json_encode($jsonContent));
+                    }           
+
+
+     
 
            #[Route('/updateCommentaire/{id}', name: 'updateCommentaire')]
                public function updateCommentaire(CommentaireRepository $repository,
@@ -95,6 +126,23 @@ class CommentaireController extends AbstractController
                    return $this->renderForm("commentaire/addC.html.twig",
                        array("p"=>$form));
                } 
+
+               
+               
+////////////////////////////////////////////////////////////
+#[Route('/APIupdateCommentaire/{id}', name: 'APIupdateCommentaire')]
+    public function APIupdateCommentaire(Request $req, $id, NormalizerInterface $Normalizer){
+        $em = $this->getDoctrine()->getManager();
+        $commentaire = $em->getRepository(Commentaire::class)->find($id);
+        $commentaire->setIdUser($req->get('Id_user'));
+        $commentaire->setReponse($req->get('Reponse'));
+        $commentaire->setDate($req->get('Date'));
+        $em->flush();
+
+        $jsonContent = $Normalizer->normalize($commentaire , 'json' , ['groups'=> 'commentaire']);
+        return new Response("comment updated successfully" . json_encode($jsonContent));
+    }
+
                #[Route('/suppCommentaire/{id}', name: 'suppCommentaire')]
                public function suppCommentaire($id,CommentaireRepository $r,
                ManagerRegistry $doctrine): Response
@@ -105,6 +153,34 @@ class CommentaireController extends AbstractController
                 $em->remove($reponse);
                 $em->flush();
      return $this->redirectToRoute('afficheA',);} 
+
+     #[Route('/suppCommentaireU/{id}', name: 'suppCommentaireU')]
+     public function suppCommentaireU($id,CommentaireRepository $r,
+     ManagerRegistry $doctrine): Response
+     {//récupérer la classroom à supprimer
+        
+     $reponse=$r-> findByPostId($id);
+     
+    
+     
+     //Action suppression
+      $em =$doctrine->getManager();
+      $em->remove($reponse[0]);
+
+      $em->flush();
+return $this->redirectToRoute('affichePC',);}
+
+//////////////////////////////////////////////////////////////////////
+#[Route('/APISuppCommentaireU/{id}', name: 'APISuppCommentaireU')]
+public function APISuppCommentaireU(Request $req, $id, NormalizerInterface $Normalizer){
+    $em = $this->getDoctrine()->getManager();
+    $commentaire = $em->getRepository(Commentaire::class)->find($id);
+    $em->remove($commentaire);
+    $em->flush();
+
+    $jsonContent = $Normalizer->normalize($commentaire , 'json' , ['groups'=> 'commentaire']);
+    return new Response("commentaire deleted successfully" . json_encode($jsonContent));
+} 
      
      
      

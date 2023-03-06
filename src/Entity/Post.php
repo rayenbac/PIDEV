@@ -73,6 +73,9 @@ class Post
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $Dislike = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $rate = null;
+
    
 
   
@@ -218,6 +221,18 @@ class Post
     public function setDislike(?string $Dislike): self
     {
         $this->Dislike = $Dislike;
+
+        return $this;
+    }
+
+    public function getRate(): ?int
+    {
+        return $this->rate;
+    }
+
+    public function setRate(?int $rate): self
+    {
+        $this->rate = $rate;
 
         return $this;
     }

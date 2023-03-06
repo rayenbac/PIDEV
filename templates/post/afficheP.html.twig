@@ -70,9 +70,11 @@
                                 <h3>علاخاطر صحتك
  تهمنا</h3>
                                 <a class="btn btn-lg btn-block btn-success rounded-0 py-4 mb-3 bg-op-6 roboto-bold" href="{{path('addP') }}">Poser Question</a>
-                                 <h6>Liste questions&Réponses</h6>
+                                 
                                
-                                {% for i in forum %}
+                                <h6>Liste questions&Réponses</h6>
+                               
+                                {% for i in forum  |sort((a, b) => a.rate - b.rate)|reverse %}
                                
                                 <div class="row">
                                 <div id="google_translate_element"></div>
@@ -88,10 +90,30 @@
                                         <div class="single_our_depertment">
                                             <span class="our_depertment_icon"><img src="img/icon/feature_2.svg"
                                                     alt=""></span>
-                                                
+                                                   
+                                                {% set flashbag_notices = app.session.flashbag.get('notices') %}
+                                 {% if flashbag_notices is not empty %}
+                                 <ul class ="flashy--success">
+                                 {% for notice in flashbag_notices %}
+                                 <li>{{ notice }}</li>
+                                 {% endfor %}
+                                 <ul>
+                                 {% endif %}
                                             <h4>Question : {{i.id}}</h4>
                                             <p>{{i.publication}} </p>
-                                            <p><td><a href={{path('app_likes',{'id':i.id}) }} class="text-danger">&#128077; </a>
+                                            
+                                             <a href={{path('app_rate',{'id':i.id}) }} class="text-danger">&#x2605; </a> 
+                                           
+                                                
+                                             {% if i.rate is not empty %}
+                                            {{i.rate}}Rate(s)
+                                            {% else %}
+                                              0 Rate
+                                            {% endif %}
+                            
+
+                                           
+                                            <p><td><a href={{path('app_likes',{'id':i.id}) }} class="text-danger">&#128077;  </a>
                                             {% if i.Likes is not empty %}
                                             {{i.Likes}}like(s)
                                             {% else %}
