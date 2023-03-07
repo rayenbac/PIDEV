@@ -1,69 +1,69 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}RendezVous{% endblock %}
+{% block title %}RendezVous
+{% endblock %}
 
 {% block body %}
-<section class="banner_part">
- <div class="container">
-  <div class="row align-items-center">
-                <div class="col-lg-12 col-xl-12">
-                    <div class="banner_text">
-                        <div class="banner_text_iner">
+	<section class="banner_part">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-lg-12 col-xl-12">
+					<div class="banner_text">
+						<div class="banner_text_iner">
 
-    <h1>RendezVous</h1>
+							<h1>RendezVous</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ rendez_vou.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ rendez_vou.nom }}</td>
-            </tr>
-            <tr>
-                <th>Prenom</th>
-                <td>{{ rendez_vou.prenom }}</td>
-            </tr>
-            <tr>
-                <th>Cause</th>
-                <td>{{ rendez_vou.cause }}</td>
-            </tr>
-            <tr>
-                <th>DateRV</th>
-                <td>{{ rendez_vou.dateRV ? rendez_vou.dateRV|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ rendez_vou.description }}</td>
-            </tr>
-        </tbody>
-    </table>
-        <table>
+							<table class="table">
+								<tbody>
+									<tr>
+										<th>Id</th>
+										<td>{{ rendez_vou.id }}</td>
+									</tr>
+									<tr>
+										<th>Nom</th>
+										<td>{{ rendez_vou.nom }}</td>
+									</tr>
+									<tr>
+										<th>Prenom</th>
+										<td>{{ rendez_vou.prenom }}</td>
+									</tr>
+									<tr>
+										<th>Cause</th>
+										<td>{{ rendez_vou.cause }}</td>
+									</tr>
+									<tr>
+										<th>DateRV</th>
+										<td>{{ rendez_vou.dateRV ? rendez_vou.dateRV|date('Y-m-d') : '' }}</td>
+									</tr>
+									<tr>
+										<th>Description</th>
+										<td>{{ rendez_vou.description }}</td>
+									</tr>
+								</tbody>
+							</table>
+							<table>
 
-<th>
-<div class="row">
-<div class="col-md 4">
-    <a class="btn btn-primary" href="{{ path('app_rendez_vous_edit', {'id': rendez_vou.id}) }}">modifier</a>
-</div>
+								<th>
+									<div class="row">
+										<div class="col-md 4">
+											<a class="btn btn-primary" href="{{ path('app_rendez_vous_edit', {'id': rendez_vou.id}) }}">modifier</a>
+										</div>
 
-<div class="col-md 4">
-    <a class="btn btn-primary" href="{{ path('app_rendez_vous_index') }}">retour</a>
-</div>
-<a href="{{ path('pdf') }}" class="btn btn-primary">Télécharger le PDF</a>
+										<div class="col-md 4">
+											<a class="btn btn-primary" href="{{ path('app_rendez_vous_index') }}">retour</a>
+										</div>
+										<a href="{{ path('pdf' , {'id': rendez_vou.id}) }}" class="btn btn-primary">Télécharger le PDF</a>
 
 
+									</div>
 
-    </div>
+								</th>
+							</table>
 
-     </th>
-         </table>
-
-     </div>
-     </div>
-      </div>
-       </div>
-        </div>
-    </section>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 {% endblock %}

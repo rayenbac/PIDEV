@@ -21,8 +21,15 @@
 							<li class="nav-item">
 								<a class="nav-link" href="{{path('afficheP')}}">Forum</a>
 							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="{{path('app_liste')}}">Rendez-vous</a>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="{{path('home')}}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									Rendez-vous
+								</a>
+								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+									<a class="dropdown-item" href="{{path('app_liste')}}">créer un rendez-vous</a>
+									<a class="dropdown-item" href="{{path('app_rendez_vous_index')}}">liste des rendez vous
+									</a>
+								</div>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="{{path('userProducts')}}">Produits</a>
