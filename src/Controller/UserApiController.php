@@ -48,7 +48,7 @@ class UserApiController extends AbstractController
 
 
 
-    #[Route('/signup', name: 'signup' , methods:['GET'])]
+    #[Route('/signup', name: 'signup' , methods:['POST'])]
     public function addUser(ManagerRegistry $doctrine,Request $request, NormalizerInterface $Normalizer,UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $entityManager = $doctrine->getManager();
@@ -60,11 +60,11 @@ class UserApiController extends AbstractController
         $user->setEmail($email);
         $user->setRoles(array($roles));
         $user->setPassword($passwordEncoder->encodePassword($user,$password));
-        $user->setLastName($request->get('lastname'));
-        $user->setFirstName($request->get('firstname'));
-        $user->setAdresse($request->get('adresse'));
+        $user->setLastName("ahmed");
+        $user->setFirstName("mohamed");
+        $user->setAdresse("paris");
         $user->setBirthDate(new \DateTimeImmutable($date));
-        $user->setGender($request->get('gender'));
+        $user->setGender("H");
         $user->setCreatedAt(new \DateTimeImmutable());
         $user->setStatus(0);
         $entityManager->persist($user);

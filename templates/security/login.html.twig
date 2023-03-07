@@ -1,88 +1,77 @@
 {% extends 'login.html.twig' %}
 
-{% block title %}ECHKILI-connexion{% endblock %}
+{% block title %}ECHKILI-connexion
+{% endblock %}
 
 {% block body %}
-<form method="post">
-   
-
-   {#} {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-    {% endif %}#}
-
 <div class="content">
     <div class="container">
       <div class="row">
         <div class="col-md-4">
           <img src="{{asset('login/images/undraw_remotely_2j6y.svg')}}" alt="Image" class="img-fluid">
         </div>
-        <div class="col-md-8">
+                    <div class="col-md-8">
         <div class="col-lg-10 mx-auto">
 			    <div class="card mb-8">
-				      <div class="card-body">
-                        <div class="mb-4">
-                            <h3>Connexion</h3>
-                        </div>
-             <div class="row">
-                <div class="col-md-8">
-    <label for="inputEmail">Email:</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                <div class="card-body">
+<form method="post" class="login-form">
+
+  {% if app.user %}
+    <div class="alert alert-info" role="alert">
+      You are logged in as {{ app.user.userIdentifier }}. <a href="{{ path('app_logout') }}">Logout</a>
     </div>
-    </div>
-     <div class="row">
-        <div class="col-md-8">
-    <label for="inputPassword">Mot de passe:</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+  {% endif %}
 
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-</div>
-</div>
-    
-       
-{#
- Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
-        </div>
-    #}
-
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
      
-
-
-     <div class="row">
-     <div class="col-md-8">
-     <div class="form-group text-right">
-     {% if error %}
-        <div class="erreur  text-left" style="color: red;">Verifiez vos données
-														</div>
-    {% endif %}
+        <div class="card-body">
+          <h2 class="card-title text-center mb-5">Se connecter</h2>
+          {% if error %}
+            <div class="alert alert-danger mb-3" role="alert">
+              Verifiez vos données et réessayez.
+            </div>
+          {% endif %}
+          <div class="mb-4">
+           
+        
+                  <a href="{{ path('connect_google') }}" class="btn btn-google btn-block"><i class="fab fa-google fa-fw"></i>Se connecter avec google</a>
+          <div class="form-group">
+            <label for="inputEmail">Adresse email</label>
+            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+          </div>
+          <div class="form-group">
+            <label for="inputPassword">Mot de passe</label>
+            <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+          </div>
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" name="_remember_me" id="rememberMe">
+            <label class="form-check-label" for="rememberMe">
+              Rester connecté
+            </label>
+          </div>
+          <div class="text-center">
+            <button class="btn btn-primary" type="submit">
+              Se connecter
+            </button>
+          </div>
+          <div class="text-center mt-3">
+            <a href="{{ path('forgotPassword') }}">Mot de passe oublié?</a>
+          </div>
+          <div class="text-center mt-3">
+            <p>Pas encore inscrit? <a href="{{ path('register') }}">Créer un compte</a></p>
+          </div>
+        </div>
+     
     </div>
-    </div>
-    </div>
- <div class="row">
-        <div class="col-md-8">
-    <button class="btn btn-primary" type="submit">
-        Se connecter
-    </button>
-    </div>
-      <div class="col-md-4">
-       <a class="float-right font-size-13 text-muted"  href="{{path('forgotPassword')}}">Mot de passe oublié?</a>
-       </div>
-    </div>
   </div>
-  </div>
-  </div>
-  </div>
-  </div>
-  </div>
-  </div>
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 </form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 {% endblock %}

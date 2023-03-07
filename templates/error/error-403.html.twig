@@ -1,19 +1,16 @@
-
-
 {% block body %}
- <div class="col-xl-12 col-lg-7 ">
-              <div class="card">
- <div class="container-fluid" id="container-wrapper">
-          <div class="text-center">
-            <img src="{{asset('dashboard/img/error.svg')}}" style="max-height: 100px;" class="mb-3">
-            <h3 class="text-gray-800 font-weight-bold">Oopss!</h3>
-            <p class="lead text-gray-800 mx-auto">403 Page Not Found</p>
-            <a href="{{ path ('home') }}">&larr; Back to Dashboard</a>
-          </div>
-
-          <!-- Modal Logout -->
-         
-          </div>
-          </div>
- {% endblock %}
-		
+<div class="container-fluid">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-md-6">
+      <div class="card text-center">
+        <div class="card-body">
+          <img src="{{ asset('dashboard/img/error.svg') }}" class="img-fluid mb-4" style="max-height: 200px;" alt="Page Not Found">
+          <h1 class="card-title text-danger">Oops!</h1>
+          <p class="card-text lead text-muted mb-5">Nous n'arrivons pas à trouver la page que vous recherchez.</p>
+          <a href="{{ path('home') }}" class="btn btn-primary">&larr; Retour au tableau de bord</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

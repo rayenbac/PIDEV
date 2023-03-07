@@ -16,6 +16,7 @@ class DashboardController extends AbstractController
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
+
         return $this->render('admin/index.html.twig', [
             'controller_name' => 'DashboardController',
         ]);
@@ -163,6 +164,35 @@ class DashboardController extends AbstractController
         if ($this->isGranted('ROLE_ADMIN')) {
 
             $notifications=$doctrine->getRepository(Notification::class)->findBy(array('Status' => '0' ));
+        
+        }
+        return $this->render('notification/index.html.twig', [
+            'controller' => 'admin',
+            'notifs'=>$notifications,
+
+
+        ]);
+
+    }
+
+
+
+    #[Route('/notification/delete', name: 'deletenotif')]
+    public function deleteNotif(ManagerRegistry $doctrine,Request $request)
+    {
+
+        if ($this->isGranted('ROLE_ADMIN')) {
+
+            $notifications=$doctrine->getRepository(Notification::class)->findAll();
+            $entityManager = $this->getDoctrine()->getManager();
+
+            foreach ($notifications as $notification) {
+                $entityManager->remove($notification);
+            }
+            
+            $entityManager->flush();
+            
+            return $this->redirectToRoute('admin');
         
         }
         return $this->render('notification/index.html.twig', [
