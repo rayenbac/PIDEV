@@ -24,6 +24,9 @@ class Cabinet
     #[ORM\OneToMany(mappedBy: 'cabinet', targetEntity: RendezVous::class)]
     private Collection $RV;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?User $cabinetmedecin = null;
+
     public function __construct()
     {
         $this->RV = new ArrayCollection();
@@ -84,6 +87,18 @@ class Cabinet
                 $rV->setCabinet(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCabinetmedecin(): ?User
+    {
+        return $this->cabinetmedecin;
+    }
+
+    public function setCabinetmedecin(?User $cabinetmedecin): self
+    {
+        $this->cabinetmedecin = $cabinetmedecin;
 
         return $this;
     }

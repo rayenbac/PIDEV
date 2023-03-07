@@ -46,6 +46,7 @@ class RVmobileController extends AbstractController
     #[Route('/mobile/rendezvous/{id}', name: 'rendezvousid')]
     public function rendezvousId(MedecinRepository $rendezVousRepository,NormalizerInterface $normalizer,$id)
     {
+        
         $rendezvous = $this->getDoctrine()->getRepository(RendezVous::class)->find($id);
         $s = $normalizer->normalize($rendezvous,'json',['groups'=>"rendezvous"]);
         $json = json_encode($s);

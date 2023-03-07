@@ -1,0 +1,51 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<section class="breadcrumb_part breadcrumb_bg">
+        
+          
+                <div class="col-lg-12">
+                    <div class="breadcrumb_iner">
+                        <div class="breadcrumb_iner_item">
+                            <h2>Journal mood</h2>
+                        </div>
+                    </div>
+                </div>
+            
+        
+    </section>
+
+<div id="google_translate_element"></div>
+                                    <script type="text/javascript">
+                                        function googleTranslateElementInit() {
+                                            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+                                        }
+                                    </script>
+
+                                    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<div class="col-lg-10 mx-auto">
+	<div class="card mb-4">
+		<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+			<h6 class="m-0 font-weight-bold text-primary">Modifier un journal mood</h6>
+		</div>
+		<div class="card-body">
+			{{ form_start(f, {'attr': {'novalidate': 'novalidate'}}) }}
+			
+			<div class="form-group">
+				{{form_label(f.IdUser,"UserId " )}}
+				{{form_widget(f.IdUser,{'attr': {'class': 'form-control', 'placeholder': ' UserId', 'id': 'exampleFormControlTextarea1', }}) }}
+				{{form_errors(f.IdUser)}}
+
+	<div class="form-group">
+				{{form_label(f.moods,"moods " )}}
+				{{form_widget(f.moods,{'attr': {'class': 'form-control', 'placeholder': ' moods', 'moods': 'exampleFormControlTextarea1', }}) }}
+				{{form_errors(f.moods)}}
+					
+			</div>
+			
+			{{ form_widget(f.save, { 'attr': {'class': 'btn btn-primary'} }) }}
+			{{form_end(f)}}
+		</div>
+	</div>
+{% endblock %}

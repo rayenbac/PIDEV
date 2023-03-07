@@ -1,0 +1,50 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}{{ parent() }}-Membres {% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+{% endblock %}	
+{% block body %}
+
+
+        <div class="col-xl-12 col-lg-7 ">
+              <div class="card">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Invoice</h6>
+                
+                </div>
+                <div class="table-responsive">
+                  <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Prenom</th>
+                        <th>Adresse</th>
+
+                        <th>Modifier</th>
+                          <th>Supprimer</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for patient in patients %}
+                      <tr>
+                        <td>{{ patient.id}}</td>  
+                        <td>{{ patient.FirstName}}</td>
+                        <td>{{ patient.LastName}}</td>
+                        <td>{{ patient.adresse}}</td>
+                        <td><a href="{{ path ('editP', {'id':patient.id}) }}" class="btn btn-sm btn-primary">Detail</a></td>
+                        <td>
+                        <a href="{{ path ('deleteP', {'id':patient.id}) }}" class="btn btn-danger">
+                    <i class="fas fa-trash"></i>
+                  </a>
+                  </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+ {% endblock %}
+			{% block javascripts %}
+				{{ parent() }}
+			{% endblock %}

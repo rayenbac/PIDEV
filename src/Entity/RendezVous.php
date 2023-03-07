@@ -85,6 +85,14 @@ class RendezVous
 
     private ?Cabinet $cabinet = null;
 
+    #[ORM\ManyToOne(inversedBy: 'rendezVouses')]
+    private ?User $usermed = null;
+
+    #[ORM\Column]
+    #[Assert\NotBlank(message: "Le champ cause est obligatoire.")]
+
+    private ?int $telephone = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -170,6 +178,30 @@ class RendezVous
     public function setCabinet(?Cabinet $cabinet): self
     {
         $this->cabinet = $cabinet;
+
+        return $this;
+    }
+
+    public function getUsermed(): ?User
+    {
+        return $this->usermed;
+    }
+
+    public function setUsermed(?User $usermed): self
+    {
+        $this->usermed = $usermed;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?int
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(int $telephone): self
+    {
+        $this->telephone = $telephone;
 
         return $this;
     }

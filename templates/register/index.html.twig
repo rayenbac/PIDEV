@@ -1,0 +1,196 @@
+{% extends 'login.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+<style>
+.img-fluid {
+    max-width: 100%;
+    height: 600px;
+}
+</style>
+{% endblock %}
+{% block body %}
+
+ <div class="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <img src="{{asset('login/images/undraw_remotely_2j6y.svg')}}" alt="Image" class="img-fluid">
+        </div>
+       
+            <div class="col-md-8">
+        <div class="col-lg-10 mx-auto">
+			    <div class="card mb-8">
+				      <div class="card-body">
+              <div class="mb-4">
+              <h3>Créer un compte</h3>
+            </div>
+					            {{ form_start(form, { 'attr': {'novalidate': 'novalidate'}}) }}
+               <div class="row">
+								  <div class="col-md-12">
+					            <div class="form-group">
+                            {{form_label(form.email,"Email" )}}
+						                {{form_widget(form.email,{'attr': {'class': 'form-control'~ (form_errors(form.email) ? ' is-invalid' : ''), 'placeholder': 'Email', 'id': 'exampleInputEmail1'}}) }}
+						                {% if form_errors(form.email) %}
+							                <div class="invalid-feedback">
+							              	{{form_errors(form.email)}}
+							                </div>
+                             {% endif %}
+                        </div>
+                    </div>
+                </div>
+				 <div class="row">
+				<div class="col-md-6">
+              <div class="form-group">
+          {{form_label(form.Gender,"Genre" )}}
+						{{form_widget(form.Gender,{'attr': {'class': 'form-control'~ (form_errors(form.Gender) ? ' is-invalid' : ''), 'placeholder': 'Genre'}}) }}
+						{% if form_errors(form.Gender) %}
+							<div class="invalid-feedback">
+								{{form_errors(form.Gender)}}
+							</div>
+						{% endif %}
+</div>
+</div>
+</div>
+                <div class="row">
+              	  <div class="col-md-6">
+                    <div class="form-group">
+                    {{form_label(form.FirstName,"Prenom" )}}
+						        {{form_widget(form.FirstName,{'attr': {'class': 'form-control'~ (form_errors(form.FirstName) ? ' is-invalid' : ''), 'placeholder': 'Nom'}}) }}
+						        {% if form_errors(form.FirstName) %}
+							        <div class="invalid-feedback">
+								    {{form_errors(form.FirstName)}}
+							          </div>
+                      {% endif %}
+                    </div>
+                    </div>
+              <div class="col-md-6">
+              <div class="form-group">
+          {{form_label(form.LastName,"Nom" )}}
+						{{form_widget(form.LastName,{'attr': {'class': 'form-control'~ (form_errors(form.LastName) ? ' is-invalid' : ''), 'placeholder': 'Prénom'}}) }}
+						{% if form_errors(form.LastName) %}
+							<div class="invalid-feedback">
+								{{form_errors(form.LastName)}}
+							</div>
+              {% endif %}
+              </div>
+              </div>
+              </div>
+              <div class="row">
+              <div class="col-md-6">
+              <div class="form-group">
+          {{form_label(form.Adresse,"Adresse" )}}
+						{{form_widget(form.Adresse,{'attr': {'class': 'form-control'~ (form_errors(form.Adresse) ? ' is-invalid' : ''), 'placeholder': 'Adresse'}}) }}
+						{% if form_errors(form.Adresse) %}
+							<div class="invalid-feedback">
+								{{form_errors(form.Adresse)}}
+							</div>
+              {% endif %}
+              </div>
+              </div>
+              <div class="col-md-6">
+              <div class="form-group">
+          {{form_label(form.BirthDate,"Date de naissance" )}}
+						{{form_widget(form.BirthDate,{'attr': {'class': 'form-control'~ (form_errors(form.BirthDate) ? ' is-invalid' : ''), 'placeholder': 'Date de naissance'}}) }}
+						{% if form_errors(form.BirthDate) %}
+							<div class="invalid-feedback">
+								{{form_errors(form.BirthDate)}}
+							</div>
+              
+						{% endif %}
+          </div>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col-md-6">
+             <div class="form-group">
+          {{form_label(form.PhoneNumber,"Numéro de téléphone" )}}
+						{{form_widget(form.PhoneNumber,{'attr': {'class': 'form-control'~ (form_errors(form.PhoneNumber) ? ' is-invalid' : ''), 'placeholder': 'Numéro de téléphone'}}) }}
+						{% if form_errors(form.PhoneNumber) %}
+							<div class="invalid-feedback">
+								{{form_errors(form.PhoneNumber)}}
+							</div>
+						{% endif %}
+</div>
+</div>
+<div class="col-md-6">
+              <div class="form-group">
+          {{form_label(form.Roles,"Type" )}}
+						{{form_widget(form.Roles,{'attr': {'class': 'form-control'~ (form_errors(form.Roles) ? ' is-invalid' : ''), 'placeholder': 'Type'}}) }}
+						{% if form_errors(form.Roles) %}
+							<div class="invalid-feedback">
+								{{form_errors(form.Roles)}}
+							</div>
+						{% endif %}
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-md-6">
+          <div class="form-group">
+          {{form_label(form.password.first,"Mot de passe" )}}
+						{{form_widget(form.password.first,{'attr': {'class': 'form-control'~ (form_errors(form.password.first) ? ' is-invalid' : ''), 'placeholder': 'Mot de passe'}}) }}
+						{% if form_errors(form.password.first) %}
+							<div class="invalid-feedback">
+								{{form_errors(form.password.first)}}
+							</div>
+						{% endif %}
+					</div>
+					</div>
+  
+  <div class="col-md-6">
+          <div class="form-group">
+          {{form_label(form.password.second,"Confirmer mot de passe" )}}
+						{{form_widget(form.password.second,{'attr': {'class': 'form-control'~ (form_errors(form.password.second) ? ' is-invalid' : ''), 'placeholder': 'confirmer mot de passe'}}) }}
+						{% if form_errors(form.password.second) %}
+							<div class="invalid-feedback">
+								{{form_errors(form.password.second)}}
+							</div>
+						{% endif %}
+					</div>
+					</div>
+  </div>
+
+					
+					
+       
+
+
+
+<div class="row">
+<div class="col-md-12">
+  <div class="form-group">
+   <label for="exampleInputPassword1">Seulement pour les médecins:</label>
+						<div class="custom-file">
+							{{ form_widget(form.file, { 'attr': {'class': 'custom-file-input', 'id': 'customFile'} }) }}
+							{{ form_label(form.file, 'Choisir un fichier', { 'label_attr': {'class': 'custom-file-label'} }) }}
+							{% if form_errors(form.file) %}
+								<div class="invalid-feedback">
+									{{form_errors(form.file)}}
+								</div>
+							{% endif %}
+</div></div>
+</div>
+</div>
+				
+          <div class="row">
+<div class="col-md-12">
+					{{ form_widget(form.save, { 'attr': {'class': 'btn btn-primary'} }) }}
+				 </div>
+</div>
+        {{form_end(form)}}
+         
+          </div>
+         </div>
+         </div>
+        
+        </div>
+      
+    </div>
+  </div>
+        
+        
+
+        
+{% endblock %}
+	{% block javascripts %}
+{% endblock %}

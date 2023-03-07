@@ -1,0 +1,69 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<section class="breadcrumb_part breadcrumb_bg">
+        
+          
+                <div class="col-lg-12">
+                    <div class="breadcrumb_iner">
+                        <div class="breadcrumb_iner_item">
+                            <h2>Mood</h2>
+                        </div>
+                    </div>
+                </div>
+            
+        
+    </section>
+
+<div id="google_translate_element"></div>
+                                    <script type="text/javascript">
+                                        function googleTranslateElementInit() {
+                                            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+                                        }
+                                    </script>
+
+                                    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<div class="col-lg-10 mx-auto">
+	<div class="card mb-4">
+		<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+			<h6 class="m-0 font-weight-bold text-primary">Modifier Mood</h6>
+		</div>
+		<div class="card-body">
+			{{ form_start(f, {'attr': {'novalidate': 'novalidate'}}) }}
+			<div class="form-group">
+				{{form_label(f.MoodId,"MoodId " )}}
+				{{form_widget(f.MoodId,{'attr': {'class': 'form-control', 'placeholder': ' MoodId', 'id': 'exampleFormControlTextarea1', }}) }}
+				{{form_errors(f.MoodId)}}
+			</div>
+			<div class="form-group">
+				{{form_label(f.UserId,"UserId " )}}
+				{{form_widget(f.UserId,{'attr': {'class': 'form-control', 'placeholder': ' UserId', 'id': 'exampleFormControlTextarea1', }}) }}
+				{{form_errors(f.UserId)}}
+			</div>
+			<div class="form-group">
+				{{form_label(f.Description,"Description " )}}
+				{{form_widget(f.Description,{'attr': {'class': 'form-control', 'placeholder': 'Description', 'id': 'exampleFormControlTextarea1', }}) }}
+				{{form_errors(f.Description)}}
+			</div>
+			<div class="form-group">
+				{{form_label(f.Mood,"Votre Mood" )}}
+				{{form_widget(f.Mood,{'attr': {'class': 'form-control', 'id': 'touchSpin3','placeholder': 'Mood' }}) }}
+				{{form_errors(f.Mood)}}
+			</div>
+			
+			
+				<div class="form-group">
+				{{form_label(f.date,"Date" )}}
+				{{form_widget(f.date,{'attr': {'class': 'form-control', 'id': 'touchSpin3','placeholder': 'date' }}) }}
+				{{form_errors(f.date)}}
+			</div>
+
+		
+
+			
+			{{ form_widget(f.save, { 'attr': {'class': 'btn btn-primary'} }) }}
+			{{form_end(f)}}
+		</div>
+	</div>
+{% endblock %}

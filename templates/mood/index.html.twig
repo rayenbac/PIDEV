@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Moods{% endblock %}
+
+{% block body %}
+<section class="banner_part">
+ <div class="container">
+  <div class="row align-items-center">
+                <div class="col-lg-12 col-xl-12">
+                    <div class="banner_text">
+                        <div class="banner_text_iner">
+    <h1>Listes Des Moods </h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                            <th>IdMood</th>
+                            <th>IdUser</th>
+                            <th>Votre mood</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                            <th>Modifier</th>
+                            <th>Supprimer</th>
+                            <th>PDF</th>
+                            <th>Statistics</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for mood in m %}
+            <tr>
+                <td>{{ mood.MoodId}}</td>
+                <td>{{ mood.UserId }}</td>
+                <td>{{ mood.Mood }}</td>
+                <td>{{ mood.Description }}</td>
+                <td>{{mood.date|date('Y-m-d H:i:s')}}</td>
+              
+           
+
+                                      <td>
+        
+         <button class="btn btn-primary">
+         <a href="{{ path('editmood',{'id':mood.id}) }}"style="color: white;">Update</a>
+          </button>
+        
+      </td>
+       <td><button class="btn btn-primary">
+        <a href="{{path('deletemood',{'id' :mood.id }) }}"style="color: white;">Delete</a>
+        </button> </td>
+
+</td>
+       <td>
+       <a class="btn btn-success" href="{{ path('pdf') }}">Create pdf</a> 
+         </td>
+         
+         <td>
+       <a class="btn btn-success" href="{{ path('mood_statistics') }}">Show Mood Statistics</a> 
+         </td>
+         
+											
+                        </tr>
+                        {% endfor %}
+  
+                     
+                    </tbody>
+                </table>
+              </div>
+          </div>
+      </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+{% endblock %}

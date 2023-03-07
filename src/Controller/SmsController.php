@@ -16,7 +16,7 @@ class MyController extends AbstractController
     {
         $this->twilioService = $twilioService;
     }
-    #[Route('/sms', name: 'sms')]
+    #[Route('/smsmoez', name: 'sms')]
 
     public function sendSms(TwilioService $twilioService,RendezVousRepository $rendezVousRepository)
     {

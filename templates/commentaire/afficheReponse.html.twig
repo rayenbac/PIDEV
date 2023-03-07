@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<section class="breadcrumb_part breadcrumb_bg">
+        
+          
+                <div class="col-lg-12">
+                    <div class="breadcrumb_iner">
+                        <div class="breadcrumb_iner_item">
+                            <h2>Les réponses</h2>
+                        </div>
+                    </div>
+                </div>
+            
+        
+    </section>
+
+
+<table  border="1">
+ <div class="row">
+            <div class="col-lg-12 mb-4">
+              <!-- Liste des questions&réponses -->
+              <div class="card">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Liste des réponses</h6>
+                </div>
+                <div class="table-responsive">
+                  <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+  <th>Id</th>
+  <th>Reponse</th>
+  
+
+ </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                     </tr>
+                      <tr>
+                        <tr>
+<tbody>
+{% for i in post %}
+<tr>
+  <td>{{i.id}}</td>
+
+  <td>{{i.reponse}}</td>
+   
+   
+ 
+</tr>
+ {% endfor %}
+<tbody/>
+
+</table>
+
+{% endblock %} 
+

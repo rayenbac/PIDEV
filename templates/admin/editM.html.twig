@@ -1,0 +1,45 @@
+{% extends 'dashboard.html.twig' %}
+
+{% block title %}{{ parent() }}-Medecins {% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+{% endblock %}	
+{% block body %}
+
+  <div class="col-xl-12 col-lg-7 ">
+ <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Modifier un médecin</h6>
+                </div>
+                <div class="card-body">
+                  <form method="post">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Email</label>
+                      <input class="form-control  mb-3" type="text" readonly placeholder="email" name="email" value="{{medecin.Username}}" >
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Nom</label>
+                     <input class="form-control  mb-3" type="text" placeholder="nom" name="Lastname"  value="{{medecin.Lastname}}">
+                    </div>
+                     <div class="form-group">
+                      <label for="exampleInputEmail1">Prénom</label>
+                      <input class="form-control  mb-3" type="text" placeholder="prenom" name="Firstname"  value="{{medecin.Firstname}}" >
+                    </div>
+                     <div class="form-group">
+                      <label for="exampleInputEmail1">Adresse</label>
+                      <input class="form-control  mb-3" type="text" placeholder="adresse" name="adresse"  value="{{medecin.Adresse}}" >
+                    </div>
+                    
+                    
+                    
+                    <button type="submit" class="btn btn-primary">Modifier</button>
+                    
+                    <button type="reset" class="btn btn-danger">Annuler</button>
+                  </form>
+                </div>
+              </div>
+</div>
+              {% endblock %}
+			{% block javascripts %}
+				{{ parent() }}
+			{% endblock %}

@@ -15,12 +15,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Dompdf;
+use Swift_Mailer;
+use App\Service\TwilioService;
+
+use Swift_Message;
+
+
 
 #[Route('/rendez/vous')]
 class RendezVousController extends AbstractController
 
-{
-    #[Route('/', name: 'app_rendez_vous_index', methods: ['GET'])]
+{#[Route('/', name: 'app_rendez_vous_index', methods: ['GET'])]
+    
     public function index(RendezVousRepository $rendezVousRepository): Response
     {
         return $this->render('rendez_vous/index.html.twig', [
@@ -86,7 +92,7 @@ class RendezVousController extends AbstractController
     #[Route('/appointments/create/{medecinId}', name: 'appointments')]
 
  
-    public function create(Request $request, int $medecinId, MedecinRepository $medecinRepository, RendezVousRepository $rvRepository,CabinetRepository $cabinetRepository){
+    public function create(TwilioService $twilioService,RendezVousRepository $rendezVousRepository,Request $request, int $medecinId, MedecinRepository $medecinRepository, RendezVousRepository $rvRepository,CabinetRepository $cabinetRepository,Swift_Mailer $mailer){
     // Get the doctor with the given ID
     $medecin = $medecinRepository->find($medecinId);
     $cabinet = $cabinetRepository->find($medecin->getCabinet()->getId()); //Notez que j'ai ajouté une injection de dépendance pour le CabinetRepository et que j'ai utilisé la méthode getCabinet() pour récupérer la cabinet associée au médecin.
@@ -106,10 +112,28 @@ class RendezVousController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($rendezVou);
         $entityManager->flush();
-        return $this->redirectToRoute('sms', [], Response::HTTP_SEE_OTHER);
-        
-        $this->addFlash('success', 'rendez vous pris avec succés!');
-       
+
+        // $content = '<p>Reservation made:</p>';
+        // $content .= '<ul>';
+        // $content .= '<li>User: '.$user->getEmail().'</li>';
+        // $content .= '<li>Offre: '.$offre->getDescription().'</li>';
+        // $content .= '<li>Date: '.$reservation->getDate()->format('Y-m-d H:i:s').'</li>';
+        // $content .= '</ul>';
+
+        $message=(new  Swift_Message('Reservation accepté'))
+            ->setFrom('wadhah.naggui@esprit.tn')
+            ->setTo('moez.bouamoud@esprit.tn')
+            ->setBody('RendezVous est pris avec succées');
+
+            $mailer->send($message);
+            $toPhoneNumber = '+21654300673'; // remplacer par le numéro de téléphone réel
+            $message = 'votre rendez vous est créé avec succès ';
+    
+            $twilioService->sendSms($toPhoneNumber, $message);
+            return $this->redirectToRoute('app_rendez_vous_show', [
+                'id' => $rendezVou->getId()
+            ]);
+            
     }
 
 

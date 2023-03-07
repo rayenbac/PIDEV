@@ -14,12 +14,12 @@ use TCPDF;
 
 class PdfController extends AbstractController
 {
-    #[Route('/pdf', name: 'pdf')]
+    #[Route('/pdfmoez/{id}', name: 'pdf')]
 
-    public function pdfAction()
+    public function pdfAction($id)
     {
 
-        $rendezVous = $this->getDoctrine()->getRepository(RendezVous::class)->find(4); // Remplacez 1 par l'ID de votre rendez-vous
+        $rendezVous = $this->getDoctrine()->getRepository(RendezVous::class)->find($id); // Remplacez 1 par l'ID de votre rendez-vous
 
         // Récupérez les données à inclure dans le PDF
         $html = $this->renderView('pdf/pdfrendezv.html.twig', [

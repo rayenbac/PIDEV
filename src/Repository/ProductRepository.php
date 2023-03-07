@@ -16,51 +16,79 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ProductRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Product::class);
+  public function __construct(ManagerRegistry $registry)
+  {
+    parent::__construct($registry, Product::class);
+  }
+
+  public function save(Product $entity, bool $flush = false): void
+  {
+    $this->getEntityManager()->persist($entity);
+
+    if ($flush) {
+      $this->getEntityManager()->flush();
+    }
+  }
+
+  public function remove(Product $entity, bool $flush = false): void
+  {
+    $this->getEntityManager()->remove($entity);
+
+    if ($flush) {
+      $this->getEntityManager()->flush();
+    }
+  }
+  public function search(string $filter, string $searchTerm, string $sortCriteria): array
+  {
+    $qb = $this->createQueryBuilder('p');
+
+    switch ($filter) {
+      case 'name':
+        $qb->andWhere('p.name LIKE :searchTerm')
+          ->setParameter('searchTerm', '%' . $searchTerm . '%');
+        break;
+      case 'category':
+        $qb->join('p.category', 'c')
+          ->andWhere('c.categoryName LIKE :searchTerm')
+          ->setParameter('searchTerm', '%' . $searchTerm . '%');
+        break;
+    }
+    if ($sortCriteria === 'name_asc') {
+      $qb->orderBy('p.name', 'ASC');
+    } else if ($sortCriteria === 'name_desc') {
+      $qb->orderBy('p.name', 'DESC');
+    } else if ($sortCriteria === 'price_asc') {
+      $qb->orderBy('p.price', 'ASC');
+    } else if ($sortCriteria === 'price_desc') {
+      $qb->orderBy('p.price', 'DESC');
     }
 
-    public function save(Product $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
+    return $qb->getQuery()->getResult();
+  }
 
-    public function remove(Product $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
+  //    /**
+  //     * @return Product[] Returns an array of Product objects
+  //     */
+  //    public function findByExampleField($value): array
+  //    {
+  //        return $this->createQueryBuilder('p')
+  //            ->andWhere('p.exampleField = :val')
+  //            ->setParameter('val', $value)
+  //            ->orderBy('p.id', 'ASC')
+  //            ->setMaxResults(10)
+  //            ->getQuery()
+  //            ->getResult()
+  //        ;
+  //    }
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
-//    /**
-//     * @return Product[] Returns an array of Product objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Product
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+  //    public function findOneBySomeField($value): ?Product
+  //    {
+  //        return $this->createQueryBuilder('p')
+  //            ->andWhere('p.exampleField = :val')
+  //            ->setParameter('val', $value)
+  //            ->getQuery()
+  //            ->getOneOrNullResult()
+  //        ;
+  //    }
 }

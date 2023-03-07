@@ -1,0 +1,70 @@
+{% extends "dashboard.html.twig" %}
+{% block title %}Categories
+{% endblock %}
+{% block body %}
+
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">Liste des categories</h1>
+
+	</div>
+	<a href={{path('addCategory')}} style="width:50%;margin:0 auto;" type="button" class="btn btn-primary mb-1">
+		Ajouter une categorie
+	</a>
+
+	<div
+		class="col-lg-12 mb-4">
+
+		<!-- Simple Tables -->
+		<div class="card">
+
+			<div class="table-responsive">
+				{% for message in app.flashes('error') %}
+					<div class="alert alert-danger">
+						{{ message }}
+
+					</div>
+				{% endfor %}
+				<table class="table align-items-center table-flush">
+					<thead class="thead-light">
+						<tr>
+							<th>Category ID</th>
+							<th>Nom du categorie</th>
+							<th>Description</th>
+							<th>Date de creation</th>
+							<th>Date de modification</th>
+							<th>Modifier categorie</th>
+							<th>Supprimer categorie</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for category in pagination %}
+
+							<tr>
+
+								<td>{{category.id}}</td>
+								<td>{{category.name}}</td>
+								<td style="max-width:250px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;">
+									{{category.description}}
+								</td>
+								<td>{{category.createAt|date('d-m-Y H:i:s')}}</td>
+								<td>{{category.updatedAt|date('d-m-Y H:i:s')}}</td>
+								<td>
+									<button type="submit" class="btn btn-primary mb-1" onclick="window.location.href='{{ path('updateCategory', { id: category.id }) }}'">
+										Modifier
+									</button>
+								</td>
+								<td>
+									<a href=" {{path('deleteCategory' , {'id': category.id} ) }} " class="btn btn-danger ">
+										<i class="fas fa-trash"></i>
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</tbody>
+				{% endfor %}
+			</table>
+			{{ knp_pagination_render(pagination) }}
+
+
+		</div>
+	{% endblock %}

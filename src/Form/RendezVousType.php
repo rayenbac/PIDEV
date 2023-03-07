@@ -14,6 +14,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -41,6 +42,14 @@ class RendezVousType extends AbstractType
                 ]
             ])
             ->add('cause',TextType::class,[
+                "attr"=>[
+                    "class"=>   "form-control"
+                ]
+            ])
+            ->add('telephone',IntegerType::class,[
+                'label'=>'numéro de téléphone', 
+
+
                 "attr"=>[
                     "class"=>   "form-control"
                 ]
