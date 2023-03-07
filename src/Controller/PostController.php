@@ -13,6 +13,7 @@ use App\Form\PostFormType;
 use Symfony\Component\Validator\Constraints\DateTime;
 use App\Repository\CommentaireRepository;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 
 
@@ -28,28 +29,40 @@ class PostController extends AbstractController
    
 
     #[Route('/afficheP', name: 'afficheP')]
-    public function afficheP(): Response
+    public function afficheP(PostRepository $PostRepository , PaginatorInterface $paginator , Request $request): Response
     {
     //récupérer le répository
     $r=$this->getDoctrine()->getRepository(Post::Class);
     //utiliser la fonction findAll()
     $c=$r->findAll();
+    $queryBuilder = $PostRepository->createQueryBuilder('p');
+    $pagination = $paginator->paginate(
+        $queryBuilder,
+        $request->query->getInt('page',1),
+        3
+    );
 
         return $this->render('post/afficheP.html.twig', [
-            'forum' => $c
+            'pagination' => $pagination,
         ]);
     } 
 
     #[Route('/affichePC', name: 'affichePC')]
-    public function affichePC(): Response
+    public function affichePC(PostRepository $PostRepository , PaginatorInterface $paginator , Request $request): Response
     {
     //récupérer le répository
     $r=$this->getDoctrine()->getRepository(Post::Class);
     //utiliser la fonction findAll()
     $c=$r->findAll();
+    $queryBuilder = $PostRepository->createQueryBuilder('p');
+    $pagination = $paginator->paginate(
+        $queryBuilder,
+        $request->query->getInt('page',1),
+        3
+    );
 
         return $this->render('post/affichePC.html.twig', [
-            'forum' => $c
+            'pagination' => $pagination,
         ]);
     } 
 

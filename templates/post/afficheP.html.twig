@@ -74,7 +74,7 @@
                                
                                 <h6>Liste questions&Réponses</h6>
                                
-                                {% for i in forum  |sort((a, b) => a.rate - b.rate)|reverse %}
+                                {% for i in pagination |sort((a, b) => a.rate - b.rate)|reverse %}
                                
                                 <div class="row">
                                 <div id="google_translate_element"></div>
@@ -158,6 +158,7 @@
                                    </div> 
                                 </div>
                                 {% endfor %}
+                                 {{ knp_pagination_render(pagination)}}
                                 
                             </div>
                         </div>

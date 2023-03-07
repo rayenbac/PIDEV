@@ -18,16 +18,23 @@ class LikesController extends AbstractController
         //utiliser la fonction findby()
         $c=$r->find($id);
 
+        $p=$this->getDoctrine()->getRepository(Post::Class);
+        //utiliser la fonction findby()
+        $m=$p->find($id);
+
+        $dislikes = $m->getDislike();
         $likes = $c->getLikes();
 
         //Incrémentation
        // if ($likes=0) {
             $plusDeLikes = $likes + 1 ;
+            $dislikes = $dislikes -1 ;
        // } else {  $plusDeLikes = 1 ;}
       
 
         //Je mets à jour mon champ la table Post
         $c->setLikes($plusDeLikes);
+        $m->setDislike($dislikes);
         $em =$doctrine->getManager() ;
         $em->flush();
 
@@ -38,20 +45,26 @@ class LikesController extends AbstractController
     #[Route('/dislikes/{id}', name: 'app_dislikes')]
     public function app_Dislikes($id , ManagerRegistry $doctrine): Response
     {   
+        $a=$this->getDoctrine()->getRepository(Post::Class);
+        //utiliser la fonction findby()
+        $m=$a->find($id);
         $r=$this->getDoctrine()->getRepository(Post::Class);
         //utiliser la fonction findby()
         $c=$r->find($id);
 
         $dislikes = $c->getDislike();
+        $likes = $m->getLikes();
 
         //Incrémentation
         
         $plusDedislikes = $dislikes + 1 ;
+        $likes = $likes -1 ;
         
       
 
         //Je mets à jour mon champ la table Post
         $c->setDislike($plusDedislikes);
+        $m->setLikes($likes);
         $em =$doctrine->getManager() ;
         $em->flush();
 

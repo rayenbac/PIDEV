@@ -71,8 +71,9 @@
  تهمنا</h3>
                                 
                                  <h6>Liste questions&Réponses</h6>
+                                 
                                
-                                {% for i in forum %}
+                                {% for i in forum |sort((a, b) => a.createdAt.timestamp() - b.createdAt.timestamp())|reverse %}
                                
                                 <div class="row">
                                 <div id="google_translate_element"></div>
@@ -91,7 +92,14 @@
                                                 
                                             <h4>Question : {{i.id}}</h4>
                                             <p>{{i.publication}} </p>
+                                             <a  class="text-danger">&#x2605; </a> 
+                                            {% if i.rate is not empty %}
+                                            {{i.rate}}Rate(s)
+                                            {% else %}
+                                              0 Rate
+                                            {% endif %}
                                             <p><td><a href={{path('app_likes',{'id':i.id}) }} class="text-danger">&#128077; </a>
+                                    
                                             {% if i.Likes is not empty %}
                                             {{i.Likes}}like(s)
                                             {% else %}
@@ -141,6 +149,7 @@
                                    </div> 
                                 </div>
                                 {% endfor %}
+                                 {{ knp_pagination_render(pagination)}}
                                 
                             </div>
                         </div>
