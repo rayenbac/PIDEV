@@ -27,190 +27,205 @@ class PostController extends AbstractController
             'controller_name' => 'PostController',
         ]);
     }
-   
+
 
     #[Route('/afficheP', name: 'afficheP')]
-    public function afficheP(UserRepository $userRepository,PostRepository $PostRepository , PaginatorInterface $paginator , Request $request): Response
+    public function afficheP(UserRepository $userRepository, PostRepository $PostRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        if ($this ->isGranted('ROLE_MEDECIN')) {
+        if ($this->isGranted('ROLE_MEDECIN')) {
             return $this->redirectToRoute('affichePC');
         }
-    //récupérer le répository
-    $user2 = $this->getUser();
-    $user = $userRepository->find($user2);
-    $userId = $user->getId();
-    $r=$this->getDoctrine()->getRepository(Post::Class);
-    //utiliser la fonction findAll()
-    $c=$r->findAll();
-    $queryBuilder = $PostRepository->createQueryBuilder('p');
-    $pagination = $paginator->paginate(
-        $queryBuilder,
-        $request->query->getInt('page',1),
-        3
-    );
+
+        //récupérer le répository
+        $user2 = $this->getUser();
+        if ($user2) {
+            $user = $userRepository->find($user2);
+            $userId = $user->getId();
+        } else {
+            $userId = 0;
+        }
+        $r = $this->getDoctrine()->getRepository(Post::Class);
+        //utiliser la fonction findAll()
+        $c = $r->findAll();
+        $queryBuilder = $PostRepository->createQueryBuilder('p');
+        $pagination = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            3
+        );
 
         return $this->render('post/afficheP.html.twig', [
             'pagination' => $pagination,
             'userId' => $userId
         ]);
-    } 
+    }
 
     #[Route('/affichePC', name: 'affichePC')]
-    public function affichePC(UserRepository $userRepository,PostRepository $PostRepository , PaginatorInterface $paginator , Request $request): Response
+    public function affichePC(UserRepository $userRepository, PostRepository $PostRepository, PaginatorInterface $paginator, Request $request): Response
     {
-        if ($this ->isGranted('ROLE_MEDECIN')) {
-            $r=$this->getDoctrine()->getRepository(Post::Class);
+        if ($this->isGranted('ROLE_MEDECIN')) {
+            $r = $this->getDoctrine()->getRepository(Post::Class);
             $user2 = $this->getUser();
-    $user = $userRepository->find($user2);
-    $userId = $user->getId();
-    //utiliser la fonction findAll()
-    $c=$r->findAll();
-    $queryBuilder = $PostRepository->createQueryBuilder('p');
-    $pagination = $paginator->paginate(
-        $queryBuilder,
-        $request->query->getInt('page',1),
-        3
-    );
+            $user = $userRepository->find($user2);
+            $userId = $user->getId();
+            //utiliser la fonction findAll()
+            $c = $r->findAll();
+            $queryBuilder = $PostRepository->createQueryBuilder('p');
+            $pagination = $paginator->paginate(
+                $queryBuilder,
+                $request->query->getInt('page', 1),
+                3
+            );
 
-        return $this->render('post/affichePC.html.twig', [
-            'pagination' => $pagination,
-            'userId' => $userId
-        ]);
-        } 
+            return $this->render('post/affichePC.html.twig', [
+                'pagination' => $pagination,
+                'userId' => $userId
+            ]);
+        }
         return $this->redirectToRoute("afficheP");
-    //récupérer le répository
-    
-    } 
+        //récupérer le répository
+
+    }
 
 
-   
+
     #[Route('/afficheQ/{id}', name: 'afficheQ')]
-    public function affichepQ($id,PostRepository $repository,ManagerRegistry $doctrine):  Response
-                {
-     //utiliser la fonction findAll()
-        $s=$repository->findAll();
-       
-        $c= $doctrine->getRepository(Post::class)->find($id);
-       
-       
-   return $this->render('post/afficheQuestion.html.twig', [
-    
-    'post'=>$c
-                    ]);
-     }
-    
+    public function affichepQ($id, PostRepository $repository, ManagerRegistry $doctrine): Response
+    {
+        //utiliser la fonction findAll()
+        $s = $repository->findAll();
+
+        $c = $doctrine->getRepository(Post::class)->find($id);
+
+
+        return $this->render('post/afficheQuestion.html.twig', [
+
+            'post' => $c
+        ]);
+    }
+
 
     #[Route('/APIafficheP', name: 'APIafficheP')]
-    public function APIafficheP(PostRepository $repo , NormalizerInterface $normalizer )
+    public function APIafficheP(PostRepository $repo, NormalizerInterface $normalizer)
     {
-    $post = $repo->findAll();
-    //Nous utilisions la fonction normalize quitransforme le tableau d'objets
-    //post en tableau associatif simple 
-    $postNormalises = $normalizer->normalize($post , 'json' , ['groups' => "post"]);
-    // nous utilisons la fonction json_encode pour transfomer un tableau associatif en format json
-    $json = json_encode($postNormalises);
-    //nous renvoyons une reponse Http qui prend en parametre un tableau en format JSON
-    return new Response($json);
-
-    } 
+        $post = $repo->findAll();
+        //Nous utilisions la fonction normalize quitransforme le tableau d'objets
+        //post en tableau associatif simple 
+        $postNormalises = $normalizer->normalize($post, 'json', ['groups' => "post"]);
+        // nous utilisons la fonction json_encode pour transfomer un tableau associatif en format json
+        $json = json_encode($postNormalises);
+        //nous renvoyons une reponse Http qui prend en parametre un tableau en format JSON
+        return new Response($json);
+    }
     ///////////////////////////////////////////////////////////////////////////////
-   
+
     #[Route('/afficheA', name: 'afficheA')]
     public function afficheA(): Response
     {
-        if ($this ->isGranted('ROLE_PATIENT')) {
+        if ($this->isGranted('ROLE_PATIENT')) {
             return $this->redirectToRoute('home');
         }
-        if ($this ->isGranted('ROLE_MEDECIN')) {
+        if ($this->isGranted('ROLE_MEDECIN')) {
             return $this->redirectToRoute('home');
         }
-    //récupérer le répository
-    $r=$this->getDoctrine()->getRepository(Post::Class);
-    //utiliser la fonction findAll()
-    $c=$r->findAll();
+        //récupérer le répository
+        $r = $this->getDoctrine()->getRepository(Post::Class);
+        //utiliser la fonction findAll()
+        $c = $r->findAll();
         return $this->render('Post/afficheA.html.twig', [
             'forum' => $c
         ]);
     }
 
     #[Route('/addP', name: 'addP')]
-    public function addP(ManagerRegistry $doctrine,Request $request )
-                   {
-                    $post= new Post();
-                    
-                    $form=$this->createForm(PostFormType::class,$post);
-  
-                       $form->handleRequest($request);
-                       if($form->isSubmitted() && $form->isValid()){
-                        $currenttime = new \DateTime();
-                        $post->setCreatedAt($currenttime);
-                       $post->setUpdatedAt($currenttime);
-                       
-                       
-                           $em =$doctrine->getManager() ; // EM gestionnaire de l'entite (crud bd)
-                           $em->persist($post); //ajout
-                           $em->flush(); // persist->bd
-                           $this->get('session')->getFlashBag()->add('flashy--success', 'Ajout avec succées');
-                           return $this->redirectToRoute("afficheP");}
-                  return $this->renderForm("post/addP.html.twig",
-                           array("f"=>$form));
-                    }
-/////////////////////////////////////////////////////////////
-#[Route('/APIaddP', name: 'APIaddP')]
-    public function APIaddP(Request $req, NormalizerInterface $Normalizer){
+    public function addP(ManagerRegistry $doctrine, Request $request)
+    {
+        $post = new Post();
+
+        $form = $this->createForm(PostFormType::class, $post);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $currenttime = new \DateTime();
+            $post->setCreatedAt($currenttime);
+            $post->setUpdatedAt($currenttime);
+
+
+            $em = $doctrine->getManager(); // EM gestionnaire de l'entite (crud bd)
+            $em->persist($post); //ajout
+            $em->flush(); // persist->bd
+            $this->get('session')->getFlashBag()->add('flashy--success', 'Ajout avec succées');
+            return $this->redirectToRoute("afficheP");
+        }
+        return $this->renderForm(
+            "post/addP.html.twig",
+            array("f" => $form)
+        );
+    }
+    /////////////////////////////////////////////////////////////
+    #[Route('/APIaddP', name: 'APIaddP')]
+    public function APIaddP(Request $req, NormalizerInterface $Normalizer)
+    {
         $em = $this->getDoctrine()->getManager();
-        $post = new Post ();
+        $post = new Post();
         $post->setIDUser($req->get('ID_user'));
         $post->setNomUtilisateur($req->get('NomUtilisateur'));
         $post->setDescription($req->get('Description'));
         $post->setCreatedAt(new \DateTime('now'));
         $post->setUpdatedAt(new \DateTime('now'));
         $post->setPublication($req->get('Publication'));
-        
+
         $em->persist($post);
         $em->flush();
 
-        $jsonContent = $Normalizer->normalize($post , 'json' , ['groups'=> 'post']);
+        $jsonContent = $Normalizer->normalize($post, 'json', ['groups' => 'post']);
         return new Response(json_encode($jsonContent));
     }
-                  
-////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////////////
 
 
-                    #[Route('/updatePost/{id}', name: 'updatePost')]
-               public function updatePost(PostRepository $repository,
-               $id,ManagerRegistry $doctrine,Request $request)
-               { //récupérer le classroom à modifier
-                   $post1= $repository->find($id);
-                   $post=new Post();
-                    $currenttime = new \DateTime();
-                    
-                   $form=$this->createForm(PostFormType::class,$post);
-                   $form->get("NomUtilisateur")->setData($post1->getNomUtilisateur());
-                   $form->get("ID_user")->setData($post1->getIDUser());
-                   $form->get("Description")->setData($post1->getDescription());
-                   $form->get("Publication")->setData($post1->getPublication());
+    #[Route('/updatePost/{id}', name: 'updatePost')]
+    public function updatePost(
+        PostRepository $repository,
+        $id,
+        ManagerRegistry $doctrine,
+        Request $request
+    ) { //récupérer le classroom à modifier
+        $post1 = $repository->find($id);
+        $post = new Post();
+        $currenttime = new \DateTime();
+
+        $form = $this->createForm(PostFormType::class, $post);
+        $form->get("NomUtilisateur")->setData($post1->getNomUtilisateur());
+        $form->get("ID_user")->setData($post1->getIDUser());
+        $form->get("Description")->setData($post1->getDescription());
+        $form->get("Publication")->setData($post1->getPublication());
 
 
-                   $form->handleRequest($request);
-                   if($form->isSubmitted() && $form->isValid()){
-                    $post1->setNomUtilisateur($form->get("NomUtilisateur")->getData());
-                    $post1->setIDUser($form->get("ID_user")->getData());
-                    $post1->setDescription($form->get("Description")->getData());
-                    $post1->setPublication($form->get("Publication")->getData());
-                    $post1->setCreatedAt($post1->getCreatedAt());
-                    $post1->setUpdatedAt($currenttime );
-                    
-                       $em =$doctrine->getManager();
-                       $em->persist($post1);
-                       $em->flush();
-                       return $this->redirectToRoute("afficheP"); }
-                   return $this->renderForm("Post/addP.html.twig",
-                       array("f"=>$form));
-               } 
-////////////////////////////////////////////////////////////
-#[Route('/APIupdatePost/{id}', name: 'APIupdatePost')]
-    public function APIupdatePost(Request $req, $id, NormalizerInterface $Normalizer){
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $post1->setNomUtilisateur($form->get("NomUtilisateur")->getData());
+            $post1->setIDUser($form->get("ID_user")->getData());
+            $post1->setDescription($form->get("Description")->getData());
+            $post1->setPublication($form->get("Publication")->getData());
+            $post1->setCreatedAt($post1->getCreatedAt());
+            $post1->setUpdatedAt($currenttime);
+
+            $em = $doctrine->getManager();
+            $em->persist($post1);
+            $em->flush();
+            return $this->redirectToRoute("afficheP");
+        }
+        return $this->renderForm(
+            "Post/addP.html.twig",
+            array("f" => $form)
+        );
+    }
+    ////////////////////////////////////////////////////////////
+    #[Route('/APIupdatePost/{id}', name: 'APIupdatePost')]
+    public function APIupdatePost(Request $req, $id, NormalizerInterface $Normalizer)
+    {
         $em = $this->getDoctrine()->getManager();
         $post = $em->getRepository(Post::class)->find($id);
         $post->setIDUser($req->get('ID_user'));
@@ -219,36 +234,40 @@ class PostController extends AbstractController
         $post->setCreatedAt(new \DateTime('now'));
         $post->setUpdatedAt(new \DateTime('now'));
         $post->setPublication($req->get('Publication'));
-        
-       
+
+
         $em->flush();
 
-        $jsonContent = $Normalizer->normalize($post , 'json' , ['groups'=> 'post']);
+        $jsonContent = $Normalizer->normalize($post, 'json', ['groups' => 'post']);
         return new Response("question updated successfully" . json_encode($jsonContent));
     }
-////////////////////////////////////////////////////////////
- #[Route('/suppPost/{id}', name: 'suppPost')]
-           public function suppPost($id,PostRepository $r,
-           ManagerRegistry $doctrine): Response
-           {//récupérer la classroom à supprimer
-           $post=$r->find($id);
-           //Action suppression
-            $em =$doctrine->getManager();
-            $em->remove($post);
-            $em->flush();
- return $this->redirectToRoute('afficheP',);} 
+    ////////////////////////////////////////////////////////////
+    #[Route('/suppPost/{id}', name: 'suppPost')]
+    public function suppPost(
+        $id,
+        PostRepository $r,
+        ManagerRegistry $doctrine
+    ): Response { //récupérer la classroom à supprimer
+        $post = $r->find($id);
+        //Action suppression
+        $em = $doctrine->getManager();
+        $em->remove($post);
+        $em->flush();
+        return $this->redirectToRoute('afficheP',);
+    }
 
- /////////////////////////////////////
-#[Route('/APISuppPost/{id}', name: 'APISuppPost')]
-public function APISuppPost(Request $req, $id, NormalizerInterface $Normalizer){
-    $em = $this->getDoctrine()->getManager();
-    $post = $em->getRepository(Post::class)->find($id);
-    $em->remove($post);
-    $em->flush();
-    $jsonContent = $Normalizer->normalize($post , 'json' , ['groups'=> 'post']);
-    return new Response("question deleted successfully" . json_encode($jsonContent));
-}
-/////////////////////////////////////
+    /////////////////////////////////////
+    #[Route('/APISuppPost/{id}', name: 'APISuppPost')]
+    public function APISuppPost(Request $req, $id, NormalizerInterface $Normalizer)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $post = $em->getRepository(Post::class)->find($id);
+        $em->remove($post);
+        $em->flush();
+        $jsonContent = $Normalizer->normalize($post, 'json', ['groups' => 'post']);
+        return new Response("question deleted successfully" . json_encode($jsonContent));
+    }
+    /////////////////////////////////////
 
 
 

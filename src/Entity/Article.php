@@ -42,7 +42,6 @@ class Article
 
     #[ORM\Column(length: 255)]
     #[Groups("article")]
-    #[Assert\NotBlank(message: "Image est obligatoire")]
     private ?string $image = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
