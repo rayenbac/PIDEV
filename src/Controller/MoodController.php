@@ -16,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 
+
 use Dompdf\Dompdf;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -77,7 +78,7 @@ class MoodController extends AbstractController
                             $em =$doctrine->getManager() ;
                             $em->persist($mood);
                             $em->flush();
-                            return $this->redirectToRoute("afficheM");}
+                            return $this->redirectToRoute("sms");}
                    return $this->renderForm("mood/add.html.twig",
                             array("f"=>$form));
                      }
@@ -187,8 +188,8 @@ public function deleteMoodJSON(Request $req, $id, NormalizerInterface $Normalize
 
 
 
-    #[Route('/pdf', name: 'pdf', methods: ['GET'])]
-    public function pdf(MoodRepository $MoodRepository): Response
+    #[Route('/pdf_mood', name: 'pdf_mood', methods: ['GET'])]
+    public function pdf_mood(MoodRepository $MoodRepository): Response
     {
         // Configure Dompdf according to your needs
         $pdfOptions = new OptionsResolver();
@@ -200,7 +201,7 @@ public function deleteMoodJSON(Request $req, $id, NormalizerInterface $Normalize
         $dompdf = new Dompdf($pdfOptions);
     
         // Retrieve the HTML generated in our twig file
-        $html = $this->renderView('mood/pdf.html.twig', [
+        $html = $this->renderView('mood/pdfMood.html.twig', [
             'moods' => $MoodRepository->findAll(),
         ]);
     

@@ -25,8 +25,8 @@ class Reservation
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups("info")]
-    #[Assert\Email(message:"L'email est invalide")]
-    #[Assert\NotBlank(message:"L'email est obligatoire")]
+    //#[Assert\Email(message:"L'email est invalide")]
+    //#[Assert\NotBlank(message:"L'email est obligatoire")]
 
 
     private ?string $Email = null;

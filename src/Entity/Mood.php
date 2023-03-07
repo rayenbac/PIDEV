@@ -26,6 +26,7 @@ class Mood
     #[Groups("moods")]
     private ?int $MoodId = null;
 
+    
     #[ORM\Column]
     #[Assert\NotBlank(message:"Champ obligatoire")]
     #[Groups("moods")]
