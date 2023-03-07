@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 
 
@@ -27,14 +29,21 @@ class ArticleController extends AbstractController
     }
    
     #[Route('/afficheArticle', name: 'afficheArticle')]
-    public function afficheArticle(): Response
+    public function afficheArticle(ArticleRepository $ArticleRepository , PaginatorInterface $paginator , Request $request): Response
     {
     //récupérer le répository
     $r=$this->getDoctrine()->getRepository(Article::Class);
     //utiliser la fonction findAll()
     $c=$r->findAll();
+    $queryBuilder = $ArticleRepository->createQueryBuilder('p');
+    $pagination = $paginator->paginate(
+        $queryBuilder,
+        $request->query->getInt('page',1),
+        3
+    );
+
         return $this->render('article/afficheArticle.html.twig', [
-            'forum' => $c
+            'pagination' => $pagination,
         ]);
     }
     #[Route('/APIafficheArticle', name: 'APIafficheArticle')]
@@ -54,6 +63,12 @@ class ArticleController extends AbstractController
     #[Route('/afficheAA', name: 'afficheAA')]
     public function afficheAA(): Response
     {
+        if ($this ->isGranted('ROLE_PATIENT')) {
+            return $this->redirectToRoute('home');
+        }
+        if ($this ->isGranted('ROLE_MEDECIN')) {
+            return $this->redirectToRoute('home');
+        }
     //récupérer le répository
     $r=$this->getDoctrine()->getRepository(Article::Class);
     //utiliser la fonction findAll()

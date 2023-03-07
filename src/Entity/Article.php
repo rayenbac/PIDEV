@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
 {
@@ -18,30 +19,30 @@ class Article
 
     #[ORM\Column]
     #[Groups("article")]
-    #[Assert\Positive (message:"Vérifier votre ID")]
-    #[Assert\NotBlank (message:"ID est obligatoire")]
+    #[Assert\Positive(message: "Vérifier votre ID")]
+    #[Assert\NotBlank(message: "ID est obligatoire")]
     private ?int $Id_user = null;
 
     #[ORM\Column(length: 255)]
     #[Groups("article")]
-    #[Assert\NotBlank (message:"Article est obligatoire")]
+    #[Assert\NotBlank(message: "Article est obligatoire")]
     private ?string $article = null;
 
-    
+
 
     #[ORM\Column(length: 255)]
     #[Groups("article")]
-    #[Assert\NotBlank (message:"Name est obligatoire")]
-     #[Assert\Length([
+    #[Assert\NotBlank(message: "Name est obligatoire")]
+    #[Assert\Length([
         'max' => 20,
         'maxMessage' => 'La description ne doit pas dépasser 20 caractères',
     ]),]
-     
+
     private ?string $NomUtilisateur = null;
 
     #[ORM\Column(length: 255)]
     #[Groups("article")]
-    
+    #[Assert\NotBlank(message: "Image est obligatoire")]
     private ?string $image = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -81,7 +82,7 @@ class Article
         return $this;
     }
 
- 
+
     public function getNomUtilisateur(): ?string
     {
         return $this->NomUtilisateur;

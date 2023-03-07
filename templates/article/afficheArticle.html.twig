@@ -71,7 +71,7 @@
                         <div class="row justify-content-center">
                             <div class="col-xl-8">
                                 <h2>Nouveautés</h2>
-                                {% for i in forum %}
+                                {% for i in pagination %}
                                 <div class="row">
                                     <div class="col-lg-6 col-sm-6">
                                         <div class="single_our_depertment">
@@ -108,6 +108,7 @@
                                
                                  
                                 {% endfor %}
+                                {{ knp_pagination_render(pagination)}}
                             </div>
                         </div>
 
