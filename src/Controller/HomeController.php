@@ -11,7 +11,7 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(): Response
     {
-        
+
         if ($this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('admin');
         }

@@ -14,6 +14,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mailer\MailerInterface;
 
 class StripeController extends AbstractController
 {
@@ -61,7 +64,7 @@ class StripeController extends AbstractController
         return new JsonResponse(['id' => $checkout_session->id]);
     }
     #[Route('/success', name: 'success_route')]
-    public function success(UserRepository $userRepository, ManagerRegistry $doctrine): Response
+    public function success(UserRepository $userRepository, ManagerRegistry $doctrine, MailerInterface $mailer): Response
     {
         $user2 = $this->getUser();
         //check if the user is authenticated or not
@@ -72,6 +75,7 @@ class StripeController extends AbstractController
         //get the user from the repository to get the necessary informations such as his address
         $userAddress = $user->getAdresse();
         $userItems = $user->getShoppingCartItems();
+        $userEmail = $user->getEmail();
         $commande = new Commande();
         $currenttime = new DateTime();
         $commande->setCreatedAt($currenttime);
@@ -109,7 +113,23 @@ class StripeController extends AbstractController
         $em = $doctrine->getManager();
         $em->persist($commande);
         $em->flush();
+        //mail 
 
+        $email = (new Email())
+
+            ->from('echkiliboucha@gmail.com')
+            ->to($userEmail)
+            //->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+            //->priority(Email::PRIORITY_HIGH)
+            ->subject('Commande confrimée !')
+            ->text('Votre Commande est confirmée ')
+            ->html('<p>Merci de nous faire confiance,vous serez livré(e) dans les plus brefs délais  </p>');
+
+
+
+        $mailer->send($email);
 
 
 

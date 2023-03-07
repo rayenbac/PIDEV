@@ -1,0 +1,66 @@
+{% extends "dashboard.html.twig" %}
+{% block title %}Commandes
+{% endblock %}
+{% block body %}
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-800">Liste des commandes</h1>
+	</div>
+
+
+	<div class="col-lg-12">
+		<div class="card mb-4">
+
+			<div class="table-responsive p-3">
+				<table class="table align-items-center table-flush table-hover" id="dataTableHover">
+					<thead class="thead-light">
+						<tr>
+							<th>Id</th>
+							<th>Id Utilistaeur</th>
+							<th>Nom d'Utilistaeur</th>
+							<th>Products</th>
+							<th>Date</th>
+							<th>status</th>
+							<th>Confirmer</th>
+						</tr>
+					</thead>
+					<tbody id="product-table">
+						{% for commande in pagination %}
+							<tr>
+								<td>{{commande.id}}</td>
+								<td>{{commande.user.id}}</td>
+								<td>{{commande.user.firstName}}
+									{{commande.user.lastName}}</td>
+								<td>
+									{% for item in commande.items %}
+										<p>{{item.product.name}}x{{item.quantity}}</p>
+									{% endfor %}
+								</td>
+								<td>{{commande.createdAt|date('d-m-Y H:i:s')}}</td>
+								<td>
+									{% if commande.isConfirmed %}
+										<div class="alert alert-success" role="alert">
+											Confirmé
+										</div>
+									{% else %}
+										<div class="alert alert-danger" role="alert">
+											non confirmé
+										</div>
+									{% endif %}
+								</td>
+
+								<td>
+									<button type="submit" class="btn btn-primary mb-1" onclick="window.location.href='{{ path('confirmCommande', { commandeId: commande.id }) }}'">
+										Modifier
+									</button>
+								</td>
+
+							</tr>
+						</tbody>
+					</tbody>
+				</tr>
+			{% endfor %}
+		</tbody>
+
+	</table>
+	{{ knp_pagination_render(pagination) }}
+</div></div></div>{% endblock %}

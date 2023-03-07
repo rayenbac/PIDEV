@@ -30,7 +30,7 @@ class Commande
     private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column]
-    private ?bool $isConfirmed = null;
+    private ?bool $isConfirmed = false;
 
     public function __construct()
     {

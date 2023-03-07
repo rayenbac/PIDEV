@@ -3,14 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Commande;
+use App\Repository\CommandeRepository;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/commande')]
+
 class CommandeController extends AbstractController
 {
     #[Route('/addCommande', name: "addCommande")]
@@ -67,5 +70,29 @@ class CommandeController extends AbstractController
 
 
         return $this->redirectToRoute('home');
+    }
+    #[Route('/dashboard/commandes', name: 'commandes')]
+    public function dashboardCommandes(CommandeRepository $commandeRepository, PaginatorInterface $paginator, Request $request): Response
+    {
+        $queryBuilder = $commandeRepository->createQueryBuilder('c');
+        $pagination = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1), // get the page parameter from the URL, defaults to 1
+            3 // limit per page
+        );
+
+        return $this->render('commande/commandes.html.twig', [
+            'pagination' => $pagination,
+        ]);
+    }
+    #[Route('/confirmCommande/{commandeId}', name: "confirmCommande")]
+    public function confirmCommande($commandeId, CommandeRepository $commandeRepository, ManagerRegistry $doctrine,): Response
+    {
+        $commande = $commandeRepository->find($commandeId);
+        $commande->setIsConfirmed(true);
+        $em = $doctrine->getManager();
+        $em->persist($commande);
+        $em->flush();
+        return $this->redirectToRoute('commandes');
     }
 }
