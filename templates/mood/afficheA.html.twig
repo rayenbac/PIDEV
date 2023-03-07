@@ -58,6 +58,15 @@
                      <td><a href="{{path('deletemood',{'id' :i.id }) }}" class="btn btn-danger">
                     <i class="fas fa-trash"></i>
                   </a></td>
+
+
+                      <td>
+       <a class="btn btn-success" href="{{ path('pdf') }}">Create pdf</a> 
+         </td>
+         
+         <td>
+       <a class="btn btn-success" href="{{ path('mood_statistics') }}">Show Mood Statistics</a> 
+         </td>
                
 {#    
           <td><a href="{{path('afficheA',{'id':i.id }) }}" class="btn btn-sm btn-primary">listes des moods </a></td> #}

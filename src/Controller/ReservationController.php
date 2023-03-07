@@ -25,8 +25,9 @@ use Endroid\QrCode\Writer\PngWriter;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mailer\MailerInterface;
-
-
+use Symfony\Component\Serializer\Annotation\Groups ;
+use App\Repository\UserRepository;
+use App\omponent\Serializer\SerializerInterface;
 
 
 class ReservationController extends AbstractController
@@ -61,16 +62,14 @@ class ReservationController extends AbstractController
     'reservation' => $info,
                     ]);}
     #[Route('/confirmation', name: 'confirmation')]
-    public function confirmation(ReservationRepository  $r): Response
+    public function confirmation(ReservationRepository  $r , SerializerInterface $serializer ): Response
                 {
-                        //$f=$r->find($id);
-                        //$fjson=$serializer->serialize($f, 'json', ['groups' => "suppliers"]);
-                        //$lien=$f->getWebsite();
-                        //$img=$f->getImg();
+                        $e=$r->find($id);
+                        $ejson=$serializer->serialize($e, 'json', ['groups' => "info"]);
                         $qrCode=Builder::create()
                             ->writer(new PngWriter())
                             ->writerOptions([])
-                            ->data("cette personne est autorisée de faire partie de l'événement!")
+                            ->data("Cette personne est autorisée de faire partie de l'événement!")
                             ->encoding(new Encoding('UTF-8'))
                             ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
                             ->size(300)
@@ -91,8 +90,16 @@ class ReservationController extends AbstractController
      
      #[Route('/addR', name: 'addR')]
      
-    public function addR(ManagerRegistry $doctrine, Request $request, EvenementsRepository $repository , MailerInterface $mailer)
+    public function addR(UserRepository $userRepository,ManagerRegistry $doctrine, Request $request, EvenementsRepository $repository , MailerInterface $mailer)
     {
+        $userSession = $this->getUser();
+        
+        if (!$userSession) {
+            return $this->RedirectToRoute('app_login');
+        }
+        $user = $userRepository->find($userSession);
+
+        $userEmail = $user->getEmail();
         $complet='';
         $reservation = new Reservation();
         $form = $this->createForm(ReservationFormType::class, $reservation);
@@ -103,7 +110,7 @@ class ReservationController extends AbstractController
             if ($nomevenement->getNbrDePlaces()) {
                 $nombreDePlaces = $reservation->getNombreDePlaceAReserver();
                 $nomevenement->setNbrDePlaces($nomevenement->getNbrDePlaces() - $nombreDePlaces);
-    
+                $reservation->setEmail($userEmail);
                 $em = $doctrine->getManager();
                 $em->persist($reservation);
                 $em->flush();
@@ -113,7 +120,7 @@ class ReservationController extends AbstractController
                 $email = (new Email())
                 
                 ->from('echkiliboucha@gmail.com')
-                ->to($form->get('Email')->getData())
+                ->to($userEmail)
                 //->cc('cc@example.com')
                 //->bcc('bcc@example.com')
                 //->replyTo('fabien@example.com')
