@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Post;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\PostRepository;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Form\PostFormType;
 use Symfony\Component\Validator\Constraints\DateTime;
@@ -29,12 +30,15 @@ class PostController extends AbstractController
    
 
     #[Route('/afficheP', name: 'afficheP')]
-    public function afficheP(PostRepository $PostRepository , PaginatorInterface $paginator , Request $request): Response
+    public function afficheP(UserRepository $userRepository,PostRepository $PostRepository , PaginatorInterface $paginator , Request $request): Response
     {
         if ($this ->isGranted('ROLE_MEDECIN')) {
             return $this->redirectToRoute('affichePC');
         }
     //récupérer le répository
+    $user2 = $this->getUser();
+    $user = $userRepository->find($user2);
+    $userId = $user->getId();
     $r=$this->getDoctrine()->getRepository(Post::Class);
     //utiliser la fonction findAll()
     $c=$r->findAll();
@@ -47,14 +51,18 @@ class PostController extends AbstractController
 
         return $this->render('post/afficheP.html.twig', [
             'pagination' => $pagination,
+            'userId' => $userId
         ]);
     } 
 
     #[Route('/affichePC', name: 'affichePC')]
-    public function affichePC(PostRepository $PostRepository , PaginatorInterface $paginator , Request $request): Response
+    public function affichePC(UserRepository $userRepository,PostRepository $PostRepository , PaginatorInterface $paginator , Request $request): Response
     {
         if ($this ->isGranted('ROLE_MEDECIN')) {
             $r=$this->getDoctrine()->getRepository(Post::Class);
+            $user2 = $this->getUser();
+    $user = $userRepository->find($user2);
+    $userId = $user->getId();
     //utiliser la fonction findAll()
     $c=$r->findAll();
     $queryBuilder = $PostRepository->createQueryBuilder('p');
@@ -66,6 +74,7 @@ class PostController extends AbstractController
 
         return $this->render('post/affichePC.html.twig', [
             'pagination' => $pagination,
+            'userId' => $userId
         ]);
         } 
         return $this->redirectToRoute("afficheP");
