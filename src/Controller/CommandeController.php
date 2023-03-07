@@ -20,7 +20,7 @@ class CommandeController extends AbstractController
         $user2 = $this->getUser();
         //check if the user is authenticated or not
         if (!$user2) {
-            return new Response('Utilisateur introuvable', Response::HTTP_BAD_REQUEST);
+            return $this->redirectToRoute('login');
         }
         $user = $userRepository->find($user2);
         //get the user from the repository to get the necessary informations such as his address
@@ -48,7 +48,6 @@ class CommandeController extends AbstractController
                 return new Response("Produit non disponible", Response::HTTP_BAD_REQUEST);
             }
         }
-        $stripeProducts = [];
         foreach ($userItems as $item) {
             $product = $item->getProduct();
             //get the available quantity of the product

@@ -7,6 +7,8 @@ use App\Repository\ShoppingCartItemRepository;
 use App\Repository\UserRepository;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
+use Stripe\BalanceTransaction;
+use Stripe\Stripe;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -112,5 +114,54 @@ class StripeController extends AbstractController
 
 
         return $this->redirectToRoute('home');
+    }
+    #[Route('/dashboard/stats', name: 'stats')]
+    public function stats(): Response
+    {
+        Stripe::setApiKey('sk_test_51MhGaAGeGEgrQ6hOFaUPvKPr8iOv7UjDwPJ22UAHMhCVD0VCQw3CmEGh0mQoVN7b635WeO2rilB94j2hSWMNDxhu00UQXAHDAc');
+
+        // Calculate the start and end timestamps for the last 7 days
+        $startDate = strtotime('-7 days');
+        $endDate = time();
+
+        // Retrieve the balance transactions for the last 7 days
+        $transactions = BalanceTransaction::all([
+            'created' => [
+                'gte' => $startDate,
+                'lte' => $endDate,
+            ],
+        ]);
+
+        // Initialize an empty array to hold the daily revenue data
+        $dailyRevenueData = [];
+
+        // Loop through the transactions to calculate the daily revenue data
+        foreach ($transactions->autoPagingIterator() as $transaction) {
+            if ($transaction->type === 'charge') {
+                $transactionDate = date('Y-m-d', $transaction->created);
+                if (!isset($dailyRevenueData[$transactionDate])) {
+                    $dailyRevenueData[$transactionDate] = 0;
+                }
+                $dailyRevenueData[$transactionDate] += $transaction->amount / 100;
+            }
+        }
+
+        // Sort the daily revenue data by date
+        ksort($dailyRevenueData);
+
+        // Prepare the data for the Chart.js bar chart
+        $chartData = [
+            'labels' => [],
+            'data' => [],
+        ];
+        foreach ($dailyRevenueData as $date => $revenue) {
+            $chartData['labels'][] = $date;
+            $chartData['data'][] = $revenue;
+        }
+
+        // Render the twig template and pass the data to the view
+        return $this->render('stripe/stats.html.twig', [
+            'chartData' => $chartData,
+        ]);
     }
 }
