@@ -63,6 +63,12 @@ class ArticleController extends AbstractController
     #[Route('/afficheAA', name: 'afficheAA')]
     public function afficheAA(): Response
     {
+        if ($this ->isGranted('ROLE_PATIENT')) {
+            return $this->redirectToRoute('home');
+        }
+        if ($this ->isGranted('ROLE_MEDECIN')) {
+            return $this->redirectToRoute('home');
+        }
     //récupérer le répository
     $r=$this->getDoctrine()->getRepository(Article::Class);
     //utiliser la fonction findAll()

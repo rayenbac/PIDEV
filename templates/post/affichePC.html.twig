@@ -73,7 +73,7 @@
                                  <h6>Liste questions&Réponses</h6>
                                  
                                
-                                {% for i in forum |sort((a, b) => a.createdAt.timestamp() - b.createdAt.timestamp())|reverse %}
+                                {% for i in pagination |sort((a, b) => a.createdAt.timestamp() - b.createdAt.timestamp())|reverse %}
                                
                                 <div class="row">
                                 <div id="google_translate_element"></div>

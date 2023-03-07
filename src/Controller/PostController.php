@@ -31,6 +31,9 @@ class PostController extends AbstractController
     #[Route('/afficheP', name: 'afficheP')]
     public function afficheP(PostRepository $PostRepository , PaginatorInterface $paginator , Request $request): Response
     {
+        if ($this ->isGranted('ROLE_MEDECIN')) {
+            return $this->redirectToRoute('affichePC');
+        }
     //récupérer le répository
     $r=$this->getDoctrine()->getRepository(Post::Class);
     //utiliser la fonction findAll()
@@ -50,8 +53,8 @@ class PostController extends AbstractController
     #[Route('/affichePC', name: 'affichePC')]
     public function affichePC(PostRepository $PostRepository , PaginatorInterface $paginator , Request $request): Response
     {
-    //récupérer le répository
-    $r=$this->getDoctrine()->getRepository(Post::Class);
+        if ($this ->isGranted('ROLE_MEDECIN')) {
+            $r=$this->getDoctrine()->getRepository(Post::Class);
     //utiliser la fonction findAll()
     $c=$r->findAll();
     $queryBuilder = $PostRepository->createQueryBuilder('p');
@@ -64,6 +67,10 @@ class PostController extends AbstractController
         return $this->render('post/affichePC.html.twig', [
             'pagination' => $pagination,
         ]);
+        } 
+        return $this->redirectToRoute("afficheP");
+    //récupérer le répository
+    
     } 
 
 
@@ -102,6 +109,12 @@ class PostController extends AbstractController
     #[Route('/afficheA', name: 'afficheA')]
     public function afficheA(): Response
     {
+        if ($this ->isGranted('ROLE_PATIENT')) {
+            return $this->redirectToRoute('home');
+        }
+        if ($this ->isGranted('ROLE_MEDECIN')) {
+            return $this->redirectToRoute('home');
+        }
     //récupérer le répository
     $r=$this->getDoctrine()->getRepository(Post::Class);
     //utiliser la fonction findAll()
