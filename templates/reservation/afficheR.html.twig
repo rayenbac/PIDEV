@@ -1,87 +1,89 @@
 {% extends "dashboard.html.twig" %}
 {% block body %}
 
-<div class="container-fluid" id="container-wrapper">
+	<div class="container-fluid" id="container-wrapper">
 
 
-<div class="section-top-border">
-<br/>
-<br/>
-<h3 class="mb-30">Liste de vos résérvations</h3>
-<center>
-<h1>Résérvation confirmée !</h1>
-<br/>
+		<div class="section-top-border">
+			<br/>
+			<br/>
+			<h3 class="mb-30">Liste de vos résérvations</h3>
+			<center>
+				<h1>Résérvation confirmée !</h1>
+				<br/>
 
- </center>
- 
-
- 
-<a href="{{ path('afficheE') }}" class="genric-btn default circle">
+			</center>
 
 
-Cliquez pour retourner aux évenements
+			<a href="{{ path('afficheE') }}" class="genric-btn default circle">
 
 
-</a>
-{% if reservation|length == 0 %}
-
-    <a href="#" class="genric-btn info circle" disabled>Cliquez pour générer un Qr-Code</a>
-{% else %}
-    <a href="{{ path('confirmation') }}" class="genric-btn info circle">Cliquez pour générer un Qr-Code</a>
-{% endif %}
-
-   
-
-<br/>
-<br/>
-<br/>
-<div class="progress-table-wrap">
-<div class="progress-table">
-<div class="table-head">
-<div class="country"><center>Id résérvation</center></div>
-<div class="country"><center>Nombre de places résérvés </center></div>
-
-<div class="country"><center>Modifier résérvation </center></div>
-<div class="country"><center>Supprimer résérvation </center></div>
-
-</div>
-{% for i in reservation %}
-<div class="table-row">
-
-<div class="country">{{i.id}}</div>
-<div class="country"> <center>{{i.nombredeplaceareserver}}</center> </div>
-
-<div class="country"><a href="{{ path('updateReservation',{'id':i.id}) }}" class="genric-btn info circle">
+				Cliquez pour retourner aux évenements
 
 
-Cliquez pour mettre à jour
-</a>
-</div>
+			</a>
+			{% if reservation|length == 0 %}
+
+				<a href="#" class="genric-btn info circle" disabled>Cliquez pour générer un Qr-Code</a>
+			{% else %}
+				<a href="{{ path('confirmation') }}" class="genric-btn info circle">Cliquez pour générer un Qr-Code</a>
+			{% endif %}
 
 
+			<br/>
+			<br/>
+			<br/>
+			<div class="progress-table-wrap">
+				<div class="progress-table">
+					<div class="table-head">
+						<div class="country">
+							<center>Id résérvation</center>
+						</div>
+						<div class="country">
+							<center>Nombre de places résérvés
+							</center>
+						</div>
+
+						<div class="country">
+							<center>Modifier résérvation
+							</center>
+						</div>
+						<div class="country">
+							<center>Supprimer résérvation
+							</center>
+						</div>
+
+					</div>
+					{% for i in reservation %}
+						<div class="table-row">
+
+							<div class="country">{{i.id}}</div>
+							<div class="country">
+								<center>{{i.nombredeplaceareserver}}</center>
+							</div>
+
+							<div class="country">
+								<a href="{{ path('updateReservation',{'id':i.id}) }}" class="genric-btn info circle">
 
 
-
-<td>
-<a href="{{path('suppReservation',{'id':i.id }) }}" class="genric-btn danger circle">
-Cliquer pour supprimer
- </a>
-</td>
+									Cliquez pour mettre à jour
+								</a>
+							</div>
 
 
+							<td>
+								<a href="{{path('suppReservation',{'id':i.id }) }}" class="genric-btn danger circle">
+									Cliquez pour supprimer
+								</a>
+							</td>
 
 
-</div>
+						</div>
 
-{% endfor %}
-
-
+					{% endfor %}
 
 
-</div>
+				</div>
 
 
-
-
-
-{% endblock %}
+			{% endblock %}
