@@ -24,13 +24,13 @@ class Post
 
     #[ORM\Column]
     #[Groups("post")]
-    #[Assert\Positive (message:"Vérifier votre ID")]
-    #[Assert\NotBlank (message:"ID est obligatoire")]
+    #[Assert\Positive(message: "Vérifier votre ID")]
+    #[Assert\NotBlank(message: "ID est obligatoire")]
     private ?int $ID_user = null;
 
     #[ORM\Column(length: 255)]
     #[Groups("post")]
-    #[Assert\NotBlank (message:"Description est obligatoire")]
+    #[Assert\NotBlank(message: "Description est obligatoire")]
     #[Assert\Length([
         'max' => 30,
         'maxMessage' => 'La description ne doit pas dépasser 30 caractères',
@@ -43,20 +43,20 @@ class Post
 
     #[ORM\Column(length: 255)]
     #[Groups("post")]
-    #[Assert\NotBlank (message:"Question est obligatoire")]
+    #[Assert\NotBlank(message: "Question est obligatoire")]
     private ?string $Publication = null;
-   
-    #[ORM\OneToMany(mappedBy: 'commentaires', targetEntity: Commentaire::class , cascade: ['remove'])]
+
+    #[ORM\OneToMany(mappedBy: 'commentaires', targetEntity: Commentaire::class, cascade: ['remove'])]
     private Collection $commentaires;
 
     #[ORM\Column(length: 255)]
     #[Groups("post")]
-    #[Assert\NotBlank (message:"Nom utilisateur est obligatoire")]
+    #[Assert\NotBlank(message: "Nom utilisateur est obligatoire")]
     #[Assert\Length([
         'max' => 20,
         'maxMessage' => 'La description ne doit pas dépasser 20 caractères',
     ]),]
-    
+
     private ?string $NomUtilisateur = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -76,17 +76,17 @@ class Post
     #[ORM\Column(nullable: true)]
     private ?int $rate = null;
 
-   
 
-  
 
-   
 
-   
-   
 
-  
-    
+
+
+
+
+
+
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
@@ -108,7 +108,7 @@ class Post
 
         return $this;
     }
-  
+
     public function getDescription(): ?string
     {
         return $this->Description;
@@ -121,7 +121,7 @@ class Post
         return $this;
     }
 
-   
+
 
     public function getPublication(): ?string
     {
@@ -189,7 +189,7 @@ class Post
         return $this;
     }
 
-   public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }
@@ -236,33 +236,8 @@ class Post
 
         return $this;
     }
-
-
-   
-
-   
-
-   
-
-   
-
-    
-
-    
-
-   
-   
-
-   
-
-  
-
-    
-  
-    
-
-   
-
-    
-    
+    public function __toString(): String
+    {
+        return $this->getPublication();
+    }
 }

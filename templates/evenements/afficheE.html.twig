@@ -1,139 +1,147 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-<section class="breadcrumb_part breadcrumb_bg">
-<div class="container">
-<div class="row">
-<div class="col-lg-12">
-<div class="breadcrumb_iner">
-<div class="breadcrumb_iner_item">
-<h2>Nos événements</h2>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section class="blog_area section_padding">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 mb-5 mb-lg-0">
-                    <div class="blog_left_sidebar">
+	<section class="breadcrumb_part breadcrumb_bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="breadcrumb_iner">
+						<div class="breadcrumb_iner_item">
+							<h2>Nos événements</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="blog_area section_padding">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 mb-5 mb-lg-0">
+					<div class="blog_left_sidebar">
 
-                        {% for i in evenements |sort((a, b) => b.dateevenement.timestamp() - a.dateevenement.timestamp())|reverse  %}
-                       
-                       
-                        <article class="blog_item">
-                            <div class="blog_item_img">
-                                <img width = "750px" height = "350px" class="card-img rounded-0" src="{{ asset('uploads/Evenements/' ~ i.Image) }}" alt="">
-                                <a href="#" class="blog_item_date">
-                                    <h3>{{i.dateevenement|date("d/m/Y")}}</h3>
-                                   
-                                   
-                                </a>
-                            </div>
+						{% for i in evenements |sort((a, b) => b.dateevenement.timestamp() - a.dateevenement.timestamp())|reverse  %}
 
-                            <div class="blog_details">
 
-                                <a>
+							<article class="blog_item">
+								<div class="blog_item_img">
+									<img width="750px" height="350px" class="card-img rounded-0" src="{{ asset('uploads/Evenements/' ~ i.Image) }}" alt="">
+									<a href="#" class="blog_item_date">
+										<h3>{{i.dateevenement|date("d/m/Y")}}</h3>
 
-                                <h2>{{i.nomevenement}}</h2>
 
-                                </a>
-<p>{{i.descriptionevenement}}</p>
+									</a>
+								</div>
 
-                               
+								<div class="blog_details">
 
-                                <ul class="blog-info-link">
-                                    <li>Lieu : <a href="#"><i class="far fa-user"></i> {{i.lieuevenement}} </a></li>
-<li>Nombre de places : <a href="#"><i class="far fa-user"></i> {{i.nbrdeplaces}} </a></li>
-                                    {% if i.nbrdeplaces > 0 %}
-  <p style="color: blue; display: flex; align-items: center;">
-   
-    <i class='bx bxs-error-circle bx-flashing'  style="margin-right: 0.5rem; color: blue;"></i> {{ i.nbrdeplaces }} places restantes seulement
-  </p>
-{% else %}
-  <p style="color: blue; display: flex; align-items: center;">
-    <i  class='bx bxs-x-circle bx-burst'  style="margin-right: 0.5rem;"></i> Evenement Complet
-  </p>
- 
-{% endif %}
-<li>Type de l'évenement : <a href="#"><i class="far fa-user"></i> {{i.type}} </a></li>
+									<a>
 
-                                   {% if i.nbrdeplaces <= 0 %}
-    {% set message = 'Plus de places pour cet événement ' %}
-    {% set type = 'warning' %}
-    {% set reserveButtonId = 'reserveButtonDisabled' %}
+										<h2>{{i.nomevenement}}</h2>
 
-    {% for flashMessage in app.session.flashbag.get('warning') %}
-        {% set message = flashMessage %}
-    {% endfor %}
+									</a>
+									<p>{{i.descriptionevenement}}</p>
 
-    <a  id="{{ reserveButtonId }}" disabled>
-        <div class="alert alert-{{ type }}">{{ message }}</div>
-    </a>
-             
-                                 
-                                  {% else %}
-                                    <a href="{{path('addR')}}">
-                                      <span class="badge badge-success"> <h6>Cliquez pour réserver</h6> </span>
-                                    </a>
-                                  {% endif %}
-                                  <p>
-                                    <td>
-                                      <a href="{{path('app_likes',{'id':i.id})}}" class="text-danger">&#128077; </a>
-                                      {% if i.Likes is not empty %}
-                                        {{i.Likes}}like(s)
-                                      {% else %}
-                                        0 like
-                                      {% endif %}
-                                   
-                                      <td>
-                                        <a href="{{path('app_dislikes',{'id':i.id})}}" class="text-danger" onclick="decrementLikes('{{i.id}}');">&#128078;</a>
-                                        {% if i.Dislikes is not empty %}
-                                          {{i.Dislikes}}dislike(s)
-                                        {% else %}
-                                          0 dislike
-                                        {% endif %}
-                                    </p>
-                                   
-                                   
-                                   
 
-                                   
-                                </ul>
-                            </div>
-                        </article>
-{% endfor %}
+									<ul class="blog-info-link">
+										<li>Lieu :
+											<a href="#">
+												<i class="far fa-user"></i>
+												{{i.lieuevenement}}
+											</a>
+										</li>
+										<li>Nombre de places :
+											<a href="#">
+												<i class="far fa-user"></i>
+												{{i.nbrdeplaces}}
+											</a>
+										</li>
+										{% if i.nbrdeplaces > 0 %}
+											<p style="color: blue; display: flex; align-items: center;">
 
-                       
-                       
-                    </div>
-                </div>
-               
-                               
-                        </aside>
+												<i class='bx bxs-error-circle bx-flashing' style="margin-right: 0.5rem; color: blue;"></i>
+												{{ i.nbrdeplaces }}
+												places restantes seulement
+											</p>
+										{% else %}
+											<p style="color: blue; display: flex; align-items: center;">
+												<i class='bx bxs-x-circle bx-burst' style="margin-right: 0.5rem;"></i>
+												Evenement Complet
+											</p>
 
-                       
+										{% endif %}
+										<li>Type de l'évenement :
+											<a href="#">
+												<i class="far fa-user"></i>
+												{{i.type}}
+											</a>
+										</li>
 
-                       
+										{% if i.nbrdeplaces <= 0 %}
+											{% set message = 'Plus de places pour cet événement ' %}
+											{% set type = 'warning' %}
+											{% set reserveButtonId = 'reserveButtonDisabled' %}
 
-                        <aside class="single_sidebar_widget newsletter_widget">
-                            <h4 class="widget_title">Newsletter</h4>
+											{% for flashMessage in app.session.flashbag.get('warning') %}
+												{% set message = flashMessage %}
+											{% endfor %}
 
-                            <form action="#">
-                                <div class="form-group">
-                                    <input type="email" class="form-control" onfocus="this.placeholder = ''"
-                                        onblur="this.placeholder = 'Enter email'" placeholder='Enter email' required>
-                                </div>
-                                <button class="button rounded-0 primary-bg text-white w-100 btn_1"
-                                    type="submit">Subscribe</button>
-                            </form>
-                        </aside>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-   
-{% endblock %}
+											<a id="{{ reserveButtonId }}" disabled>
+												<div class="alert alert-{{ type }}">{{ message }}</div>
+											</a>
+
+
+										{% else %}
+											<a href="{{path('addR')}}">
+												<span class="badge badge-success">
+													<h6>Cliquez pour réserver</h6>
+												</span>
+											</a>
+										{% endif %}
+										<p>
+											<td>
+												<a href="{{path('app_likesM',{'id':i.id})}}" class="text-danger">&#128077;
+												</a>
+												{% if i.Likes is not empty %}
+													{{i.Likes}}like(s)
+												{% else %}
+													0 like
+												{% endif %}
+											</td>
+											<td>
+												<a href="{{path('app_dislikesM',{'id':i.id})}}" class="text-danger" onclick="decrementLikes('{{i.id}}');">&#128078;</a>
+												{% if i.Dislikes is not empty %}
+													{{i.Dislikes}}dislike(s)
+												{% else %}
+													0 dislike
+												{% endif %}
+											</td>
+										</p>
+
+
+									</ul>
+								</div>
+							</article>
+						{% endfor %}
+
+
+					</div>
+				</div>
+
+
+			</aside>
+
+
+			<aside class="single_sidebar_widget newsletter_widget">
+				<h4 class="widget_title">Newsletter</h4>
+
+				<form action="#">
+					<div class="form-group">
+						<input type="email" class="form-control" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email'" placeholder='Enter email' required>
+					</div>
+					<button class="button rounded-0 primary-bg text-white w-100 btn_1" type="submit">Subscribe</button>
+				</form>
+			</aside>
+		</div>
+	</div>
+</div></div></section>{% endblock %}

@@ -19,8 +19,8 @@ class ArticleFormType extends AbstractType
             ->add('Id_user')
             ->add('NomUtilisateur')
             ->add('article')
-            ->add('createdAt',HiddenType::class)
-            ->add('updatedAt',HiddenType::class)
+            ->add('createdAt', HiddenType::class)
+            ->add('updatedAt', HiddenType::class)
             ->add('photo', FileType::class, [
                 'label' => 'Votre image (Des fichiers images uniquement)',
 
@@ -42,16 +42,15 @@ class ArticleFormType extends AbstractType
                             'image/jpeg',
                             'image/png',
 
-                            
+
                         ],
                         'mimeTypesMessage' => 'Please upload a valid image',
                     ])
                 ],
             ])
 
-            
-            ->add('save', SubmitType::class);
-        ;
+
+            ->add('save', SubmitType::class);;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

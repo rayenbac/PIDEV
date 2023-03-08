@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Schema\Schema;
 use Symfony\Component\Serializer\Annotation\Groups;
+
 #[ORM\Entity(repositoryClass: CommentaireRepository::class)]
 class Commentaire
 {
@@ -14,7 +15,7 @@ class Commentaire
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups("commentaire")]
-    
+
     private ?int $id = null;
 
     #[ORM\Column]
@@ -29,8 +30,8 @@ class Commentaire
     #[Groups("commentaire")]
     private ?\DateTimeInterface $Date = null;
 
-    #[ORM\ManyToOne(inversedBy: 'commentaires', )]
-   
+    #[ORM\ManyToOne(inversedBy: 'commentaires',)]
+
     private ?Post $commentaires = null;
 
     public function getId(): ?int
@@ -85,5 +86,8 @@ class Commentaire
 
         return $this;
     }
-    
+    public function __toString(): String
+    {
+        return $this->getReponse();
+    }
 }

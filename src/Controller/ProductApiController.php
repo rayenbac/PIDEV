@@ -31,15 +31,16 @@ class ProductApiController extends AbstractController
     {
         $products = $productsRepository->findAll();
         $normalizedProducts = array_map(function ($product) use ($normalizer) {
-            $normalizedProduct = $normalizer->normalize($product, 'json', ['groups' => 'userProducts']);
-            $categoryId = $product->getCategory() ? $product->getCategory()->getId() : null;
-            $normalizedProduct['category'] = $categoryId;
+            $normalizedProduct = $normalizer->normalize($product, 'json', [
+                'groups' => ['userProducts', 'category']
+            ]);
             return $normalizedProduct;
         }, $products);
 
         $json = json_encode($normalizedProducts);
         return new Response($json);
     }
+
     #[Route('/api/addProduct', name: 'addProductApi', methods: ['POST'])]
     public function addProductsApi(NormalizerInterface $normalizer, ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger, CategoryRepository $categoryRepository): Response
     {

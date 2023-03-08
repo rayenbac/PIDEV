@@ -111,7 +111,7 @@ class RendezVousController extends AbstractController
             $entityManager->persist($rendezVou);
             $entityManager->flush();
             $message = (new  Swift_Message('Reservation accepté'))
-                ->setFrom('wadhah.naggui@esprit.tn')
+                ->setFrom('moez.boumoud@esprit.tn')
                 ->setTo('moez.bouamoud@esprit.tn')
                 ->setBody('RendezVous est pris avec succées');
 

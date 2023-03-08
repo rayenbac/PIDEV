@@ -6,6 +6,7 @@ use App\Entity\Commentaire;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class CommentaireFormType extends AbstractType
 {
@@ -16,7 +17,7 @@ class CommentaireFormType extends AbstractType
             ->add('Reponse')
             ->add('Date')
             ->add('commentaires')
-        ;
+            ->add('save', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
