@@ -55,7 +55,7 @@
               	  <div class="col-md-6">
                     <div class="form-group">
                     {{form_label(form.FirstName,"Prenom" )}}
-						        {{form_widget(form.FirstName,{'attr': {'class': 'form-control'~ (form_errors(form.FirstName) ? ' is-invalid' : ''), 'placeholder': 'Nom'}}) }}
+						        {{form_widget(form.FirstName,{'attr': {'class': 'form-control'~ (form_errors(form.FirstName) ? ' is-invalid' : ''), 'placeholder': 'Prenom'}}) }}
 						        {% if form_errors(form.FirstName) %}
 							        <div class="invalid-feedback">
 								    {{form_errors(form.FirstName)}}
@@ -66,7 +66,7 @@
               <div class="col-md-6">
               <div class="form-group">
           {{form_label(form.LastName,"Nom" )}}
-						{{form_widget(form.LastName,{'attr': {'class': 'form-control'~ (form_errors(form.LastName) ? ' is-invalid' : ''), 'placeholder': 'Prénom'}}) }}
+						{{form_widget(form.LastName,{'attr': {'class': 'form-control'~ (form_errors(form.LastName) ? ' is-invalid' : ''), 'placeholder': 'Nom'}}) }}
 						{% if form_errors(form.LastName) %}
 							<div class="invalid-feedback">
 								{{form_errors(form.LastName)}}

@@ -127,7 +127,7 @@ class ReservationController extends AbstractController
                     //->priority(Email::PRIORITY_HIGH)
                     ->subject('Réservation confrimée !')
                     ->text('Votre réservation est confirmée ')
-                    ->html('<p>Merci de nous faire confiance </p>');
+                    ->html(' <p> Votre réservation a été confirmée </p> <p>Merci de nous faire confiance </p>');
 
 
 

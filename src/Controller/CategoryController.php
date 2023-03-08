@@ -27,6 +27,12 @@ class CategoryController extends AbstractController
     #[Route('/dashboard/categories', name: 'categories')]
     public function categories(CategoryRepository $categoryRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        if ($this->isGranted('ROLE_PATIENT')) {
+            return $this->redirectToRoute('home');
+        }
+        if ($this->isGranted('ROLE_MEDECIN')) {
+            return $this->redirectToRoute('home');
+        }
         $queryBuilder = $categoryRepository->createQueryBuilder('c')
             ->orderBy('c.id', 'ASC');
         $pagination = $paginator->paginate(
@@ -44,6 +50,12 @@ class CategoryController extends AbstractController
     #[Route('/dashboard/addCategory', name: 'addCategory')]
     public function addCategory(ManagerRegistry $doctrine, Request $request): Response
     {
+        if ($this->isGranted('ROLE_PATIENT')) {
+            return $this->redirectToRoute('home');
+        }
+        if ($this->isGranted('ROLE_MEDECIN')) {
+            return $this->redirectToRoute('home');
+        }
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
@@ -66,6 +78,12 @@ class CategoryController extends AbstractController
         ManagerRegistry $doctrine,
         Request $request
     ) {
+        if ($this->isGranted('ROLE_PATIENT')) {
+            return $this->redirectToRoute('home');
+        }
+        if ($this->isGranted('ROLE_MEDECIN')) {
+            return $this->redirectToRoute('home');
+        }
         $category = $repository->find($id);
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
@@ -88,6 +106,12 @@ class CategoryController extends AbstractController
         CategoryRepository $r,
         ManagerRegistry $doctrine
     ): Response {
+        if ($this->isGranted('ROLE_PATIENT')) {
+            return $this->redirectToRoute('home');
+        }
+        if ($this->isGranted('ROLE_MEDECIN')) {
+            return $this->redirectToRoute('home');
+        }
         $category = $r->find($id);
         if ($category->getProducts()->count() > 0) {
             $this->addFlash(

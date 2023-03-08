@@ -31,6 +31,12 @@ class ProductController extends AbstractController
     #[Route('/dashboard/products', name: 'products')]
     public function dashboardProducts(ProductRepository $productsRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        if ($this->isGranted('ROLE_PATIENT')) {
+            return $this->redirectToRoute('home');
+        }
+        if ($this->isGranted('ROLE_MEDECIN')) {
+            return $this->redirectToRoute('home');
+        }
         $queryBuilder = $productsRepository->createQueryBuilder('p');
         $pagination = $paginator->paginate(
             $queryBuilder,
@@ -46,6 +52,12 @@ class ProductController extends AbstractController
     #[Route('/dashboard/addProduct', name: 'addProduct')]
     public function addProduct(ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
     {
+        if ($this->isGranted('ROLE_PATIENT')) {
+            return $this->redirectToRoute('home');
+        }
+        if ($this->isGranted('ROLE_MEDECIN')) {
+            return $this->redirectToRoute('home');
+        }
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
@@ -90,6 +102,12 @@ class ProductController extends AbstractController
         Request $request,
         SluggerInterface $slugger
     ) {
+        if ($this->isGranted('ROLE_PATIENT')) {
+            return $this->redirectToRoute('home');
+        }
+        if ($this->isGranted('ROLE_MEDECIN')) {
+            return $this->redirectToRoute('home');
+        }
         $product = $repository->find($id);
         $form = $this->createForm(ProductType::class, $product);
 
@@ -131,6 +149,12 @@ class ProductController extends AbstractController
         ProductRepository $r,
         ManagerRegistry $doctrine
     ): Response {
+        if ($this->isGranted('ROLE_PATIENT')) {
+            return $this->redirectToRoute('home');
+        }
+        if ($this->isGranted('ROLE_MEDECIN')) {
+            return $this->redirectToRoute('home');
+        }
         $product = $r->find($id);
         $em = $doctrine->getManager();
         $em->remove($product);

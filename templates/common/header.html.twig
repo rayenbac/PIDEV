@@ -40,6 +40,18 @@
 							<li class="nav-item">
 								<a class="nav-link" href="{{path('afficheE')}}">Evènements</a>
 							</li>
+							{% if app.user.email is defined %}
+
+								<li class="nav-item">
+									<a class="nav-link" href="{{path('afficheReservation', {'email': app.user.email})}}">Reservation</a>
+								</li>
+							{% endif %}
+							{% if app.user.email is defined %}
+
+								<li class="nav-item">
+									<a class="nav-link" href="{{path('cart')}}">Mon Panier</a>
+								</li>
+							{% endif %}
 						</ul>
 					</div>
 					{% if app.user is null %}

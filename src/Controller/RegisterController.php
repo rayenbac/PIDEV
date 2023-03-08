@@ -15,6 +15,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Swift_Mailer;
+use Swift_Message;
 
 
 
@@ -33,7 +37,7 @@ class RegisterController extends AbstractController
 
 
     #[Route('/inscription', name: 'register')]
-    public function index(Request $request, UserPasswordEncoderInterface $encoder, SluggerInterface $slugger): Response
+    public function index(Request $request, UserPasswordEncoderInterface $encoder, SluggerInterface $slugger, Swift_Mailer $mailer): Response
     {
 
 
@@ -47,6 +51,7 @@ class RegisterController extends AbstractController
 
                 $date = new \DateTimeImmutable(date('Y/m/d H:i:s'));
                 $user = $form->getData();
+                $email = $form->getData()->getEmail();
 
                 $user->setCreatedAt($date);
                 $password = $encoder->encodePassword($user, $user->getPassword());
@@ -93,6 +98,16 @@ class RegisterController extends AbstractController
                 $user->addNotif($notification);
                 $doctrine->persist($notification);
                 $doctrine->flush();
+
+                $message = (new Swift_Message('BIENVENUE'))
+                    ->setFrom('rayen.baccouch@esprit.tn')
+                    ->setTo($user->getEmail())
+                    ->setBody(
+                        " Bienvenue a echkili "
+                    );
+
+                //send mail
+                $mailer->send($message);
                 return $this->redirectToRoute('app_login');
             }
         }

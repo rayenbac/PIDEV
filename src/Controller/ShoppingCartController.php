@@ -27,6 +27,10 @@ class ShoppingCartController extends AbstractController
 
     public function addToCart(ProductRepository $productRepository, $productId): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
         $entityManager = $this->getDoctrine()->getManager();
 
         $user = $this->getUser();
@@ -71,7 +75,7 @@ class ShoppingCartController extends AbstractController
         $user = $this->getUser();
 
         if (!$user) {
-            return new Response('Utilisateur introuvable', Response::HTTP_BAD_REQUEST);
+            return $this->redirectToRoute('app_login');
         }
         $cartItems = $shoppingCartRepository->findBy(['user' => $user]);
 
