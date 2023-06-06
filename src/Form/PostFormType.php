@@ -17,11 +17,10 @@ class PostFormType extends AbstractType
             ->add('ID_user')
             ->add('NomUtilisateur')
             ->add('Description')
-            ->add('createdAt',HiddenType::class)
-            ->add('updatedAt',HiddenType::class)
+            ->add('createdAt', HiddenType::class)
+            ->add('updatedAt', HiddenType::class)
             ->add('Publication')
-            ->add('save',SubmitType::class)
-        ;
+            ->add('save', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
