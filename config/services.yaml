@@ -13,7 +13,7 @@ parameters:
     password : '%env(PASS)%'
     twilio_account_sid: '%env(TWILIO_ACCOUNT_SID)%'
     twilio_auth_token: '%env(TWILIO_AUTH_TOKEN)%'
-    twilio_phone_number: '+12765337052'
+    twilio_phone_number: '+16813233462'
 
 services:
     

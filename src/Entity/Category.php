@@ -33,7 +33,7 @@ class Category
         minMessage: 'Le nom du categorie doit contenir au moin 3 caracteres',
         maxMessage: 'Le nom du categorie doit contenir au maximum 40 caracteres',
     )]
-    #[Groups("category")]
+    #[Groups("category", "categoryName")]
 
     public ?string $categoryName = null;
 

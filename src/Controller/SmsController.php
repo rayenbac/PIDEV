@@ -20,18 +20,18 @@ class MyController extends AbstractController
     }
     #[Route('/sms', name: 'sms')]
 
-    public function sendSms(TwilioService $twilioService,MoodRepository $MoodRepository)
+    public function sendSms(TwilioService $twilioService, MoodRepository $MoodRepository)
     {
-        $toPhoneNumber = '+21654300673'; // remplacer par le numéro de téléphone réel
+        $toPhoneNumber = '+21624660566'; // remplacer par le numéro de téléphone réel
         $message = 'Votre Mood est enregistrée avec succées ';
 
         $twilioService->sendSms($toPhoneNumber, $message);
-        $c=$this->getDoctrine()->getRepository(Mood::Class)->findAll();
-     //utiliser la fonction findAll()
-     //$c=$r->findAll();
-   return $this->render('mood/index.html.twig', [
-    'm' => $c
-                    ]);
-     }  
-        // Retournez une réponse Symfony si nécessaire
+        $c = $this->getDoctrine()->getRepository(Mood::Class)->findAll();
+        //utiliser la fonction findAll()
+        //$c=$r->findAll();
+        return $this->render('mood/index.html.twig', [
+            'm' => $c
+        ]);
     }
+    // Retournez une réponse Symfony si nécessaire
+}

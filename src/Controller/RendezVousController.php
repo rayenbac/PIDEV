@@ -110,16 +110,8 @@ class RendezVousController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($rendezVou);
             $entityManager->flush();
-            $message = (new  Swift_Message('Reservation accepté'))
-                ->setFrom('moez.boumoud@esprit.tn')
-                ->setTo('moez.bouamoud@esprit.tn')
-                ->setBody('RendezVous est pris avec succées');
 
-            $mailer->send($message);
-            $toPhoneNumber = '+21654300673'; // remplacer par le numéro de téléphone réel
-            $message = 'votre rendez vous est créé avec succès ';
 
-            $twilioService->sendSms($toPhoneNumber, $message);
             return $this->redirectToRoute('app_rendez_vous_show', [
                 'id' => $rendezVou->getId()
             ]);

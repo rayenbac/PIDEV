@@ -53,25 +53,7 @@ class ProductApiController extends AbstractController
         $product->setDescription($request->get('description'));
         $product->setPrice($request->get('price'));
         $product->setQuantity($request->get('quantity'));
-        //upload image to database with a unique name
-        $imageFile = $request->get('image')->getData();
-        if ($imageFile) {
-            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-            // this is needed to safely include the file name as part of the URL
-            $safeFilename = $slugger->slug($originalFilename);
-            $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
 
-            // Move the file to the directory where brochures are stored
-            try {
-                $imageFile->move(
-                    $this->getParameter('products_directory'),
-                    $newFilename
-                );
-            } catch (FileException $e) {
-                return new JsonResponse("erreur", 400);
-            }
-            $product->setImage($newFilename);
-        }
         //get categoryId , find it by id in the repository and set it as the product's category
         $categoryId = $request->get('categoryId');
         $category =  $categoryRepository->find($categoryId);
@@ -137,9 +119,10 @@ class ProductApiController extends AbstractController
     }
 
     #[Route('/api/product/{id}', name: 'ProductApi')]
-    public function getProductApi(NormalizerInterface $normalizer, ManagerRegistry $doctrine, ProductRepository $productRepository, $id): Response
+    public function getProductApi(NormalizerInterface $normalizer, ProductRepository $productRepository, $id): Response
     {
         $product = $productRepository->find($id);
+        // $categoryName = $product->getCategory()->getcategoryName();
         $normalizedProduct = $normalizer->normalize($product, 'json', ['groups' => 'userProducts']);
         $json = json_encode($normalizedProduct);
         return new Response($json);

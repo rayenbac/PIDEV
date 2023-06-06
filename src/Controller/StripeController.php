@@ -116,7 +116,6 @@ class StripeController extends AbstractController
         //mail 
 
         $email = (new Email())
-
             ->from('echkiliboucha@gmail.com')
             ->to($userEmail)
             //->cc('cc@example.com')
@@ -126,9 +125,6 @@ class StripeController extends AbstractController
             ->subject('Commande confrimée !')
             ->text('Votre Commande est confirmée ')
             ->html('<p>Merci de nous faire confiance,vous serez livré(e) dans les plus brefs délais  </p>');
-
-
-
         $mailer->send($email);
 
 
